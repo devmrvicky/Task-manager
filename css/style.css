@@ -1,0 +1,112 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+}
+
+#app :is(input, button) {
+  width: auto;
+  padding: 0;
+  margin: 0;
+}
+
+#app h1 {
+  padding-bottom: 0;
+}
+
+main#app {
+  width: 100%;
+  margin: 0;
+  /* margin-top: 50px; */
+  padding: 0 0 0;
+  border-top: 1px solid;
+  background-color: #EAF1F1;
+  font-family: poppins;
+}
+
+& button {
+  width: auto !important;
+}
+
+.task-manager-side-bar {
+  & button {
+    margin: 140px 0 0 0;
+  }
+}
+
+.side-menu-options {
+  & li:hover {
+    color: #e2e2e2;
+  }
+
+  & li.active {
+    color: #e2e2e2;
+  }
+
+  & i {
+    font-size: 1.5rem;
+  }
+
+  & span {
+    display: none;
+  }
+}
+
+.main-content-area {
+  background: linear-gradient(to right, #F9FAFA 70%, #EAF1F1 30%);
+}
+
+.task-manager-top-bar form input {
+  width: 100% !important;
+}
+
+.task-area {
+  width: 70%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 100px 100px 100px 100px 100px;
+}
+
+/* section{
+  background-color: #fff;
+  padding: 20px;
+} */
+.recent-tasks-section {
+  grid-row: 1 / 4;
+}
+
+.statistic-section {
+  grid-row: 4 / -1;
+}
+
+.folders-section {
+  grid-row: -6 / -4;
+}
+
+.notes-section {
+  grid-row: -4 / -1;
+}
+
+.date-time-area {
+  width: 30%;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.task-item.active {
+  background-color: #fff;
+}
+
+.show {
+  .fa-angle-down {
+    transform: rotate(180deg);
+    transition: all .4s;
+  }
+}

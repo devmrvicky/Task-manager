@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- favicon -->
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <title>Task manager</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <!-- tip-calculator js -->
+  <script type="module" src="./js/script.js" defer></script>
+  <script type="module" src="./js/dashboard.js" defer></script>
+  <!-- tailwind css -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- font awesome cdn link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+  <!-- Project code -->
+  <main id="app" class="flex" data-project-name="task-manager">
+    <!-- <h1>Task manager</h1> -->
+
+    <!-- task manager side bar -->
+    <div class="task-manager-side-bar bg-[#719191] text-white p-2 flex flex-col items-center gap-5 w-14 h-screen fixed">
+      <!-- logo -->
+      <div class="logo p-1 bg-white rounded">
+        <img src="/task-manager-logo.png" alt="logo">
+      </div>
+      <!-- side menu options -->
+      <ul class="side-menu-options my-4 flex flex-col gap-2">
+        <li id="task-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer">
+          <i class="fa-solid fa-clipboard-list"></i>
+          <span>Tasks</span>
+        </li>
+        <li id="statistic-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer">
+          <i class="fa-solid fa-square-poll-vertical"></i>
+          <span>statics</span>
+        </li>
+        <li id="note-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer">
+          <i class="fa-solid fa-book"></i>
+          <span>note</span>
+        </li>
+        <li id="calendar-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer">
+          <i class="fa-solid fa-calendar-days"></i>
+          <span>calendar</span>
+        </li>
+        <li id="setting-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer">
+          <i class="fa-solid fa-gear"></i>
+          <span>setting</span>
+        </li>
+      </ul>
+      <!-- collapse side bar -->
+      <button type="button" title="collapse side bar" class="mt-auto">
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </button>
+    </div>
+    <!-- end task manager side bar -->
+
+    <!-- task and calendar area -->
+    <div class="main-content-area pl-20 pr-5 flex flex-col w-full h-fit">
+      <!-- top nav bar -->
+      <div class="task-manager-top-bar flex items-center gap-5 px-5">
+        <!-- title -->
+        <h1 class="text-2xl">Dashboard</h1>
+        <!-- search form -->
+        <form action="" class="border max-w-2xl w-full px-3 py-2 rounded-5 flex items-center bg-[#EAF1F1] rounded-md">
+          <label for="search-task" aria-hidden="true" class="hidden">search task</label>
+          <input type="text" name="search" id="search-task" title="input search text"
+            class="bg-transparent w-full outline-none">
+          <button type="submit" title="search button">
+            <i class="fa fa-search text-[#719191]"></i>
+          </button>
+        </form>
+        <!-- notification -->
+        <div class="task-notification ml-auto">
+          <i class="fa fa-bell text-xl"></i>
+        </div>
+        <!-- profile -->
+        <div class="prof w-12">
+          <div class="profile-img">
+            <img src="/profile.jpg" alt="profile img">
+          </div>
+        </div>
+      </div>
+      <!-- end top nav bar -->
+
+      <div class="task-manager-content flex gap-5 py-5">
+        <!-- here is code append by JavaScript -->
+      </div>
+    </div>
+    <!-- end task and calendar area -->
+
+  </main>
+</body>
+
+</html>
