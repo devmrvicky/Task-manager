@@ -3,7 +3,7 @@ import {
   allTaskList,
   getNoOfAllTask,
   taskManagerContent,
-} from "./script.js";
+} from "../main.js";
 const logo = document.querySelector(".logo");
 
 // get all section
