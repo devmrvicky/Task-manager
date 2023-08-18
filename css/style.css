@@ -57,7 +57,7 @@ main#app {
 }
 
 .main-content-area {
-  background: linear-gradient(to right, #F9FAFA 70%, #EAF1F1 30%);
+  background: linear-gradient(to right, #F9FAFA 72%, #EAF1F1 28%);
 }
 
 .task-manager-top-bar form input {
@@ -109,4 +109,8 @@ main#app {
     transform: rotate(180deg);
     transition: all .4s;
   }
+}
+
+section::-webkit-scrollbar {
+  display: none;
 }
