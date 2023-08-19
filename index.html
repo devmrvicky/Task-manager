@@ -62,7 +62,7 @@
     <!-- task and calendar area -->
     <div class="main-content-area pl-20 pr-5 flex flex-col w-full h-fit">
       <!-- top nav bar -->
-      <div class="task-manager-top-bar flex items-center gap-5 px-5">
+      <div class="task-manager-top-bar flex items-center gap-5 px-5 py-3">
         <!-- title -->
         <h1 class="text-2xl main-title">Dashboard</h1>
         <!-- search form -->
@@ -74,13 +74,19 @@
             <i class="fa fa-search text-[#719191]"></i>
           </button>
         </form>
+        <!-- add task button -->
+        <div class="ml-auto">
+          <button type="button" title="add task" class="open-text-editor">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
         <!-- notification -->
-        <div class="task-notification ml-auto">
+        <div class="task-notification">
           <i class="fa fa-bell text-xl"></i>
         </div>
         <!-- profile -->
         <div class="prof w-12">
-          <div class="profile-img">
+          <div class="profile-img rounded-full">
             <img src="/profile.jpg" alt="profile img">
           </div>
         </div>

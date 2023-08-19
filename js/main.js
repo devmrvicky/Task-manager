@@ -1,8 +1,11 @@
 import { appendNewPage } from "./components/appendNewPage.js";
+import { getTextEditor } from "./components/getTextEditor.js";
 import "./pages/dashboard.js";
 
+const mainApp = document.querySelector("main");
 const menuOptions = document.querySelectorAll(".menu-option");
 const taskManagerContent = document.querySelector(".task-manager-content");
+const openTextEditorBtn = document.querySelector(".open-text-editor");
 
 // global variable
 let allTaskList = [];
@@ -126,13 +129,24 @@ menuOptions.forEach((menuOption) => {
   });
 });
 
-window.addEventListener("DOMContentLoaded", () => {
-  menuOptions.forEach((menu) => {
-    if (menu.id === "task-opt") {
-      // menu.click();
-    }
+const openTextEditor = () => {
+  const textEditorContainer = document.createElement("div");
+  textEditorContainer.className =
+    "text-editor-container w-full h-full fixed top-0 shadow bg-white/50 backdrop-blur-sm flex items-center justify-center p-24";
+  const pageName = taskManagerContent.children[0].dataset.page;
+  textEditorContainer.setAttribute("data-page-name", pageName);
+  if (document.querySelector(".text-editor-container")) return;
+  const textEditor = getTextEditor();
+  textEditorContainer.append(textEditor);
+  mainApp.append(textEditorContainer);
+
+  const closeButton = textEditor.querySelector(".close-editor");
+  closeButton.addEventListener("click", () => {
+    textEditorContainer.remove();
   });
-});
+};
+// add event listener for open text editor btn
+openTextEditorBtn.addEventListener("click", openTextEditor);
 
 // export something
 export default allTasks;

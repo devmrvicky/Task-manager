@@ -32,6 +32,7 @@ const getRecentTaskPage = () => {
   getNoOfAllTask();
   const recentTaskContent = document.createElement("div");
   recentTaskContent.className = "w-full flex gap-5";
+  recentTaskContent.setAttribute("data-page", "recent-task");
   const recentTaskSideBar = getRecentTaskSideBar();
 
   const recentTaskMainContent = document.createElement("div");

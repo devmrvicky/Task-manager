@@ -94,13 +94,14 @@ const getNoteSection = () => {
 };
 
 // add dashboard content
-const addDashboardElement = () => {
+export const addDashboardElement = () => {
   mainTile.textContent = "Dashboard";
   getNoOfAllTask();
   // fist clear all html from taskManagerContent
   taskManagerContent.innerHTML = "";
   // add task area element
   const taskArea = document.createElement("div");
+  taskArea.setAttribute("data-page", "dashboard");
   taskArea.className = "task-area gap-5";
   const recentTaskSection = getRecentTaskSection();
   const folderSection = getFolderSection();
