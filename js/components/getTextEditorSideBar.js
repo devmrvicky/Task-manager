@@ -7,10 +7,10 @@ export const getTaskList = (tasks, taskListElem, isFromFolder = false) => {
     li.className = `flex gap-3 cursor-default flex-col`;
     li.setAttribute("data-list-name", task.name);
     li.innerHTML = `
-    <div class="w-full flex gap-3">
+    <div class="w-full flex ${isFromFolder ? `` : `gap-3`}">
       ${
         isFromFolder
-          ? `<div class="m-3 self-center w-6"><img src="/curved-arrow.png"></div>`
+          ? `<div class="m-3 self-center w-4"><img src="/curved-arrow.png"></div>`
           : ""
       }
       <div class="hover:bg-zinc-100 flex flex-1 py-3 px-4 rounded-xl">
@@ -25,7 +25,7 @@ export const getTaskList = (tasks, taskListElem, isFromFolder = false) => {
             <p class="group text-xs">${task.name}</p>
             ${
               task.folder
-                ? `<p class="text-[.7rem] text-zinc-400">dkdfldk</p>`
+                ? `<p class="text-[.7rem] text-zinc-400">Total tasks: ${task.tasks.length}</p>`
                 : ``
             }
           </div>
@@ -47,9 +47,10 @@ export const getTaskList = (tasks, taskListElem, isFromFolder = false) => {
 
 export const getTextEditorSideBar = () => {
   const editorSideBar = document.createElement("div");
-  editorSideBar.className = "text-editor-side-bar border-r relative";
+  editorSideBar.className =
+    "text-editor-side-bar border-r relative w-[250px] flex flex-col";
   const editorSideBarHead = document.createElement("div");
-  editorSideBarHead.className = "editor-head px-4 py-2 border-b";
+  editorSideBarHead.className = "editor-head px-4 py-2 border-b bg-white";
   editorSideBarHead.innerHTML = `
     <select>
       <option value="task" selected>Task</option>
@@ -70,7 +71,7 @@ export const getTextEditorSideBar = () => {
     </div>
   `;
   const recentTaskList = document.createElement("ul");
-  recentTaskList.className = "task-lists flex flex-col";
+  recentTaskList.className = "task-lists flex flex-col overflow-auto";
   getTaskList(allTasks.recentTask, recentTaskList);
   // for (let task of allTasks.recentTask) {
   //   const li = getTaskList(task);

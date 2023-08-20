@@ -7,6 +7,12 @@ import { getTaskList, getTextEditorSideBar } from "./getTextEditorSideBar.js";
 let selectedObj;
 let isSelected = false;
 let nestedTaskName;
+const timeDateObj = {
+  year: "",
+  init: "",
+  end: "",
+};
+const tags = [];
 
 // re-render pages
 const reRenderPages = (textEditor) => {
@@ -24,18 +30,26 @@ const reRenderPages = (textEditor) => {
   }
 };
 
+// get time obj
+const getTimeObj = () => {
+  const dateObj = new Date();
+  const year = dateObj.getFullYear();
+  const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+  const day = ("0" + dateObj.getDay()).slice(-2);
+  const date = ("0" + dateObj.getDate()).slice(-2);
+  const hour = ("0" + dateObj.getHours()).slice(-2);
+  const minute = ("0" + dateObj.getMinutes()).slice(-2);
+  return { year, month, day, date, hour, minute };
+};
+
 // update task lists
-const updateAllTasksList = (name, folder) => {
+const updateAllTasksList = (name, folder, time = []) => {
   const newTaskObj = {};
   newTaskObj.name = name;
   newTaskObj.folder = folder;
   newTaskObj.status = "uncompleted";
-  newTaskObj.time = {
-    date: "19 may",
-    init: "",
-    end: "",
-  };
-  newTaskObj.tags = [];
+  newTaskObj.time = time;
+  newTaskObj.tags = tags;
   if (folder) {
     newTaskObj.completedTask = 0;
     newTaskObj.tasks = [];
@@ -46,21 +60,36 @@ const updateAllTasksList = (name, folder) => {
 
 // add new folder
 const addNewFolder = (folderName) => {
-  updateAllTasksList(folderName, true);
+  updateAllTasksList(folderName, true, timeDateObj);
 };
 
 const getNestedTaskList = () => {
   const nestedObj = {};
   nestedObj.name = nestedTaskName;
-  nestedObj.time = {
-    date: "19 may",
-    init: "17:30",
-    end: "18:00",
-  };
-  nestedObj.status = "completed";
-  nestedObj.tags = [];
+  nestedObj.time = timeDateObj;
+  nestedObj.status = "uncompleted";
+  nestedObj.tags = tags;
   let nestedList = [].concat(nestedObj);
   return nestedList;
+};
+
+const updateTimeDateObj = (year, init, end) => {
+  timeDateObj.date = year;
+  timeDateObj.init = init;
+  timeDateObj.end = end;
+};
+
+const setDefaultDateTime = (form) => {
+  const dateElem = form.querySelector("#date");
+  const timeElem = form.querySelectorAll('input[type="time"]');
+  const timeObj = getTimeObj();
+  const date = `${timeObj.year}-${timeObj.month}-${timeObj.date}`;
+  const time = `${timeObj.hour}:${timeObj.minute}`;
+  dateElem.value = date;
+  timeElem.forEach((elem) => {
+    elem.value = time;
+  });
+  updateTimeDateObj(date, time, time);
 };
 
 export const getTextEditor = () => {
@@ -80,17 +109,54 @@ export const getTextEditor = () => {
 
   const tasksListElem = textEditor.querySelector(".task-lists");
   const editorForm = textEditor.querySelector(".editor-form");
+  setDefaultDateTime(editorForm);
+  const dateElem = editorForm.querySelector("#date");
+  const initTimeElem = editorForm.querySelector("#init-time");
+  const endTimeElem = editorForm.querySelector("#end-time");
+  const tagsElem = editorForm.querySelectorAll(".tag");
+  const parentElemOfTag = tagsElem[0].parentElement.previousElementSibling;
+
+  const updateAndGetTagElem = (tag) => {
+    if (tags.includes(tag) || parentElemOfTag.children.length >= 5) return;
+    tags.push(tag);
+    let tagElem = document.createElement("span");
+    tagElem.className =
+      "tag text-xs border rounded-xl py-1 px-2 bg-white hover:bg-zinc-50 cursor-default";
+    tagElem.textContent = `#${tag}`;
+    parentElemOfTag.prepend(tagElem);
+  };
+
+  const tagInput = parentElemOfTag.querySelector("input");
+  tagInput.addEventListener("input", (e) => {
+    if (e.data === ",") {
+      const tag = tagInput.value.replace(",", "");
+      updateAndGetTagElem(tag);
+      tagInput.value = "";
+      tagInput.focus();
+    }
+  });
+
+  tagsElem.forEach((tagElem) => {
+    tagElem.addEventListener("click", (e) => {
+      const tag = e.currentTarget.dataset.tag;
+      updateAndGetTagElem(tag);
+    });
+  });
+
   editorForm.addEventListener("submit", (e) => {
     e.preventDefault();
+    updateTimeDateObj(dateElem.value, initTimeElem.value, endTimeElem.value);
     const input = e.currentTarget[0];
     if (!input.value) return;
     if (!isSelected) {
-      updateAllTasksList(input.value, false);
+      updateAllTasksList(input.value, false, timeDateObj, tags);
     } else {
       nestedTaskName = input.value;
       selectedObj.tasks.push(...getNestedTaskList());
     }
     reRenderPages(textEditor);
+    input.value = "";
+    input.focus();
   });
 
   getActiveListElem(tasksListElem);
@@ -104,6 +170,7 @@ export const getTextEditor = () => {
       let isLiExit =
         tasksListElem.children[0].dataset.listType === "create-folder";
       if (btn.title === "create file" || isLiExit) return;
+      updateTimeDateObj(dateElem.value, initTimeElem.value, endTimeElem.value);
       const li = document.createElement("li");
       li.className = `flex gap-3 cursor-default flex-col`;
       li.setAttribute("data-list-type", "create-folder");
@@ -111,8 +178,8 @@ export const getTextEditor = () => {
       <div class="w-full flex gap-3">
         <div class="hover:bg-zinc-100 flex flex-1 py-3 px-4 rounded-xl">
           <i class="fa fa-folder text-[1.5rem]"></i>
-          <form class="create-folder-form flex-1 ml-4">
-            <input type="text" class="border outline-none" autofocus />
+          <form class="create-folder-form flex-1 ml-4 w-[170px]">
+            <input type="text" class="border outline-none w-full" autofocus />
           </form>
         </div>
       </div>
@@ -170,8 +237,13 @@ function getActiveListElem(listsElem) {
     list.addEventListener("click", () => {
       const listName = list.dataset.listName;
       getSelectedListObj(listName);
-      let ul = getNestedTaskListElem();
-      list.insertAdjacentElement("beforeend", ul);
+      // check if nested ul exist
+      if (list.nextElementSibling?.tagName === "UL") {
+        list.nextElementSibling.remove();
+      } else {
+        let ul = getNestedTaskListElem();
+        list.insertAdjacentElement("afterend", ul);
+      }
       if (list.classList.contains("active")) {
         list.classList.remove("active");
         isSelected = false;
