@@ -36,7 +36,12 @@ export const getRecentTaskList = (task, isFromFolder = false) => {
   }</div>
         </div>
         <ul class="tags flex items-center gap-4 ml-auto text-xs">
-          ${task.tags.map((tag) => `<li>${tag}</li>`).join("")}
+          ${task.tags
+            .map(
+              (tag) =>
+                `<li class="tag text-xs border rounded-xl py-1 px-2 bg-white hover:bg-zinc-50 cursor-default">#${tag}</li>`
+            )
+            .join("")}
         </ul>
        </div>
       ${

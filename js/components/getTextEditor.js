@@ -7,12 +7,9 @@ import { getTaskList, getTextEditorSideBar } from "./getTextEditorSideBar.js";
 let selectedObj;
 let isSelected = false;
 let nestedTaskName;
-const timeDateObj = {
-  year: "",
-  init: "",
-  end: "",
-};
-const tags = [];
+let nestedDateTimeObj = {};
+let nestedTags = [];
+let tags = [];
 
 // re-render pages
 const reRenderPages = (textEditor) => {
@@ -42,13 +39,15 @@ const getTimeObj = () => {
   return { year, month, day, date, hour, minute };
 };
 
+const initTaskDateTime = (date, init, end) => ({ date, init, end });
+
 // update task lists
-const updateAllTasksList = (name, folder, time = []) => {
+const updateAllTasksList = (name, folder, date = [], tags = []) => {
   const newTaskObj = {};
   newTaskObj.name = name;
   newTaskObj.folder = folder;
   newTaskObj.status = "uncompleted";
-  newTaskObj.time = time;
+  newTaskObj.time = date;
   newTaskObj.tags = tags;
   if (folder) {
     newTaskObj.completedTask = 0;
@@ -58,25 +57,14 @@ const updateAllTasksList = (name, folder, time = []) => {
   allTasks.recentTask.push(...newTaskList);
 };
 
-// add new folder
-const addNewFolder = (folderName) => {
-  updateAllTasksList(folderName, true, timeDateObj);
-};
-
 const getNestedTaskList = () => {
   const nestedObj = {};
   nestedObj.name = nestedTaskName;
-  nestedObj.time = timeDateObj;
+  nestedObj.time = nestedDateTimeObj;
   nestedObj.status = "uncompleted";
-  nestedObj.tags = tags;
+  nestedObj.tags = nestedTags;
   let nestedList = [].concat(nestedObj);
   return nestedList;
-};
-
-const updateTimeDateObj = (year, init, end) => {
-  timeDateObj.date = year;
-  timeDateObj.init = init;
-  timeDateObj.end = end;
 };
 
 const setDefaultDateTime = (form) => {
@@ -89,7 +77,7 @@ const setDefaultDateTime = (form) => {
   timeElem.forEach((elem) => {
     elem.value = time;
   });
-  updateTimeDateObj(date, time, time);
+  // updateTimeDateObj(date, time, time);
 };
 
 export const getTextEditor = () => {
@@ -145,18 +133,32 @@ export const getTextEditor = () => {
 
   editorForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    updateTimeDateObj(dateElem.value, initTimeElem.value, endTimeElem.value);
+    const taskInitTime = initTaskDateTime(
+      dateElem.value,
+      initTimeElem.value,
+      endTimeElem.value
+    );
+    const tagsForTask = [...tags];
+    tags = [];
     const input = e.currentTarget[0];
     if (!input.value) return;
     if (!isSelected) {
-      updateAllTasksList(input.value, false, timeDateObj, tags);
+      updateAllTasksList(input.value, false, taskInitTime, tagsForTask);
     } else {
       nestedTaskName = input.value;
+      nestedDateTimeObj = taskInitTime;
+      nestedTags = tags;
+      tags = [];
       selectedObj.tasks.push(...getNestedTaskList());
     }
     reRenderPages(textEditor);
     input.value = "";
     input.focus();
+    Array.from(parentElemOfTag.children).forEach((elem) => {
+      if (elem.tagName === "SPAN") {
+        elem.remove();
+      }
+    });
   });
 
   getActiveListElem(tasksListElem);
@@ -170,7 +172,11 @@ export const getTextEditor = () => {
       let isLiExit =
         tasksListElem.children[0].dataset.listType === "create-folder";
       if (btn.title === "create file" || isLiExit) return;
-      updateTimeDateObj(dateElem.value, initTimeElem.value, endTimeElem.value);
+      const folderInitTime = initTaskDateTime(
+        dateElem.value,
+        initTimeElem.value,
+        endTimeElem.value
+      );
       const li = document.createElement("li");
       li.className = `flex gap-3 cursor-default flex-col`;
       li.setAttribute("data-list-type", "create-folder");
@@ -188,14 +194,19 @@ export const getTextEditor = () => {
       const createFolderForm = li.querySelector(".create-folder-form");
       const input = createFolderForm.querySelector("input");
       input.addEventListener("blur", () => {
-        li.remove();
+        if (!input.value) {
+          li.remove();
+          return;
+        }
+        updateAllTasksList(input.value, true, folderInitTime);
+        reRenderPages(textEditor);
       });
 
       createFolderForm.addEventListener("submit", (e) => {
         e.preventDefault();
         const input = e.currentTarget[0];
         if (!input.value) return;
-        addNewFolder(input.value);
+        updateAllTasksList(input.value, true, folderInitTime);
         reRenderPages(textEditor);
       });
 
@@ -208,7 +219,13 @@ export const getTextEditor = () => {
 
 const appendFolderHeading = (name) => {
   const folderNameHeading = document.querySelector(".folder-name-heading");
+  if (folderNameHeading?.children[0]) {
+    folderNameHeading.removeAttribute("data-folder-name");
+    folderNameHeading.innerHTML = "";
+    return;
+  }
   const h4 = document.createElement("h4");
+  h4.setAttribute("data-folder-name", name);
   h4.className = "folder-name-heading flex gap-4 items-center pb-3";
   h4.innerHTML = `
     <i class="fa-solid fa-folder"></i>
@@ -238,14 +255,17 @@ function getActiveListElem(listsElem) {
       const listName = list.dataset.listName;
       getSelectedListObj(listName);
       // check if nested ul exist
-      if (list.nextElementSibling?.tagName === "UL") {
-        list.nextElementSibling.remove();
-      } else {
-        let ul = getNestedTaskListElem();
-        list.insertAdjacentElement("afterend", ul);
-      }
+      // if (list.nextElementSibling?.tagName === "UL") {
+      //   list.nextElementSibling.remove();
+      // } else {
+      //   let ul = getNestedTaskListElem();
+      //   list.insertAdjacentElement("afterend", ul);
+      // }
       if (list.classList.contains("active")) {
         list.classList.remove("active");
+        if (list.nextElementSibling?.tagName === "UL") {
+          list.nextElementSibling.remove();
+        }
         isSelected = false;
         return;
       }
@@ -253,6 +273,8 @@ function getActiveListElem(listsElem) {
         listElem.classList.remove("active");
       }
       list.classList.add("active");
+      let ul = getNestedTaskListElem();
+      list.insertAdjacentElement("afterend", ul);
       isSelected = true;
     });
   });

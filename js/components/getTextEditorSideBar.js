@@ -1,10 +1,13 @@
 import allTasks from "../main";
-// import { showRecentTaskList } from "../pages/recentTask";
 
 export const getTaskList = (tasks, taskListElem, isFromFolder = false) => {
+  const folderNameHeading = document.querySelector(".folder-name-heading");
+  const folderName = folderNameHeading?.dataset.folderName;
   for (let task of tasks) {
     const li = document.createElement("li");
-    li.className = `flex gap-3 cursor-default flex-col`;
+    li.className = `flex gap-3 cursor-default flex-col ${
+      folderName === task.name ? "active" : ""
+    }`;
     li.setAttribute("data-list-name", task.name);
     li.innerHTML = `
     <div class="w-full flex ${isFromFolder ? `` : `gap-3`}">
