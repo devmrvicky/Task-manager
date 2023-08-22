@@ -83,16 +83,18 @@ export const getTextEditorMainArea = () => {
   const editorMainArea = document.createElement("div");
   editorMainArea.className = "editor-main-area flex-1";
   editorMainArea.innerHTML = `
-    <div class="text-editor-ctrl-menus px-4 py-2">Text editor control menus</div>
+    <div class="text-editor-ctrl-menus md:px-[20px] flex items-center md:translate-x-0 translate-x-[60px] h-[50px]">Text editor control menus</div>
     <hr>
     <div class="p-4 w-full h-[93%]">
       <h4 class="folder-name-heading"></h4>
       <form class="editor-form flex flex-col h-full">
         <input type="text" placeholder="Enter your task" class="w-full py-2 px-3 outline-none border" required/>
-        <div class="date flex gap-3 py-3">
-          <input type="date" id="date" class="w-full py-2 px-3 outline-none border"/>
-          <input type="time" id="init-time" class="w-full py-2 px-3 outline-none border" value="09:10"/>
-          <input type="time" id="end-time" class="w-full py-2 px-3 outline-none border" value="13:00"/>
+        <div class="date flex flex-wrap gap-3 py-3 text-xs sm:text-md">
+          <input type="date" id="date" class="flex-1 py-2 px-3 outline-none border min-w-[100px]"/>
+          <div class="flex items-center gap-3 flex-wrap">
+            <input type="time" id="init-time" class="w-full flex-1 py-2 px-3 outline-none border" value="09:10"/>
+            <input type="time" id="end-time" class="w-full flex-1 py-2 px-3 outline-none border" value="13:00"/>
+          </div>
         </div>
         <div class="selected-tags border w-full py-2 px-3 text-xs flex flex-wrap gap-1">
           <input type="text" placeholder="tag name" class="outline-none"/>

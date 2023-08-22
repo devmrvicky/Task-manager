@@ -13,11 +13,11 @@ const mainTile = document.querySelector(".main-title");
 // get section head that is common in all section
 const getSectionElem = (sectionName) => {
   const section = document.createElement("section");
-  section.className = `bg-white shadow rounded-3xl p-5 ${sectionName}-section overflow-auto`;
+  section.className = `bg-white shadow rounded-3xl md:p-5 ${sectionName}-section overflow-auto mb-3 sm:mb-0`;
   // const sectionHead = getSectionElem("Recent task");
   const sectionHead = document.createElement("div");
   sectionHead.className =
-    "section-head flex justify-between items-center sticky top-0";
+    "section-head flex justify-between items-center sticky top-0 py-3 px-5 bg-white";
   const headTitleElem = document.createElement("h3");
   headTitleElem.textContent =
     sectionName[0].toUpperCase() + sectionName.slice(1);
@@ -43,17 +43,20 @@ const getSectionElem = (sectionName) => {
 const getRecentTaskSection = () => {
   const section = getSectionElem("recent-tasks");
   const recentTasks = document.createElement("ul");
-  recentTasks.className = "recent-tasks flex flex-col overflow-auto pt-6 gap-2";
+  recentTasks.className =
+    "recent-tasks flex flex-col overflow-auto md:pt-6 gap-2";
   for (let task of allTaskList) {
     // console.log(task);
     const taskItem = document.createElement("li");
     taskItem.className =
-      "recent-task flex items-center gap-2  py-3 px-5 hover:bg-gray-50 cursor-default rounded-md text-sm";
+      "recent-task flex items-center md:gap-2 py-3 px-5 hover:bg-gray-50 cursor-default rounded-md text-sm";
     taskItem.innerHTML = `
     <i class="fa-regular fa-square${
       task.status === "completed" ? `-check` : ``
     }"></i>
-    <p class="task pl-4">${task.name}</p>
+    <p class="task pl-4">${
+      task.name.length > 20 ? task.name.slice(0, 20) + "..." : task.name
+    }</p>
     <span class="task-init-day ml-auto text-xs text-[#75BAC2]">${
       task.time.date
     }</span>
@@ -67,12 +70,12 @@ const getRecentTaskSection = () => {
 const getFolderSection = () => {
   const folders = getSectionElem("folders");
   const folderList = document.createElement("ul");
-  folderList.className = "folders flex pt-4";
+  folderList.className = "folders flex pt-4 overflow-auto";
   for (let folder of allFolders) {
     // console.log(folder);
     const folderItem = document.createElement("li");
     folderItem.className =
-      "folder flex flex-col items-center hover:bg-gray-50 cursor-default gap-2 py-4 rounded-2xl w-28";
+      "folder flex flex-col items-center hover:bg-gray-50 cursor-default gap-2 py-4 rounded-2xl min-w-[100px] w-full flex-1 m-3";
     folderItem.innerHTML = `
     <i class="fa fa-folder text-3xl"></i>
     <span class="text-xs">${folder.name}</span>
@@ -102,7 +105,7 @@ export const addDashboardElement = () => {
   // add task area element
   const taskArea = document.createElement("div");
   taskArea.setAttribute("data-page", "dashboard");
-  taskArea.className = "task-area gap-5";
+  taskArea.className = "task-area gap-5 sm:grid w-full lg:w-[70%]";
   const recentTaskSection = getRecentTaskSection();
   const folderSection = getFolderSection();
   const statisticSection = getStatisticSection();
@@ -115,7 +118,7 @@ export const addDashboardElement = () => {
 
   // add date time area
   const dateTimeArea = document.createElement("div");
-  dateTimeArea.className = "date-time-area pl-10";
+  dateTimeArea.className = "date-time-area pl-10 hidden lg:block";
   dateTimeArea.textContent = "this is date time area";
 
   // append these element to taskManagerContent

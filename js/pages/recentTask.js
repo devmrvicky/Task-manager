@@ -28,22 +28,27 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
     taskList.insertAdjacentElement("beforeend", li);
   }
 };
+
 const getRecentTaskPage = () => {
   getNoOfAllTask();
   const recentTaskContent = document.createElement("div");
-  recentTaskContent.className = "w-full flex gap-5";
+  recentTaskContent.className = "w-full flex gap-5 overflow-hidden relative";
   recentTaskContent.setAttribute("data-page", "recent-task");
   const recentTaskSideBar = getRecentTaskSideBar();
 
   const recentTaskMainContent = document.createElement("div");
-  recentTaskMainContent.className = "border flex-1 bg-[#EAF1F1] p-3 rounded-xl";
+  recentTaskMainContent.className =
+    "border flex-1 bg-[#EAF1F1] p-3 rounded-xl overflow-auto";
   recentTaskMainContent.innerHTML = `
   <div class="recent-task-head w-full flex items-center gap-3 text-[#719191]">
-    <select class="tags rounded-full p-2 px-5">
+    <button type="button" class="recent-task-side-menu hidden min-w-[44px] h-11 border rounded-full bg-white items-center justify-center">
+      <i class="fa-solid fa-bars sm:text-xl"></i>
+    </button>
+    <select class="tags rounded-full p-2 px-5 sm:text-base text-xs">
       <option value="all tag" disabled selected>All tags</option>
       ${allTags.map((tag) => `<option value="${tag}">${tag}</option>`).join("")}
     </select>
-    <div class="ml-auto flex items-center gap-4 cursor-default hover:bg-white/50 px-4 py-2 rounded-full">
+    <div class="ml-auto flex items-center gap-4 cursor-default hover:bg-white/50 px-4 py-2 rounded-full sm:text-base text-xs">
       <span>Sort by</span>
       <i class="fa-solid fa-arrow-down-wide-short"></i>
     </div>
@@ -102,6 +107,20 @@ const getRecentTaskPage = () => {
         }
       }
     });
+  });
+
+  // get recent side bar button
+  const sideBarBtn = recentTaskMainContent.querySelector(
+    ".recent-task-side-menu"
+  );
+  sideBarBtn.addEventListener("click", () => {
+    recentTaskSideBar.classList.toggle("show-side-bar");
+    if (!sideBarBtn.classList.contains("translate-btn")) {
+      sideBarBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+    } else {
+      sideBarBtn.innerHTML = `<i class="fa-solid fa-bars"></i>`;
+    }
+    sideBarBtn.classList.toggle("translate-btn");
   });
 
   recentTaskMainContent.insertAdjacentElement("beforeend", taskList);

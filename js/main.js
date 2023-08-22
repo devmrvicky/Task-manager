@@ -3,7 +3,9 @@ import { getTextEditor } from "./components/getTextEditor.js";
 import "./pages/dashboard.js";
 
 const mainApp = document.querySelector("main");
+const mainSideBar = document.querySelector(".task-manager-side-bar");
 const menuOptions = document.querySelectorAll(".menu-option");
+const profImg = document.querySelector(".prof img");
 const taskManagerContent = document.querySelector(".task-manager-content");
 const openTextEditorBtn = document.querySelector(".open-text-editor");
 
@@ -127,6 +129,12 @@ menuOptions.forEach((menuOption) => {
     e.currentTarget.classList.toggle("active");
     appendNewPage(e.currentTarget.dataset.page);
   });
+});
+
+profImg.addEventListener("click", (e) => {
+  console.log("clicked");
+  mainSideBar.classList.toggle("show-side-bar");
+  e.stopPropagation();
 });
 
 const openTextEditor = () => {

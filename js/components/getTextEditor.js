@@ -83,14 +83,14 @@ const setDefaultDateTime = (form) => {
 export const getTextEditor = () => {
   const textEditor = document.createElement("div");
   textEditor.className =
-    "text-editor border bg-white w-full max-w-[1200px] h-[500px] flex relative";
+    "text-editor border bg-white w-full max-w-[1200px] h-[500px] flex relative overflow-hidden";
   const editorSideBar = getTextEditorSideBar();
   const editorMainArea = getTextEditorMainArea();
 
   textEditor.insertAdjacentElement("afterbegin", editorSideBar);
   textEditor.insertAdjacentElement("beforeend", editorMainArea);
   textEditor.innerHTML += `
-  <button class="close-editor text-xl absolute right-[-30px]">
+  <button class="close-editor text-xl absolute right-[20px] top-[10px]">
     <i class="fa-solid fa-xmark"></i>
   </button>
   `;
@@ -214,6 +214,14 @@ export const getTextEditor = () => {
     });
   });
 
+  const btn = textEditor.querySelector(".editor-side-bar-btn");
+  const editorSideBarElem = textEditor.querySelector(".text-editor-side-bar");
+  console.log(btn);
+  btn.addEventListener("click", () => {
+    editorSideBarElem.classList.toggle("show-side-bar");
+    btn.classList.toggle("translate-btn");
+  });
+
   return textEditor;
 };
 
@@ -254,13 +262,6 @@ function getActiveListElem(listsElem) {
     list.addEventListener("click", () => {
       const listName = list.dataset.listName;
       getSelectedListObj(listName);
-      // check if nested ul exist
-      // if (list.nextElementSibling?.tagName === "UL") {
-      //   list.nextElementSibling.remove();
-      // } else {
-      //   let ul = getNestedTaskListElem();
-      //   list.insertAdjacentElement("afterend", ul);
-      // }
       if (list.classList.contains("active")) {
         list.classList.remove("active");
         if (list.nextElementSibling?.tagName === "UL") {

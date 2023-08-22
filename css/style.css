@@ -59,16 +59,10 @@ main#app {
 }
 
 .task-area {
-  width: 70%;
-  display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 100px 100px 100px 100px 100px;
 }
 
-/* section{
-  background-color: #fff;
-  padding: 20px;
-} */
 .recent-tasks-section {
   grid-row: 1 / 4;
 }
@@ -110,9 +104,6 @@ section::-webkit-scrollbar {
 }
 
 .text-editor-container {
-  /* opacity: 0.5; */
-  /* -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px); */
   animation: openEditor .5s ease-in-out forwards alternate;
 }
 
@@ -129,4 +120,120 @@ section::-webkit-scrollbar {
 .task-lists li.active>div,
 .task-lists li.active>div:hover {
   background-color: #e2e2e2;
+}
+
+/* responsive code */
+@media screen and (max-width: 1024px) {
+  .main-content-area {
+    background: #F9FAFA;
+  }
+}
+
+@media screen and (max-width: 910px) {
+  .text-editor-container {
+    padding: 20px !important;
+  }
+
+  .task-lists :is(.fa-folder, .fa-file) {
+    font-size: .9rem;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .task-manager-content {
+    padding-top: 0 !important;
+  }
+
+  .task-manager-top-bar {
+    gap: 10px !important;
+  }
+
+  .recent-task-sidebar-item {
+    position: absolute;
+    height: 450px;
+    width: 200px !important;
+    box-shadow: 0 0 rgba(0, 0, 0, .5);
+    transform: translateX(-100%);
+    transition: all .5s ease-in-out;
+  }
+
+  .show-side-bar {
+    transform: translateX(0) !important;
+    z-index: 99;
+  }
+
+  .recent-task-side-menu {
+    display: flex !important;
+  }
+
+  .recent-task-side-menu.translate-btn {
+    animation: animMenuBtn .5s ease-in-out forwards alternate;
+  }
+
+  @keyframes animMenuBtn {
+    0% {
+      transform: translateX(0) rotate(0);
+    }
+
+    100% {
+      transform: translateX(200px) rotate(360deg);
+    }
+  }
+
+  .editor-head>button.translate-btn {
+    animation: animMenuBtn2 .5s ease-in-out forwards alternate;
+  }
+
+  .text-editor-side-bar {
+    transition: all .5s ease-in-out;
+  }
+
+  @keyframes animMenuBtn2 {
+    0% {
+      transform: translateX(60px) rotate(0);
+    }
+
+    100% {
+      transform: translateX(0px) rotate(180deg);
+    }
+  }
+}
+
+
+
+@media screen and (max-width: 768px) {
+  .task-manager-top-bar {
+    grid-template-columns: repeat(4, auto);
+    grid-template-rows: auto auto;
+    gap: 5px;
+  }
+
+  .task-manager-top-bar form {
+    grid-column: 1 / -1;
+    grid-row: 2 / -1;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .main-task-list .tags {
+    display: none !important;
+  }
+
+  .main-task-list .progress-bar-container {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .text-editor-container {
+    z-index: 99;
+  }
+
+  .main-content-area {
+    padding: 0 !important;
+  }
+
+  .task-manager-side-bar {
+    transform: translateX(-100%);
+  }
 }
