@@ -1,5 +1,5 @@
 import { appendNewPage } from "../components/appendNewPage.js";
-import {
+import allTasks, {
   allFolders,
   allTaskList,
   getNoOfAllTask,
@@ -127,6 +127,3 @@ export const addDashboardElement = () => {
 };
 // addDashboardElement();
 logo.addEventListener("click", addDashboardElement);
-window.onload = () => {
-  addDashboardElement();
-};
