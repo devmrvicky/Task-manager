@@ -244,8 +244,9 @@ const showAllLoginUsers = () => {
   ul.className = "pb-5";
   for (let user of users) {
     let li = document.createElement("li");
-    li.className =
-      "px-3 py-2 rounded-lg hover:bg-zinc-50 flex gap-3 items-center cursor-default";
+    li.className = `user-list px-3 py-2 rounded-lg hover:bg-zinc-50 flex gap-3 items-center cursor-default ${
+      user.current_user ? "active" : ""
+    }`;
     li.innerHTML = `
       <i class="fa-solid fa-user fa-2x"></i>
       <div class="flex flex-col">
@@ -261,6 +262,16 @@ const showAllLoginUsers = () => {
 
     ul.append(li);
   }
+  const userList = ul.querySelectorAll(".user-list");
+  console.log(userList);
+  userList.forEach((list) => {
+    list.addEventListener("click", () => {
+      for (let user of userList) {
+        user.classList.remove("active");
+      }
+      list.classList.add("active");
+    });
+  });
   dialogBoxElem.insertAdjacentElement("afterbegin", ul);
 };
 

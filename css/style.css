@@ -122,6 +122,11 @@ section::-webkit-scrollbar {
   background-color: #e2e2e2;
 }
 
+.user-list.active,
+.user-list.active:hover {
+  background-color: #e2e2e288;
+}
+
 /* responsive code */
 @media screen and (max-width: 1024px) {
   .main-content-area {
