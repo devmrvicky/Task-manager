@@ -26,7 +26,7 @@ let users = [
     user_name: "vikash kumar",
     user_id: "mrvikashkumar",
     user_password: "@(mrvikash396)_Login",
-    current_user: true,
+    current_user: false,
     user_task: [
       {
         folder: true,
@@ -288,8 +288,8 @@ const userAvailable = (userId, userPassword) => {
 // login form submitted
 const handleSubmit = (e) => {
   e.preventDefault();
-  const idInput = e.currentTarget[1];
-  const passwordInput = e.currentTarget[2];
+  const idInput = e.currentTarget[0];
+  const passwordInput = e.currentTarget[1];
   const userId = idInput.value;
   const userPassword = passwordInput.value;
   const user = userAvailable(userId, userPassword);
