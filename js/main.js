@@ -1,5 +1,6 @@
 import { appendNewPage } from "./components/appendNewPage.js";
 import { getLoginForm } from "./components/getLoginForm.js";
+import { getSignupForm } from "./components/getSignupForm.js";
 import { getTextEditor } from "./components/getTextEditor.js";
 // import "./pages/dashboard.js";
 import { addDashboardElement } from "./pages/dashboard.js";
@@ -263,7 +264,6 @@ const showAllLoginUsers = () => {
     ul.append(li);
   }
   const userList = ul.querySelectorAll(".user-list");
-  console.log(userList);
   userList.forEach((list) => {
     list.addEventListener("click", () => {
       for (let user of userList) {
@@ -286,7 +286,7 @@ const userAvailable = (userId, userPassword) => {
 };
 
 // login form submitted
-const handleSubmit = (e) => {
+const handleLoginFormSubmit = (e) => {
   e.preventDefault();
   const idInput = e.currentTarget[0];
   const passwordInput = e.currentTarget[1];
@@ -313,10 +313,31 @@ window.onload = () => {
   if (user) {
     login(user);
   } else {
-    let loginForm = getLoginForm();
-    const form = loginForm.querySelector("form");
-    form.addEventListener("submit", handleSubmit);
-    taskManagerContent.append(loginForm);
+    let loginFormContainer = getLoginForm();
+    const loginForm = loginFormContainer.querySelector("form");
+    loginForm.addEventListener("submit", handleLoginFormSubmit);
+    taskManagerContent.append(loginFormContainer);
+
+    let signupFormContainer = getSignupForm();
+    let signupForm = signupFormContainer.querySelector("form");
+
+    const goToSignupFormBtn = loginForm.querySelector("#signup-btn");
+    goToSignupFormBtn.addEventListener("click", () => {
+      loginFormContainer.remove();
+      taskManagerContent.append(signupFormContainer);
+    });
+    const goToLoginFormBtn = signupForm.querySelector("#login-btn");
+    goToLoginFormBtn.addEventListener("click", () => {
+      signupFormContainer.remove();
+      taskManagerContent.append(loginFormContainer);
+    });
+
+    const addUserBtn = dialogBoxElem.querySelector("#add-user-btn");
+    addUserBtn.addEventListener("click", () => {
+      addUserBtn.parentElement.parentElement.nextElementSibling.innerHTML = "";
+      dialogBoxElem.close();
+      taskManagerContent.append(signupFormContainer);
+    });
   }
 };
 
