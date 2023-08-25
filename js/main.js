@@ -5,8 +5,9 @@ import { getTextEditor } from "./components/getTextEditor.js";
 import { addDashboardElement } from "./pages/dashboard.js";
 
 const mainApp = document.querySelector("main");
-const mainSideBar = document.querySelector(".task-manager-side-bar");
+// const mainSideBar = document.querySelector(".task-manager-side-bar");
 const menuOptions = document.querySelectorAll(".menu-option");
+const dialogBoxElem = document.querySelector("#d");
 const profImg = document.querySelector(".prof img");
 const userNameElem = document.querySelector(".user-name");
 const taskManagerContent = document.querySelector(".task-manager-content");
@@ -230,18 +231,37 @@ const login = (loginUser) => {
   if (loginUser) {
     const updatedUser = { ...loginUser, current_user: true };
     const remainingUsers = users.filter((user) => user !== loginUser);
-
     users = [updatedUser, ...remainingUsers];
-
-    // Update allTasks.recentTask directly with the user's tasks
     allTasks.recentTask = [...loginUser.user_task];
-    // console.log(allTasks);
-    // userNameElem.textContent = loginUser.user_name;
-    // addDashboardElement();
     renderDashboard();
   } else {
     // Handle login failure
   }
+};
+
+const showAllLoginUsers = () => {
+  const ul = document.createElement("ul");
+  ul.className = "pb-5";
+  for (let user of users) {
+    let li = document.createElement("li");
+    li.className =
+      "px-3 py-2 rounded-lg hover:bg-zinc-50 flex gap-3 items-center cursor-default";
+    li.innerHTML = `
+      <i class="fa-solid fa-user fa-2x"></i>
+      <div class="flex flex-col">
+        <p class="text-base">${user.user_name}</p>
+        <span class="text-xs text-zinc-500">${user.user_id}</span>
+      </div>
+    `;
+
+    li.onclick = () => {
+      login(user);
+      dialogBoxElem.close();
+    };
+
+    ul.append(li);
+  }
+  dialogBoxElem.insertAdjacentElement("afterbegin", ul);
 };
 
 // check if user available
@@ -277,7 +297,7 @@ const handleSubmit = (e) => {
 };
 
 window.onload = () => {
-  console.log("window loaded");
+  showAllLoginUsers();
   const user = users.find((user) => user.current_user);
   if (user) {
     login(user);
@@ -317,11 +337,6 @@ menuOptions.forEach((menuOption) => {
     e.currentTarget.classList.toggle("active");
     appendNewPage(e.currentTarget.dataset.page);
   });
-});
-
-profImg.addEventListener("click", (e) => {
-  mainSideBar.classList.toggle("show-side-bar");
-  e.stopPropagation();
 });
 
 const openTextEditor = () => {
