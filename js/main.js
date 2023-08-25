@@ -241,8 +241,10 @@ const login = (loginUser) => {
 };
 
 const showAllLoginUsers = () => {
+  const preUsersListElem = dialogBoxElem.querySelector("ul");
+  preUsersListElem?.remove();
   const ul = document.createElement("ul");
-  ul.className = "pb-5";
+  ul.className = "users-list pb-5";
   for (let user of users) {
     let li = document.createElement("li");
     li.className = `user-list px-3 py-2 rounded-lg hover:bg-zinc-50 flex gap-3 items-center cursor-default ${
@@ -307,6 +309,34 @@ const handleLoginFormSubmit = (e) => {
   login(user);
 };
 
+// handle signup form submit
+const handleSignupFormSubmit = (e) => {
+  e.preventDefault();
+  const userNameElem = e.currentTarget[0];
+  const userIdElem = e.currentTarget[1];
+  const userPassElem = e.currentTarget[2];
+
+  let userName = userNameElem.value;
+  let userId = userIdElem.value;
+  let userPassword = userPassElem.value;
+
+  for (let user of users) {
+    if (user.user_id === userId) {
+      alert("this user id is already exist");
+      return;
+    }
+  }
+
+  let newUser = {};
+  newUser.user_name = userName;
+  newUser.user_id = userId;
+  newUser.user_password = userPassword;
+  newUser.user_task = [];
+  users = [...users, newUser];
+  login(newUser);
+  showAllLoginUsers();
+};
+
 window.onload = () => {
   showAllLoginUsers();
   const user = users.find((user) => user.current_user);
@@ -320,6 +350,7 @@ window.onload = () => {
 
     let signupFormContainer = getSignupForm();
     let signupForm = signupFormContainer.querySelector("form");
+    signupForm.addEventListener("submit", handleSignupFormSubmit);
 
     const goToSignupFormBtn = loginForm.querySelector("#signup-btn");
     goToSignupFormBtn.addEventListener("click", () => {
