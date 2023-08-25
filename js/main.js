@@ -25,7 +25,7 @@ let users = [
     user_name: "vikash kumar",
     user_id: "mrvikashkumar",
     user_password: "@(mrvikash396)_Login",
-    current_user: false,
+    current_user: true,
     user_task: [
       {
         folder: true,
@@ -215,11 +215,72 @@ let allTasks = {
   completedTask: [],
 };
 
+const renderDashboard = () => {
+  for (let user of users) {
+    if (user.current_user) {
+      userNameElem.textContent = user.user_name;
+      addDashboardElement();
+      return true;
+    }
+  }
+  return false;
+};
+
+const login = (loginUser) => {
+  if (loginUser) {
+    const updatedUser = { ...loginUser, current_user: true };
+    const remainingUsers = users.filter((user) => user !== loginUser);
+
+    users = [updatedUser, ...remainingUsers];
+
+    // Update allTasks.recentTask directly with the user's tasks
+    allTasks.recentTask = [...loginUser.user_task];
+    // console.log(allTasks);
+    // userNameElem.textContent = loginUser.user_name;
+    // addDashboardElement();
+    renderDashboard();
+  } else {
+    // Handle login failure
+  }
+};
+
+// check if user available
+const userAvailable = (userId, userPassword) => {
+  for (let user of users) {
+    if (user.user_id === userId && user.user_password === userPassword) {
+      return user;
+    }
+  }
+  return false;
+};
+
+// login form submitted
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const idInput = e.currentTarget[1];
+  const passwordInput = e.currentTarget[2];
+  const userId = idInput.value;
+  const userPassword = passwordInput.value;
+  const user = userAvailable(userId, userPassword);
+  if (!user) {
+    const span = document.createElement("span");
+    span.className = "text-xs text-red-500";
+    span.textContent = `User id ${userId} doesn't exit`;
+    idInput.insertAdjacentElement("afterend", span);
+    idInput.select();
+    setTimeout(() => {
+      span.remove();
+    }, 500);
+    return;
+  }
+  login(user);
+};
+
 window.onload = () => {
   console.log("window loaded");
   const user = users.find((user) => user.current_user);
   if (user) {
-    // login
+    login(user);
   } else {
     let loginForm = getLoginForm();
     const form = loginForm.querySelector("form");
