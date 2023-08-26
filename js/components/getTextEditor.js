@@ -1,4 +1,8 @@
-import allTasks, { taskManagerContent } from "../main.js";
+import allTasks, {
+  getUsersFromLocalStorage,
+  taskManagerContent,
+  users,
+} from "../main.js";
 import { addDashboardElement } from "../pages/dashboard.js";
 import { getRecentTaskPage } from "../pages/recentTask.js";
 import { getTextEditorMainArea } from "./getTextEditorMainArea.js";
@@ -41,6 +45,29 @@ const getTimeObj = () => {
 
 const initTaskDateTime = (date, init, end) => ({ date, init, end });
 
+// get current user
+const getCurrentUser = () => {
+  getUsersFromLocalStorage();
+  let user = users.find((user) => user.current_user);
+  return user;
+};
+
+// update users tasks list
+const updateUsersTasksList = (tasks, nested = false) => {
+  let currentUser = getCurrentUser();
+  let remainingUsers = users.filter((user) => user !== currentUser);
+  if (nested) {
+    const filteredTask = currentUser.user_task.filter(
+      (userTask) => userTask.name !== tasks.name
+    );
+    currentUser.user_task = [...filteredTask, tasks];
+  } else {
+    currentUser.user_task = tasks;
+  }
+  let newUsersArr = [...remainingUsers, currentUser];
+  localStorage.setItem("users", JSON.stringify(newUsersArr));
+};
+
 // update task lists
 const updateAllTasksList = (name, folder, date = [], tags = []) => {
   const newTaskObj = {};
@@ -55,6 +82,7 @@ const updateAllTasksList = (name, folder, date = [], tags = []) => {
   }
   const newTaskList = [].concat(newTaskObj);
   allTasks.recentTask.push(...newTaskList);
+  updateUsersTasksList(allTasks.recentTask);
 };
 
 const getNestedTaskList = () => {
@@ -150,6 +178,7 @@ export const getTextEditor = () => {
       nestedTags = tags;
       tags = [];
       selectedObj.tasks.push(...getNestedTaskList());
+      updateUsersTasksList(selectedObj, true);
     }
     reRenderPages(textEditor);
     input.value = "";
@@ -216,7 +245,6 @@ export const getTextEditor = () => {
 
   const btn = textEditor.querySelector(".editor-side-bar-btn");
   const editorSideBarElem = textEditor.querySelector(".text-editor-side-bar");
-  console.log(btn);
   btn.addEventListener("click", () => {
     editorSideBarElem.classList.toggle("show-side-bar");
     btn.classList.toggle("translate-btn");

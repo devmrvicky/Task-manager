@@ -20,202 +20,9 @@ let noOfCompletedTask = 0;
 let allFolders = [];
 let allTags = [];
 
-// user
-let users = [
-  {
-    id: "user_1",
-    user_name: "vikash kumar",
-    user_id: "mrvikashkumar",
-    user_password: "@(mrvikash396)_Login",
-    current_user: false,
-    user_task: [
-      {
-        folder: true,
-        name: "Call Mattew",
-        status: "uncompleted",
-        tags: ["web", "design"],
-        time: {
-          date: "19 may",
-          init: "17:30",
-          end: "18:00",
-        },
-        completedTask: 1,
-        tasks: [
-          {
-            name: "Approve header",
-            time: {
-              date: "19 may",
-              init: "17:30",
-              end: "18:00",
-            },
-            status: "completed",
-            tags: ["web", "design"],
-          },
-          {
-            name: "Book a meeting with team",
-            time: {
-              date: "19 may",
-              init: "17:30",
-              end: "18:00",
-            },
-            status: "uncompleted",
-            tags: ["web", "design"],
-          },
-        ],
-      },
-      {
-        folder: false,
-        name: "Write to council",
-        status: "completed",
-        tags: [],
-        time: {
-          date: "19 may",
-          init: "",
-          end: "",
-        },
-      },
-    ],
-  },
-  {
-    id: "user_2",
-    user_name: "vicky k.",
-    user_id: "devmrvicky",
-    user_password: "@(devmrvicky)_Login",
-    current_user: false,
-    user_task: [
-      {
-        folder: true,
-        name: "Hello word",
-        status: "uncompleted",
-        tags: ["web", "design"],
-        time: {
-          date: "19 may",
-          init: "17:30",
-          end: "18:00",
-        },
-        completedTask: 1,
-        tasks: [
-          {
-            name: "Personal work",
-            time: {
-              date: "19 may",
-              init: "17:30",
-              end: "18:00",
-            },
-            status: "completed",
-            tags: ["web", "design"],
-          },
-          {
-            name: "private meeting",
-            time: {
-              date: "19 may",
-              init: "17:30",
-              end: "18:00",
-            },
-            status: "uncompleted",
-            tags: ["web", "design"],
-          },
-        ],
-      },
-      {
-        folder: false,
-        name: "meeting with girlfriend",
-        status: "completed",
-        tags: [],
-        time: {
-          date: "19 may",
-          init: "",
-          end: "",
-        },
-      },
-    ],
-  },
-];
-// let users = [];
-// task object
+let users = [];
 let allTasks = {
-  recentTask: [
-    // {
-    //   folder: true,
-    //   name: "Call Mattew",
-    //   status: "uncompleted",
-    //   tags: ["web", "design"],
-    //   time: {
-    //     date: "19 may",
-    //     init: "17:30",
-    //     end: "18:00",
-    //   },
-    //   completedTask: 1,
-    //   tasks: [
-    //     {
-    //       name: "Approve header",
-    //       time: {
-    //         date: "19 may",
-    //         init: "17:30",
-    //         end: "18:00",
-    //       },
-    //       status: "completed",
-    //       tags: ["web", "design"],
-    //     },
-    //     {
-    //       name: "Book a meeting with team",
-    //       time: {
-    //         date: "19 may",
-    //         init: "17:30",
-    //         end: "18:00",
-    //       },
-    //       status: "uncompleted",
-    //       tags: ["web", "design"],
-    //     },
-    //   ],
-    // },
-    // {
-    //   folder: false,
-    //   name: "Write to council",
-    //   status: "completed",
-    //   tags: [],
-    //   time: {
-    //     date: "19 may",
-    //     init: "",
-    //     end: "",
-    //   },
-    // },
-    // {
-    //   folder: true,
-    //   name: "Buy watercolor",
-    //   status: "uncompleted",
-    //   tags: ["party", "office"],
-    //   time: {
-    //     date: "19 may",
-    //     init: "",
-    //     end: "",
-    //   },
-    //   completedTask: 0,
-    //   tasks: [
-    //     {
-    //       name: "Approve header",
-    //       time: {
-    //         date: "19 may",
-    //         init: "17:30",
-    //         end: "18:00",
-    //       },
-    //       status: "completed",
-    //       tags: ["web", "design"],
-    //     },
-    //     {
-    //       name: "Book a meeting with team",
-    //       time: {
-    //         date: "19 may",
-    //         init: "17:30",
-    //         end: "18:00",
-    //       },
-    //       status: "uncompleted",
-    //       tags: ["web", "design"],
-    //     },
-    //   ],
-    // },
-  ],
-  completedTask: [],
+  recentTask: [],
 };
 
 // set user in localStorage
@@ -359,7 +166,6 @@ const handleSignupFormSubmit = (e) => {
 window.onload = () => {
   getUsersFromLocalStorage();
   localStorage.setItem("users", JSON.stringify(users));
-  console.log(users);
   showAllLoginUsers();
   let loginFormContainer = getLoginForm();
   const loginForm = loginFormContainer.querySelector("form");
@@ -454,4 +260,6 @@ export {
   noOfCompletedTask,
   allTags,
   allTasks,
+  users,
+  getUsersFromLocalStorage,
 };
