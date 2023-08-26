@@ -131,6 +131,7 @@ let users = [
     ],
   },
 ];
+// let users = [];
 // task object
 let allTasks = {
   recentTask: [
@@ -217,24 +218,40 @@ let allTasks = {
   completedTask: [],
 };
 
-const renderDashboard = () => {
-  for (let user of users) {
-    if (user.current_user) {
-      userNameElem.textContent = user.user_name;
-      addDashboardElement();
-      return true;
-    }
-  }
-  return false;
+// set user in localStorage
+const getUsersFromLocalStorage = () => {
+  let usersFromLocalStorage = JSON.parse(localStorage.getItem("users"));
+  if (!usersFromLocalStorage) usersFromLocalStorage = [];
+  users = usersFromLocalStorage;
 };
 
-const login = (loginUser) => {
+const getUpdatedUsers = (users) => {
+  let updatedRemainingUsers = [];
+  for (let remainingUser of users) {
+    // console.log(remainingUser);
+    if (remainingUser.current_user) {
+      remainingUser = { ...remainingUser, current_user: false };
+      updatedRemainingUsers.push(remainingUser);
+    } else {
+      updatedRemainingUsers.push(remainingUser);
+    }
+  }
+  return updatedRemainingUsers;
+};
+
+const login = (loginUser, signup = false) => {
+  getUsersFromLocalStorage();
   if (loginUser) {
     const updatedUser = { ...loginUser, current_user: true };
     const remainingUsers = users.filter((user) => user !== loginUser);
-    users = [updatedUser, ...remainingUsers];
+    let updatedRemainingUsers = getUpdatedUsers(remainingUsers);
+    users = [updatedUser, ...updatedRemainingUsers];
+    if (signup) {
+      localStorage.setItem("users", JSON.stringify(users));
+    }
     allTasks.recentTask = [...loginUser.user_task];
-    renderDashboard();
+    userNameElem.textContent = loginUser.user_name;
+    addDashboardElement();
   } else {
     // Handle login failure
   }
@@ -328,47 +345,53 @@ const handleSignupFormSubmit = (e) => {
   }
 
   let newUser = {};
+  newUser.id = `user_${users.length + 1}`;
   newUser.user_name = userName;
   newUser.user_id = userId;
   newUser.user_password = userPassword;
   newUser.user_task = [];
   users = [...users, newUser];
-  login(newUser);
+  // localStorage.setItem("users", JSON.stringify(users));
+  login(newUser, true);
   showAllLoginUsers();
 };
 
 window.onload = () => {
+  getUsersFromLocalStorage();
+  localStorage.setItem("users", JSON.stringify(users));
+  console.log(users);
   showAllLoginUsers();
+  let loginFormContainer = getLoginForm();
+  const loginForm = loginFormContainer.querySelector("form");
+  loginForm.addEventListener("submit", handleLoginFormSubmit);
+
+  let signupFormContainer = getSignupForm();
+  let signupForm = signupFormContainer.querySelector("form");
+  signupForm.addEventListener("submit", handleSignupFormSubmit);
+
+  const goToSignupFormBtn = loginForm.querySelector("#signup-btn");
+  goToSignupFormBtn.addEventListener("click", () => {
+    loginFormContainer.remove();
+    taskManagerContent.append(signupFormContainer);
+  });
+  const goToLoginFormBtn = signupForm.querySelector("#login-btn");
+  goToLoginFormBtn.addEventListener("click", () => {
+    signupFormContainer.remove();
+    taskManagerContent.append(loginFormContainer);
+  });
+
+  const addUserBtn = dialogBoxElem.querySelector("#add-user-btn");
+  addUserBtn.addEventListener("click", () => {
+    console.log("click");
+    addUserBtn.parentElement.parentElement.nextElementSibling.innerHTML = "";
+    dialogBoxElem.close();
+    taskManagerContent.append(signupFormContainer);
+  });
   const user = users.find((user) => user.current_user);
   if (user) {
     login(user);
   } else {
-    let loginFormContainer = getLoginForm();
-    const loginForm = loginFormContainer.querySelector("form");
-    loginForm.addEventListener("submit", handleLoginFormSubmit);
     taskManagerContent.append(loginFormContainer);
-
-    let signupFormContainer = getSignupForm();
-    let signupForm = signupFormContainer.querySelector("form");
-    signupForm.addEventListener("submit", handleSignupFormSubmit);
-
-    const goToSignupFormBtn = loginForm.querySelector("#signup-btn");
-    goToSignupFormBtn.addEventListener("click", () => {
-      loginFormContainer.remove();
-      taskManagerContent.append(signupFormContainer);
-    });
-    const goToLoginFormBtn = signupForm.querySelector("#login-btn");
-    goToLoginFormBtn.addEventListener("click", () => {
-      signupFormContainer.remove();
-      taskManagerContent.append(loginFormContainer);
-    });
-
-    const addUserBtn = dialogBoxElem.querySelector("#add-user-btn");
-    addUserBtn.addEventListener("click", () => {
-      addUserBtn.parentElement.parentElement.nextElementSibling.innerHTML = "";
-      dialogBoxElem.close();
-      taskManagerContent.append(signupFormContainer);
-    });
   }
 };
 
