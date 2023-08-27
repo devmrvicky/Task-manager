@@ -14,7 +14,7 @@ export const getRecentTaskList = (task, isFromFolder = false) => {
     </div>
     ${
       isFromFolder
-        ? `<div class="m-3 self-center w-5 sm:w-6"><img src="/curved-arrow.png"></div>`
+        ? `<div class="m-3 self-center w-5 sm:w-6"><img src="/task-management/curved-arrow.png"></div>`
         : ""
     }
     <div class="bg-white flex flex-1 gap-2 p-4 rounded-xl task-show-area relative overflow-hidden">
