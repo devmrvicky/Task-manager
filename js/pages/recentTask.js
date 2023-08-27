@@ -1,11 +1,13 @@
 import { getRecentTaskSideBar } from "../components/getRecentSideBar.js";
 import { getRecentTaskList } from "../components/getRecentTaskList.js";
+import { updateUsersTasksList } from "../components/getTextEditor.js";
 import {
   getNoOfAllTask,
   allTaskList,
   allFolders,
   allTags,
   allTasks,
+  taskManagerContent,
 } from "../main.js";
 
 const showRecentTaskList = (tasks, taskList, isFromFolder) => {
@@ -26,6 +28,52 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
       }
     });
     taskList.insertAdjacentElement("beforeend", li);
+
+    // get updated tasks list
+    const getUpdatedTasksList = (status) => {
+      let updatedTaskObj = {};
+      let updatedNestedTasks = [];
+      if (task.folder) {
+        for (let nestedTask of task.tasks) {
+          nestedTask = { ...nestedTask, status };
+          updatedNestedTasks.push(nestedTask);
+        }
+        updatedTaskObj.completedTask = `${
+          status === "completed" ? task.tasks.length : 0
+        }`;
+      }
+      updatedTaskObj = {
+        ...task,
+        ...updatedTaskObj,
+        status,
+        tasks: updatedNestedTasks,
+      };
+      return updatedTaskObj;
+    };
+
+    // click on checkbox element
+    const checkboxElem = li.querySelector(".checkbox");
+    checkboxElem.addEventListener("click", () => {
+      let updatedTask = {};
+      if (task.status === "completed") {
+        updatedTask = { ...getUpdatedTasksList("uncompleted") };
+      } else {
+        updatedTask = { ...getUpdatedTasksList("completed") };
+      }
+      let filteredTasks = tasks.filter(
+        (filteredTask) => filteredTask.id !== task.id
+      );
+      task = { ...updatedTask };
+      const indexToInsert = task.id.slice(-1) - 1;
+      filteredTasks.splice(indexToInsert, 0, task);
+      let updatedTasks = filteredTasks;
+      allTasks.recentTask = updatedTasks;
+      updateUsersTasksList(updatedTasks);
+      // render whole recent task page after update user task
+      taskManagerContent.innerHTML = "";
+      const recentTaskPage = getRecentTaskPage();
+      taskManagerContent.append(recentTaskPage);
+    });
   }
 };
 

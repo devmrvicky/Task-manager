@@ -70,7 +70,10 @@ const updateUsersTasksList = (tasks, nested = false) => {
 
 // update task lists
 const updateAllTasksList = (name, folder, date = [], tags = []) => {
+  const currentUser = getCurrentUser();
   const newTaskObj = {};
+  newTaskObj.id = `task_${currentUser.user_task.length + 1}`;
+  console.log(users);
   newTaskObj.name = name;
   newTaskObj.folder = folder;
   newTaskObj.status = "uncompleted";
@@ -86,7 +89,9 @@ const updateAllTasksList = (name, folder, date = [], tags = []) => {
 };
 
 const getNestedTaskList = () => {
+  const currentUser = getCurrentUser();
   const nestedObj = {};
+  nestedObj.id = `nested_task_${currentUser.user_task.length + 1}`;
   nestedObj.name = nestedTaskName;
   nestedObj.time = nestedDateTimeObj;
   nestedObj.status = "uncompleted";
@@ -308,3 +313,5 @@ function getActiveListElem(listsElem) {
     });
   });
 }
+
+export { updateUsersTasksList };

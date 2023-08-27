@@ -5,7 +5,7 @@ export const getRecentTaskList = (task, isFromFolder = false) => {
   }`;
   li.innerHTML = `
   <div class="w-full flex ${isFromFolder ? "gap-0 sm:gap-3" : "gap-3"}">
-    <div class="bg-white p-4 flex items-center rounded-xl">
+    <div class="bg-white p-4 flex items-center rounded-xl hover:bg-zinc-50 cursor-pointer checkbox">
       ${
         task.status === "completed"
           ? `<i class="fa-solid fa-square-check"></i>`
