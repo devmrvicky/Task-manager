@@ -210,7 +210,7 @@ function getNoOfAllTask() {
     allTags = allTags.concat(task.tags);
     if (task.folder) {
       allTaskList = allTaskList.concat(task.tasks);
-      noOfCompletedTask += task.completedTask;
+      noOfCompletedTask += parseInt(task.completedTask);
       allFolders = allFolders.concat(task);
     } else {
       allTaskList = allTaskList.concat(task);

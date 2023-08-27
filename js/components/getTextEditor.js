@@ -89,9 +89,8 @@ const updateAllTasksList = (name, folder, date = [], tags = []) => {
 };
 
 const getNestedTaskList = () => {
-  const currentUser = getCurrentUser();
   const nestedObj = {};
-  nestedObj.id = `nested_task_${currentUser.user_task.length + 1}`;
+  nestedObj.id = `nested_task_${selectedObj.tasks.length + 1}`;
   nestedObj.name = nestedTaskName;
   nestedObj.time = nestedDateTimeObj;
   nestedObj.status = "uncompleted";

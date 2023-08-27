@@ -30,7 +30,7 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
     taskList.insertAdjacentElement("beforeend", li);
 
     // get updated tasks list
-    const getUpdatedTasksList = (status) => {
+    const changeTaskStatus = (status) => {
       let updatedTaskObj = {};
       let updatedNestedTasks = [];
       if (task.folder) {
@@ -56,9 +56,9 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
     checkboxElem.addEventListener("click", () => {
       let updatedTask = {};
       if (task.status === "completed") {
-        updatedTask = { ...getUpdatedTasksList("uncompleted") };
+        updatedTask = { ...changeTaskStatus("uncompleted") };
       } else {
-        updatedTask = { ...getUpdatedTasksList("completed") };
+        updatedTask = { ...changeTaskStatus("completed") };
       }
       let filteredTasks = tasks.filter(
         (filteredTask) => filteredTask.id !== task.id
