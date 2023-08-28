@@ -30,8 +30,12 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
     taskList.insertAdjacentElement("beforeend", li);
 
     // get updated tasks list
-    const changeTaskStatus = (status) => {
+    const changeTaskStatus = (status, isNestedTask = false) => {
       let updatedTaskObj = {};
+      if (isNestedTask) {
+        updatedTaskObj = { ...task, status };
+        return updatedTaskObj;
+      }
       let updatedNestedTasks = [];
       if (task.folder) {
         for (let nestedTask of task.tasks) {
@@ -54,11 +58,12 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
     // click on checkbox element
     const checkboxElem = li.querySelector(".checkbox");
     checkboxElem.addEventListener("click", () => {
+      let isNestedTask = task.id.split("_")[0] === "nested";
       let updatedTask = {};
       if (task.status === "completed") {
-        updatedTask = { ...changeTaskStatus("uncompleted") };
+        updatedTask = { ...changeTaskStatus("uncompleted", isNestedTask) };
       } else {
-        updatedTask = { ...changeTaskStatus("completed") };
+        updatedTask = { ...changeTaskStatus("completed", isNestedTask) };
       }
       let filteredTasks = tasks.filter(
         (filteredTask) => filteredTask.id !== task.id
@@ -67,8 +72,24 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
       const indexToInsert = task.id.slice(-1) - 1;
       filteredTasks.splice(indexToInsert, 0, task);
       let updatedTasks = filteredTasks;
-      allTasks.recentTask = updatedTasks;
-      updateUsersTasksList(updatedTasks);
+      if (isNestedTask) {
+        const parentElement = li.parentElement.parentElement;
+        const id = parentElement.dataset.fileId;
+        const parentTask = allTasks.recentTask.find(
+          (recentTask) => recentTask.id === id
+        );
+        parentTask.tasks = [...updatedTasks];
+        const indexToInsert = parentTask.id.slice(-1) - 1;
+        let filteredTasks = allTasks.recentTask.filter(
+          (filteredTask) => filteredTask.id !== parentTask.id
+        );
+        filteredTasks.splice(indexToInsert, 0, parentTask);
+        allTasks.recentTask = filteredTasks;
+        updateUsersTasksList(filteredTasks);
+      } else {
+        allTasks.recentTask = updatedTasks;
+        updateUsersTasksList(updatedTasks);
+      }
       // render whole recent task page after update user task
       taskManagerContent.innerHTML = "";
       const recentTaskPage = getRecentTaskPage();

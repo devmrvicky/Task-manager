@@ -3,6 +3,7 @@ export const getRecentTaskList = (task, isFromFolder = false) => {
   li.className = `flex gap-3 cursor-default flex-col ${
     isFromFolder ? "" : "main-li"
   }`;
+  li.setAttribute("data-file-id", task.id);
   li.innerHTML = `
   <div class="w-full flex ${isFromFolder ? "gap-0 sm:gap-3" : "gap-3"}">
     <div class="bg-white p-4 flex items-center rounded-xl hover:bg-zinc-50 cursor-pointer checkbox">
