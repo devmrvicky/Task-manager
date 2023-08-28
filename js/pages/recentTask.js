@@ -55,10 +55,20 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
       return updatedTaskObj;
     };
 
+    // get parent folder
+    const getParentFolder = () => {
+      const parentElement = li.parentElement.parentElement;
+      const id = parentElement.dataset.fileId;
+      const parentFolder = allTasks.recentTask.find(
+        (recentTask) => recentTask.id === id
+      );
+      return parentFolder;
+    };
+
     // click on checkbox element
+    let isNestedTask = task.id.split("_")[0] === "nested";
     const checkboxElem = li.querySelector(".checkbox");
     checkboxElem.addEventListener("click", () => {
-      let isNestedTask = task.id.split("_")[0] === "nested";
       let updatedTask = {};
       if (task.status === "completed") {
         updatedTask = { ...changeTaskStatus("uncompleted", isNestedTask) };
@@ -73,11 +83,7 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
       filteredTasks.splice(indexToInsert, 0, task);
       let updatedTasks = filteredTasks;
       if (isNestedTask) {
-        const parentElement = li.parentElement.parentElement;
-        const id = parentElement.dataset.fileId;
-        const parentFolder = allTasks.recentTask.find(
-          (recentTask) => recentTask.id === id
-        );
+        const parentFolder = getParentFolder();
         parentFolder.tasks = [...updatedTasks];
         parentFolder.completedTask = parseInt(parentFolder.completedTask) + 1;
         const indexToInsert = parentFolder.id.slice(-1) - 1;
@@ -132,10 +138,13 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
       const contextMenu = getContextMenu(e);
       taskShowArea.append(contextMenu);
 
-      const getUpdatedRemainingTasks = (tasks) => {
+      const getUpdatedIdTasks = (tasks, isNestedTask = false) => {
         let arr = [];
         for (let task of tasks) {
-          task = { ...task, id: `task_${arr.length + 1}` };
+          task = {
+            ...task,
+            id: `${isNestedTask ? "nested_" : ""}task_${arr.length + 1}`,
+          };
           arr.push(task);
         }
         return arr;
@@ -143,10 +152,29 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
 
       let deleteBtn = contextMenu.querySelector("li");
       deleteBtn.onclick = () => {
-        const remainingTasks = tasks.filter(
-          (remainTask) => remainTask.id !== task.id
-        );
-        const updatedRemainingTasks = getUpdatedRemainingTasks(remainingTasks);
+        let remainingTasks;
+        if (isNestedTask) {
+          const parentFolder = getParentFolder();
+          const remainingNestedTasks = parentFolder.tasks.filter(
+            (nestedTask) => nestedTask.id !== task.id
+          );
+          const updatedRemainingNestedTasks = getUpdatedIdTasks(
+            remainingNestedTasks,
+            true
+          );
+          parentFolder.tasks = updatedRemainingNestedTasks;
+          const indexToInsert = parentFolder.id.slice(-1) - 1;
+          let filteredTasks = allTasks.recentTask.filter(
+            (filteredTask) => filteredTask.id !== parentFolder.id
+          );
+          filteredTasks.splice(indexToInsert, 0, parentFolder);
+          remainingTasks = filteredTasks;
+        } else {
+          remainingTasks = tasks.filter(
+            (remainTask) => remainTask.id !== task.id
+          );
+        }
+        const updatedRemainingTasks = getUpdatedIdTasks(remainingTasks);
         allTasks.recentTask = updatedRemainingTasks;
         updateUsersTasksList(updatedRemainingTasks);
         // render whole recent task page after update user task
