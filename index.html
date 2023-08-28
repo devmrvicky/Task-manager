@@ -23,13 +23,14 @@
     <!-- <h1>Task manager</h1> -->
 
     <!-- task manager side bar -->
-    <div class="task-manager-side-bar bg-[#719191] text-white p-2 flex flex-col items-center gap-5 w-14 h-screen fixed">
+    <div
+      class="task-manager-side-bar bg-[#719191] text-white p-2 flex flex-col items-center gap-5 w-14 h-full fixed top-0 z-20">
       <!-- logo -->
       <div class="logo p-1 bg-white rounded">
         <img src="/task-manager-logo.png" alt="logo">
       </div>
       <!-- side menu options -->
-      <ul class="side-menu-options my-4 flex flex-col gap-2">
+      <ul class="side-menu-options flex-1 flex flex-col gap-2">
         <li id="task-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer" data-page="recent-tasks">
           <i class="fa-solid fa-clipboard-list"></i>
           <span>Tasks</span>
@@ -53,8 +54,9 @@
         </li>
       </ul>
       <!-- collapse side bar -->
-      <button type="button" title="collapse side bar" class="mt-auto">
-        <i class="fa-solid fa-right-from-bracket"></i>
+      <button type="button" title="collapse side bar"
+        class="collapse-side-bar-btn bg-white text-zinc-500 min-w-[40px] min-h-[40px] border rounded-full flex items-center justify-center hover:bg-zinc-500 hover:text-white">
+        <i class="fa-solid fa-right-from-bracket fa-rotate-180"></i>
       </button>
     </div>
     <!-- end task manager side bar -->

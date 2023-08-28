@@ -26,10 +26,15 @@ main#app {
   width: auto !important;
 }
 
-.task-manager-side-bar {
-  & button {
-    margin: 140px 0 0 0;
-  }
+.task-manager-side-bar.toggle-side-bar {
+  transition: all .5s ease;
+  transform: translateX(-100%);
+}
+
+.task-manager-side-bar.toggle-side-bar button {
+  transition: all .5s ease;
+  transform: translateX(60px) rotate(180deg);
+
 }
 
 .side-menu-options {
@@ -219,7 +224,11 @@ section::-webkit-scrollbar {
     padding: 0 !important;
   }
 
-  .task-manager-side-bar {
+  /* .task-manager-side-bar {
     transform: translateX(-100%);
   }
+
+  .collapse-side-bar-btn {
+    position: fixed
+  } */
 }

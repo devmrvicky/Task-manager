@@ -2,14 +2,13 @@ import { appendNewPage } from "./components/appendNewPage.js";
 import { getLoginForm } from "./components/getLoginForm.js";
 import { getSignupForm } from "./components/getSignupForm.js";
 import { getTextEditor } from "./components/getTextEditor.js";
-// import "./pages/dashboard.js";
 import { addDashboardElement } from "./pages/dashboard.js";
 
 const mainApp = document.querySelector("main");
-// const mainSideBar = document.querySelector(".task-manager-side-bar");
+const mainSideBar = document.querySelector(".task-manager-side-bar");
+const mainSideBarBtn = mainSideBar.querySelector("button");
 const menuOptions = document.querySelectorAll(".menu-option");
 const dialogBoxElem = document.querySelector("#d");
-const profImg = document.querySelector(".prof img");
 const userNameElem = document.querySelector(".user-name");
 const taskManagerContent = document.querySelector(".task-manager-content");
 const openTextEditorBtn = document.querySelector(".open-text-editor");
@@ -199,7 +198,24 @@ window.onload = () => {
   } else {
     taskManagerContent.append(loginFormContainer);
   }
+
+  // toggle side bar
+  mainSideBarBtn.addEventListener("click", () => {
+    toggleMainSideBar();
+  });
+  if (innerWidth <= 430) {
+    mainSideBar.classList.add("toggle-side-bar");
+  }
 };
+
+function toggleMainSideBar() {
+  if (mainSideBar.classList.contains("toggle-side-bar")) {
+    taskManagerContent.parentElement.style.paddingLeft = 80 + "px";
+  } else {
+    taskManagerContent.parentElement.style.paddingLeft = 20 + "px";
+  }
+  mainSideBar.classList.toggle("toggle-side-bar");
+}
 
 function getNoOfAllTask() {
   allTaskList = [];
