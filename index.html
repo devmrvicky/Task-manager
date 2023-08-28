@@ -62,14 +62,16 @@
     <!-- task and calendar area -->
     <div class="main-content-area pl-20 pr-5 flex flex-col w-full h-screen">
       <!-- top nav bar -->
-      <div class="task-manager-top-bar grid md:flex items-center gap-5 px-5 py-3">
+      <div
+        class="task-manager-top-bar flex items-center gap-5 pl-5 pr-1 md:px-5 md:py-2 py-1 mt-2 rounded-full md:rounded-2xl border bg-[#EAF1F1]/50 sticky top-1 z-10">
         <!-- title -->
-        <h1 class="text-2xl main-title">Dashboard</h1>
+        <h1 class="text-xl md:text-2xl main-title">Dashboard</h1>
         <!-- search form -->
-        <form action="" class="border max-w-2xl w-full px-3 py-2 rounded-5 flex items-center bg-[#EAF1F1] rounded-md">
+        <form action=""
+          class="border hidden md:flex max-w-2xl w-full px-3 py-2 rounded-5 items-center bg-white rounded-md">
           <label for="search-task" aria-hidden="true" class="hidden">search task</label>
-          <input type="text" name="search" id="search-task" title="input search text"
-            class="bg-transparent w-full outline-none">
+          <input type="text" name="search" placeholder="Search tasks, notes, folder . . . " id="search-task"
+            title="input search text" class="bg-transparent w-full outline-none">
           <button type="submit" title="search button">
             <i class="fa fa-search text-[#719191]"></i>
           </button>
@@ -80,15 +82,15 @@
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
-        <!-- notification -->
-        <div class="task-notification">
-          <i class="fa fa-bell text-xl"></i>
-        </div>
         <!-- profile -->
-        <div class="prof w-12" onclick="d.showModal()">
-          <div class="profile-img rounded-full min-w-[50px] w-full">
-            <h1 class="user-name"></h1>
-            <img src="/profile.jpg" alt="profile img">
+        <div class="prof" onclick="d.showModal()">
+          <div class="profile-img w-full flex items-center gap-2">
+            <h1 class="user-name text-xl"></h1>
+            <div
+              class="user bg-white md:min-w-[50px] md:h-[50px] min-w-[40px] h-[40px] rounded-full flex items-center justify-center border hover:bg-zinc-50">
+              <i class="fa-solid fa-user text-xl md:text-2xl"></i>
+            </div>
+            <!-- <img src="/profile.jpg" alt="profile img"> -->
           </div>
         </div>
         <dialog id="d" class="w-[300px] m-auto p-5 rounded-lg flex-col">

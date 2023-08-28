@@ -13,11 +13,11 @@ const mainTile = document.querySelector(".main-title");
 // get section head that is common in all section
 const getSectionElem = (sectionName) => {
   const section = document.createElement("section");
-  section.className = `bg-white shadow rounded-3xl md:p-5 ${sectionName}-section overflow-auto mb-3 sm:mb-0`;
+  section.className = `bg-[#EAF1F1] shadow rounded-3xl p-1 md:p-5 ${sectionName}-section overflow-auto mb-3 sm:mb-0 border`;
   // const sectionHead = getSectionElem("Recent task");
   const sectionHead = document.createElement("div");
   sectionHead.className =
-    "section-head flex justify-between items-center sticky top-0 py-3 px-5 bg-white";
+    "section-head flex justify-between items-center sticky top-0 py-2 px-3 md:py-3 md:px-5 bg-white rounded-3xl";
   const headTitleElem = document.createElement("h3");
   headTitleElem.textContent =
     sectionName[0].toUpperCase() + sectionName.slice(1);

@@ -51,7 +51,7 @@ main#app {
 }
 
 .main-content-area {
-  background: linear-gradient(to right, #F9FAFA 72%, #EAF1F1 28%);
+  background-color: #f9fafa93;
 }
 
 .task-manager-top-bar form input {
@@ -145,10 +145,6 @@ section::-webkit-scrollbar {
 }
 
 @media screen and (max-width: 850px) {
-  .task-manager-content {
-    padding-top: 0 !important;
-  }
-
   .task-manager-top-bar {
     gap: 10px !important;
   }
@@ -201,21 +197,6 @@ section::-webkit-scrollbar {
     100% {
       transform: translateX(0px) rotate(180deg);
     }
-  }
-}
-
-
-
-@media screen and (max-width: 768px) {
-  .task-manager-top-bar {
-    grid-template-columns: repeat(4, auto);
-    grid-template-rows: auto auto;
-    gap: 5px;
-  }
-
-  .task-manager-top-bar form {
-    grid-column: 1 / -1;
-    grid-row: 2 / -1;
   }
 }
 
