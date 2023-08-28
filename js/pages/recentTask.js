@@ -163,6 +163,10 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
             true
           );
           parentFolder.tasks = updatedRemainingNestedTasks;
+          if (task.status === "completed") {
+            parentFolder.completedTask =
+              parseInt(parentFolder.completedTask) - 1;
+          }
           const indexToInsert = parentFolder.id.slice(-1) - 1;
           let filteredTasks = allTasks.recentTask.filter(
             (filteredTask) => filteredTask.id !== parentFolder.id
