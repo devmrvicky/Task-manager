@@ -17,17 +17,17 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
     downAngle?.addEventListener("click", () => {
       li.classList.toggle("show");
       if (!li.children[1]) {
-        if (task.folder) {
-          const nestedTaskList = document.createElement("ul");
-          nestedTaskList.className = "nested mt-2 flex flex-col gap-2";
-          showRecentTaskList(task.tasks, nestedTaskList, true);
-          li.insertAdjacentElement("beforeend", nestedTaskList);
-        }
+        const nestedTaskList = document.createElement("ul");
+        nestedTaskList.className = "nested mt-2 flex flex-col gap-2";
+        showRecentTaskList(task.tasks, nestedTaskList, true);
+        li.insertAdjacentElement("beforeend", nestedTaskList);
       } else {
         li.children[1].remove();
       }
     });
     taskList.insertAdjacentElement("beforeend", li);
+
+    function getArrangedTask() {}
 
     // get updated tasks list
     const changeTaskStatus = (status, isNestedTask = false) => {
@@ -65,25 +65,26 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
       } else {
         updatedTask = { ...changeTaskStatus("completed", isNestedTask) };
       }
+      task = { ...updatedTask };
       let filteredTasks = tasks.filter(
         (filteredTask) => filteredTask.id !== task.id
       );
-      task = { ...updatedTask };
       const indexToInsert = task.id.slice(-1) - 1;
       filteredTasks.splice(indexToInsert, 0, task);
       let updatedTasks = filteredTasks;
       if (isNestedTask) {
         const parentElement = li.parentElement.parentElement;
         const id = parentElement.dataset.fileId;
-        const parentTask = allTasks.recentTask.find(
+        const parentFolder = allTasks.recentTask.find(
           (recentTask) => recentTask.id === id
         );
-        parentTask.tasks = [...updatedTasks];
-        const indexToInsert = parentTask.id.slice(-1) - 1;
+        parentFolder.tasks = [...updatedTasks];
+        parentFolder.completedTask = parseInt(parentFolder.completedTask) + 1;
+        const indexToInsert = parentFolder.id.slice(-1) - 1;
         let filteredTasks = allTasks.recentTask.filter(
-          (filteredTask) => filteredTask.id !== parentTask.id
+          (filteredTask) => filteredTask.id !== parentFolder.id
         );
-        filteredTasks.splice(indexToInsert, 0, parentTask);
+        filteredTasks.splice(indexToInsert, 0, parentFolder);
         allTasks.recentTask = filteredTasks;
         updateUsersTasksList(filteredTasks);
       } else {

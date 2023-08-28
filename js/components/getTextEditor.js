@@ -73,13 +73,13 @@ const updateAllTasksList = (name, folder, date = [], tags = []) => {
   const currentUser = getCurrentUser();
   const newTaskObj = {};
   newTaskObj.id = `task_${currentUser.user_task.length + 1}`;
-  console.log(users);
   newTaskObj.name = name;
   newTaskObj.folder = folder;
   newTaskObj.status = "uncompleted";
   newTaskObj.time = date;
   newTaskObj.tags = tags;
   if (folder) {
+    newTaskObj.isFolderOpen = false;
     newTaskObj.completedTask = 0;
     newTaskObj.tasks = [];
   }
