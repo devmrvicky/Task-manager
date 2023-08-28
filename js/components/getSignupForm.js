@@ -1,7 +1,7 @@
 export const getSignupForm = () => {
   const formContainer = document.createElement("div");
   formContainer.className =
-    "login-form-container w-full bg-[#1ABC9C] backdrop-blur-[10px] h-screen absolute top-0 left-0 flex items-center justify-center";
+    "login-form-container w-full bg-[#1ABC9C] backdrop-blur-[10px] h-screen absolute top-0 left-0 flex items-center justify-center z-20";
   const form = document.createElement("form");
   form.className =
     "login-form rounded-lg overflow-hidden flex flex-col w-[350px] bg-white";

@@ -24,7 +24,7 @@
 
     <!-- task manager side bar -->
     <div
-      class="task-manager-side-bar bg-[#719191] text-white p-2 flex flex-col items-center gap-5 w-14 h-full fixed top-0 z-20">
+      class="task-manager-side-bar bg-[#719191] text-white p-2 flex flex-col items-center gap-5 w-14 h-full fixed top-0 z-30">
       <!-- logo -->
       <div class="logo p-1 bg-white rounded">
         <img src="/task-manager-logo.png" alt="logo">
@@ -96,10 +96,13 @@
           </div>
         </div>
         <dialog id="d" class="w-[300px] m-auto p-5 rounded-lg flex-col">
-          <button onclick="d.close()"
-            class="border text-sm outline-none px-3 py-1 rounded-lg mx-auto hover:bg-zinc-50">Close
-            dialog</button>
-          <button type="button" id="add-user-btn">Add user</button>
+          <div class="flex justify-between">
+            <button onclick="d.close()"
+              class="border text-sm outline-none px-3 py-1 rounded-lg mx-auto hover:bg-zinc-50">Close
+              dialog</button>
+            <button type="button" id="add-user-btn"
+              class="border text-sm outline-none px-3 py-1 rounded-lg mx-auto hover:bg-zinc-50">Add user</button>
+          </div>
         </dialog>
         <!-- <button onclick="d.showModal()">show dialog</button> -->
       </div>

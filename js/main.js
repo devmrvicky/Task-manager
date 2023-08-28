@@ -45,22 +45,21 @@ const getUpdatedUsers = (users) => {
   return updatedRemainingUsers;
 };
 
-const login = (loginUser, signup = false) => {
+const login = (loginUser, isLogin = false) => {
   getUsersFromLocalStorage();
-  if (loginUser) {
-    const updatedUser = { ...loginUser, current_user: true };
-    const remainingUsers = users.filter((user) => user !== loginUser);
-    let updatedRemainingUsers = getUpdatedUsers(remainingUsers);
-    users = [updatedUser, ...updatedRemainingUsers];
-    if (signup) {
-      localStorage.setItem("users", JSON.stringify(users));
-    }
-    allTasks.recentTask = [...loginUser.user_task];
-    userNameElem.textContent = loginUser.user_name;
-    addDashboardElement();
+  const updatedUser = { ...loginUser, current_user: true };
+  let updatedRemainingUsers;
+  if (isLogin) {
+    const remainingUsers = users.filter((user) => user.id !== loginUser.id);
+    updatedRemainingUsers = getUpdatedUsers(remainingUsers);
   } else {
-    // Handle login failure
+    updatedRemainingUsers = getUpdatedUsers(users);
   }
+  users = [...updatedRemainingUsers, updatedUser];
+  localStorage.setItem("users", JSON.stringify(users));
+  allTasks.recentTask = [...updatedUser.user_task];
+  userNameElem.textContent = updatedUser.user_name;
+  addDashboardElement();
 };
 
 const showAllLoginUsers = () => {
@@ -72,7 +71,7 @@ const showAllLoginUsers = () => {
     let li = document.createElement("li");
     li.className = `user-list px-3 py-2 rounded-lg hover:bg-zinc-50 flex gap-3 items-center cursor-default ${
       user.current_user ? "active" : ""
-    }`;
+    } mb-2`;
     li.innerHTML = `
       <i class="fa-solid fa-user fa-2x"></i>
       <div class="flex flex-col">
@@ -82,7 +81,7 @@ const showAllLoginUsers = () => {
     `;
 
     li.onclick = () => {
-      login(user);
+      login(user, true);
       dialogBoxElem.close();
     };
 
@@ -119,17 +118,20 @@ const handleLoginFormSubmit = (e) => {
   const userPassword = passwordInput.value;
   const user = userAvailable(userId, userPassword);
   if (!user) {
+    const warningElem =
+      idInput.parentElement.parentElement.querySelector(".warning-text");
+    warningElem?.remove();
     const span = document.createElement("span");
-    span.className = "text-xs text-red-500";
+    span.className = "warning-text text-xs text-red-500";
     span.textContent = `User id ${userId} doesn't exit`;
-    idInput.insertAdjacentElement("afterend", span);
+    idInput.parentElement.insertAdjacentElement("afterend", span);
     idInput.select();
     setTimeout(() => {
       span.remove();
-    }, 500);
+    }, 1000);
     return;
   }
-  login(user);
+  login(user, true);
 };
 
 // handle signup form submit
@@ -143,6 +145,7 @@ const handleSignupFormSubmit = (e) => {
   let userId = userIdElem.value;
   let userPassword = userPassElem.value;
 
+  // if user id is already exit then alert that user id is already exit and return
   for (let user of users) {
     if (user.user_id === userId) {
       alert("this user id is already exist");
@@ -150,15 +153,14 @@ const handleSignupFormSubmit = (e) => {
     }
   }
 
+  getUsersFromLocalStorage();
   let newUser = {};
   newUser.id = `user_${users.length + 1}`;
   newUser.user_name = userName;
   newUser.user_id = userId;
   newUser.user_password = userPassword;
   newUser.user_task = [];
-  users = [...users, newUser];
-  // localStorage.setItem("users", JSON.stringify(users));
-  login(newUser, true);
+  login(newUser, false);
   showAllLoginUsers();
 };
 
@@ -174,6 +176,7 @@ window.onload = () => {
   let signupForm = signupFormContainer.querySelector("form");
   signupForm.addEventListener("submit", handleSignupFormSubmit);
 
+  // open sign up and login form from login form and sign up form
   const goToSignupFormBtn = loginForm.querySelector("#signup-btn");
   goToSignupFormBtn.addEventListener("click", () => {
     loginFormContainer.remove();
@@ -187,14 +190,16 @@ window.onload = () => {
 
   const addUserBtn = dialogBoxElem.querySelector("#add-user-btn");
   addUserBtn.addEventListener("click", () => {
-    console.log("click");
-    addUserBtn.parentElement.parentElement.nextElementSibling.innerHTML = "";
+    addUserBtn.parentElement.parentElement.parentElement.nextElementSibling.innerHTML =
+      "";
     dialogBoxElem.close();
     taskManagerContent.append(signupFormContainer);
   });
+
+  // check if current user is present or not if present then login with that if not open sign up form for adding new user
   const user = users.find((user) => user.current_user);
   if (user) {
-    login(user);
+    login(user, true);
   } else {
     taskManagerContent.append(loginFormContainer);
   }
