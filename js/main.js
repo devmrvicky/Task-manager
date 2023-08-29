@@ -255,4 +255,5 @@ export {
   dialogBoxElem,
   getUpdatedUsers,
   login,
+  mainApp,
 };
