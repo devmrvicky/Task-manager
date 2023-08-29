@@ -67,10 +67,10 @@ export const showAllLoginUsers = () => {
       const getLogoutPasswordInput = () => {
         const passContainer = document.createElement("div");
         passContainer.className =
-          "logout-pass-container w-full h-screen fixed z-40 backdrop-blur-lg flex items-center justify-center rounded-lg";
+          "logout-pass-container w-full h-screen fixed z-40 backdrop-blur-lg flex items-center justify-center ";
         const passForm = document.createElement("form");
         passForm.className =
-          "bg-white border p-3 flex flex-col gap-2 items-center";
+          "bg-white border p-3 flex flex-col gap-2 items-center rounded-lg";
         passForm.innerHTML = `
           <h3 class="pb-3">Enter User password</h3>
           <div class="flex gap-2 items-center">
@@ -93,11 +93,17 @@ export const showAllLoginUsers = () => {
         return passContainer;
       };
 
-      const logout = () => {
+      const openPasswordInputPage = (actionType) => {
         if (user.current_user) {
           dialogBoxElem.close();
           const logoutPasswordElem = getLogoutPasswordInput();
           const form = logoutPasswordElem.querySelector("form");
+          const submitBtn = form.querySelector('input[type="submit"]');
+          submitBtn.value = actionType.replace("-", " ");
+          if (actionType === "delete-user") {
+            submitBtn.className =
+              "border text-sm outline-none px-3 py-1 rounded-lg mx-auto text-white hover:bg-red-700 bg-red-400 mt-3";
+          }
           form.onsubmit = (e) => {
             e.preventDefault();
             const passInput = e.currentTarget[0];
@@ -107,7 +113,15 @@ export const showAllLoginUsers = () => {
               passInput.value = "";
               return;
             }
-            const updatedUsers = getUpdatedUsers(users);
+            let updatedUsers;
+            if (actionType === "delete-user") {
+              confirm("Are you sure?");
+              updatedUsers = users.filter(
+                (deletionUser) => deletionUser.id !== user.id
+              );
+            } else {
+              updatedUsers = getUpdatedUsers(users);
+            }
             localStorage.setItem("users", JSON.stringify(updatedUsers));
             location.reload();
           };
@@ -129,15 +143,60 @@ export const showAllLoginUsers = () => {
         // location.reload();
       };
 
+      const getAlertBox = () => {
+        const alertBoxContainer = document.createElement("div");
+        alertBoxContainer.className =
+          "alert-box-container w-full h-screen fixed z-40 backdrop-blur-lg flex items-center justify-center ";
+        const alertBox = document.createElement("div");
+        alertBox.className =
+          "bg-white border p-10 flex flex-col gap-2 items-center rounded-lg";
+        alertBox.innerHTML = `
+          <p class="text-2xl">Do you want to delete?</p>
+          <div class="flex justify-between items-center mt-10 w-full">
+            <button type="button" class="border text-sm outline-none px-3 py-1 rounded-lg mx-auto hover:bg-red-700 bg-red-500 text-white" id="delete-user">Delete</button>
+            <button type="button" class="border text-sm outline-none px-3 py-1 rounded-lg mx-auto hover:bg-zinc-50" id="cancel">Cancel</button>
+          </div>
+        `;
+        alertBoxContainer.append(alertBox);
+
+        alertBoxContainer.onclick = (e) => {
+          if (e.target.classList.contains("alert-box-container")) {
+            alertBoxContainer.remove();
+          }
+        };
+
+        setTimeout(() => {
+          alertBoxContainer.remove();
+        }, 10000);
+        return alertBoxContainer;
+      };
+
+      const openUserDeletePage = () => {
+        dialogBoxElem.close();
+        const alertBox = getAlertBox();
+        const alertBoxBtns = alertBox.querySelectorAll("button");
+        alertBoxBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            alertBox.remove();
+            if (btn.id === "delete-user") {
+              openPasswordInputPage("delete-user");
+            }
+          });
+        });
+        mainApp.append(alertBox);
+      };
+
       // log out
       const logoutBtns = li.querySelectorAll(".user-menu");
       logoutBtns.forEach((btn) => {
         btn.addEventListener("click", (e) => {
           e.stopPropagation();
           if (btn.id === "logout") {
-            logout();
+            openPasswordInputPage("logout-user");
           } else if (btn.id === "hide-user") {
             hideUser();
+          } else if (btn.id === "delete-user") {
+            openUserDeletePage();
           }
         });
       });

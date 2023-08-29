@@ -92,7 +92,7 @@ const handleLoginFormSubmit = (e) => {
     idInput.parentElement.insertAdjacentElement("afterend", warningElem);
     idInput.select();
     setTimeout(() => {
-      span.remove();
+      warningElem.remove();
     }, 1000);
     return;
   }
