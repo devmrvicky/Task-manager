@@ -1,4 +1,5 @@
 import { dialogBoxElem, getUpdatedUsers, login, mainApp, users } from "../main";
+// import { addDashboardElement } from "../pages/dashboard";
 
 export const showAllLoginUsers = () => {
   const preUsersListElem = dialogBoxElem.querySelector("ul");
@@ -6,6 +7,7 @@ export const showAllLoginUsers = () => {
   const ul = document.createElement("ul");
   ul.className = "users-list pb-5";
   for (let user of users) {
+    if (user.user_hide) continue;
     let li = document.createElement("li");
     li.className = `user-list px-3 py-2 rounded-lg hover:bg-zinc-50 flex gap-3 items-center cursor-default ${
       user.current_user ? "active" : ""
@@ -30,14 +32,28 @@ export const showAllLoginUsers = () => {
       }
       userMoreMenusElem = document.createElement("ul");
       userMoreMenusElem.className =
-        "user-more-menus bg-white shadow border w-[100px] p-1 rounded-lg absolute right-[50px] bottom-[-23px] z-20";
-      const userMenu = document.createElement("li");
-      userMenu.className =
-        "user-menu logout flex gap-3 items-center p-2 hover:bg-zinc-50 text-xs";
-      userMenu.innerHTML = `
-        <span>Log out</span>
+        "user-more-menus bg-white shadow border w-[100px] p-1 rounded-lg absolute right-[50px] bottom-[-23px] z-20 flex flex-col gap-2";
+      userMoreMenusElem.innerHTML = `
+        ${
+          user.current_user
+            ? `<li
+              class="user rounded-menu flex gap-3 items-center p-2 hover:bg-zinc-50 text-xs"
+              id="logout"
+            >
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span>Log out</span>
+            </li>
+            <li class="user-menu rounded flex gap-3 items-center p-2 hover:bg-red-500 bg-red-300 text-white text-xs order-last" id="delete-user">
+              <i class="fa-solid fa-trash-alt"></i>
+              <span span>delete</span>
+            </li>`
+            : `<li class="user-menu rounded flex gap-3 items-center p-2 hover:bg-zinc-50 text-xs" id="hide-user">
+                <i class="fa-solid fa-eye-slash"></i>
+                <span>Hide</span>
+              </li>`
+        }
+        
       `;
-      userMoreMenusElem.append(userMenu);
       li.append(userMoreMenusElem);
 
       const getLogoutPasswordInput = () => {
@@ -91,11 +107,31 @@ export const showAllLoginUsers = () => {
         }
       };
 
+      const hideUser = () => {
+        user = { ...user, user_hide: true };
+        let remainingUsers = users.filter(
+          (remainingUser) => remainingUser.id !== user.id
+        );
+        let updatedRemainingUsers = [...remainingUsers, user];
+        localStorage.setItem("users", JSON.stringify(updatedRemainingUsers));
+        li.remove();
+        setTimeout(() => {
+          dialogBoxElem.close();
+        }, 1000);
+        // location.reload();
+      };
+
       // log out
-      const logoutBtn = li.querySelector(".logout");
-      logoutBtn?.addEventListener("click", (e) => {
-        e.stopPropagation();
-        logout();
+      const logoutBtns = li.querySelectorAll(".user-menu");
+      logoutBtns.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (btn.id === "logout") {
+            logout();
+          } else if (btn.id === "hide-user") {
+            hideUser();
+          }
+        });
       });
 
       setTimeout(() => {
@@ -108,7 +144,10 @@ export const showAllLoginUsers = () => {
       dialogBoxElem.close();
     };
 
-    ul.append(li);
+    // append user if user's user_hide property false
+    if (!user.user_hide) {
+      ul.append(li);
+    }
   }
   const userList = ul.querySelectorAll(".user-list");
   userList.forEach((list) => {

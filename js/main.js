@@ -49,7 +49,7 @@ const getUpdatedUsers = (users) => {
 
 const login = (loginUser, isLogin = false) => {
   getUsersFromLocalStorage();
-  const updatedUser = { ...loginUser, current_user: true };
+  const updatedUser = { ...loginUser, current_user: true, user_hide: false };
   let updatedRemainingUsers;
   if (isLogin) {
     const remainingUsers = users.filter((user) => user.id !== loginUser.id);
@@ -124,6 +124,7 @@ const handleSignupFormSubmit = (e) => {
   newUser.user_name = userName;
   newUser.user_id = userId;
   newUser.user_password = userPassword;
+  newUser.user_hide = false;
   newUser.user_task = [];
   login(newUser, false);
   showAllLoginUsers();
