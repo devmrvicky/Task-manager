@@ -6,6 +6,7 @@ import {
   mainApp,
   users,
 } from "../main";
+import { getUserEditPage } from "./getUserEditPage";
 import { getUsersList } from "./getUsersList";
 // import { addDashboardElement } from "../pages/dashboard";
 
@@ -28,11 +29,19 @@ export const showAllLoginUsers = () => {
       }
       userMoreMenusElem = document.createElement("ul");
       userMoreMenusElem.className =
-        "user-more-menus bg-white shadow border w-[100px] p-1 rounded-lg absolute right-[50px] bottom-[-23px] z-30 flex flex-col gap-2";
+        "user-more-menus bg-white shadow border w-auto p-1 rounded-lg absolute right-[50px] bottom-[-23px] z-30 flex flex-col gap-2";
       userMoreMenusElem.innerHTML = `
         ${
           user.current_user
-            ? `<li
+            ? `
+            <li
+              class="user-menu rounded flex gap-3 items-center p-2 hover:bg-zinc-50 text-xs"
+              id="edit-user"
+            >
+              <i class="fa-solid fa-user-pen"></i>
+              <span>User edit</span>
+            </li>
+            <li
               class="user-menu rounded flex gap-3 items-center p-2 hover:bg-zinc-50 text-xs"
               id="logout"
             >
@@ -174,6 +183,13 @@ export const showAllLoginUsers = () => {
         mainApp.append(alertBox);
       };
 
+      // open user edit page
+      const openUserEditPage = () => {
+        dialogBoxElem.close();
+        const editPageContainer = getUserEditPage(user);
+        mainApp.append(editPageContainer);
+      };
+
       // log out
       const logoutBtns = li.querySelectorAll(".user-menu");
       logoutBtns.forEach((btn) => {
@@ -185,6 +201,8 @@ export const showAllLoginUsers = () => {
             hideUser();
           } else if (btn.id === "delete-user") {
             openUserDeletePage();
+          } else if (btn.id === "edit-user") {
+            openUserEditPage();
           }
         });
       });
