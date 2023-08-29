@@ -1,4 +1,11 @@
-import { dialogBoxElem, getUpdatedUsers, login, mainApp, users } from "../main";
+import {
+  dialogBoxElem,
+  getUpdatedUsers,
+  getUsersFromLocalStorage,
+  login,
+  mainApp,
+  users,
+} from "../main";
 // import { addDashboardElement } from "../pages/dashboard";
 
 export const showAllLoginUsers = () => {
@@ -6,6 +13,7 @@ export const showAllLoginUsers = () => {
   preUsersListElem?.remove();
   const ul = document.createElement("ul");
   ul.className = "users-list pb-5";
+  getUsersFromLocalStorage();
   for (let user of users) {
     if (user.user_hide) continue;
     let li = document.createElement("li");
@@ -32,12 +40,12 @@ export const showAllLoginUsers = () => {
       }
       userMoreMenusElem = document.createElement("ul");
       userMoreMenusElem.className =
-        "user-more-menus bg-white shadow border w-[100px] p-1 rounded-lg absolute right-[50px] bottom-[-23px] z-20 flex flex-col gap-2";
+        "user-more-menus bg-white shadow border w-[100px] p-1 rounded-lg absolute right-[50px] bottom-[-23px] z-30 flex flex-col gap-2";
       userMoreMenusElem.innerHTML = `
         ${
           user.current_user
             ? `<li
-              class="user rounded-menu flex gap-3 items-center p-2 hover:bg-zinc-50 text-xs"
+              class="user-menu rounded flex gap-3 items-center p-2 hover:bg-zinc-50 text-xs"
               id="logout"
             >
               <i class="fa-solid fa-right-from-bracket"></i>
