@@ -65,7 +65,7 @@
     <div class="main-content-area pl-20 pr-5 flex flex-col w-full h-screen">
       <!-- top nav bar -->
       <div
-        class="task-manager-top-bar flex items-center gap-5 pl-5 pr-1 md:px-5 md:py-2 py-1 mt-2 rounded-full md:rounded-2xl border bg-[#EAF1F1]/50 sticky top-1 z-10 backdrop-blur-md">
+        class="task-manager-top-bar flex items-center gap-5 p-5 md:px-5 md:py-2 py-1 mt-2 rounded-2xl border bg-[#EAF1F1]/50 sticky top-1 z-10 backdrop-blur-md">
         <!-- title -->
         <h1 class="text-xl md:text-2xl main-title">Dashboard</h1>
         <!-- search form -->
@@ -79,9 +79,10 @@
           </button>
         </form>
         <!-- add task button -->
-        <div class="ml-auto">
-          <button type="button" title="add task" class="open-text-editor">
-            <i class="fa-solid fa-plus"></i>
+        <div class="ml-auto mr-2">
+          <button type="button" title="add task"
+            class="open-text-editor bg-white min-w-[30px] min-h-[30px] rounded-full">
+            <i class="fa-solid fa-plus text-sm"></i>
           </button>
         </div>
         <!-- profile -->
@@ -96,13 +97,17 @@
           </div>
         </div>
         <dialog id="d" class="w-[300px] m-auto p-5 rounded-lg flex-col">
-          <div class="flex justify-between">
-            <button onclick="d.close()"
-              class="border text-sm outline-none px-3 py-1 rounded-lg mx-auto hover:bg-zinc-50">Close
-              dialog</button>
+          <div class="flex items-center justify-between w-full">
+            <p>Total hided user: 5</p>
             <button type="button" id="add-user-btn"
-              class="border text-sm outline-none px-3 py-1 rounded-lg mx-auto hover:bg-zinc-50">Add user</button>
+              class="border text-sm outline-none rounded-full hover:bg-zinc-50 min-w-[40px] min-h-[40px]">
+              <i class="fa-solid fa-user-plus"></i>
+            </button>
           </div>
+          <button type="button" onclick="d.close()"
+            class="text-sm outline-none px-3 py-1 hover:bg-zinc-50 absolute top-[5px] right-[5px]">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </dialog>
         <!-- <button onclick="d.showModal()">show dialog</button> -->
       </div>

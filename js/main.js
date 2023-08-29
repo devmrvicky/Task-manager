@@ -225,7 +225,7 @@ menuOptions.forEach((menuOption) => {
 const openTextEditor = () => {
   const textEditorContainer = document.createElement("div");
   textEditorContainer.className =
-    "text-editor-container w-full h-full fixed top-0 shadow bg-white/50 backdrop-blur-sm flex items-center justify-center p-24";
+    "text-editor-container w-full h-full fixed top-0 shadow bg-white/50 backdrop-blur-sm flex items-center justify-center p-24 z-20";
   const pageName = taskManagerContent.children[0].dataset.page;
   textEditorContainer.setAttribute("data-page-name", pageName);
   if (document.querySelector(".text-editor-container")) return;

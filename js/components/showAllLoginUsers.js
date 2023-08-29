@@ -6,30 +6,18 @@ import {
   mainApp,
   users,
 } from "../main";
+import { getUsersList } from "./getUsersList";
 // import { addDashboardElement } from "../pages/dashboard";
 
 export const showAllLoginUsers = () => {
   const preUsersListElem = dialogBoxElem.querySelector("ul");
   preUsersListElem?.remove();
   const ul = document.createElement("ul");
-  ul.className = "users-list pb-5";
+  ul.className = "users-list py-5 flex flex-col";
   getUsersFromLocalStorage();
   for (let user of users) {
     if (user.user_hide) continue;
-    let li = document.createElement("li");
-    li.className = `user-list px-3 py-2 rounded-lg hover:bg-zinc-50 flex gap-3 items-center cursor-default ${
-      user.current_user ? "active" : ""
-    } mb-2 relative`;
-    li.innerHTML = `
-      <i class="fa-solid fa-user fa-2x"></i>
-      <div class="flex flex-col">
-        <p class="text-base">${user.user_name}</p>
-        <span class="text-xs text-zinc-500">${user.user_id}</span>
-      </div>
-      <button type="button" class="user-menu-btn min-w-[40px] min-h-[40px] rounded-full hover:bg-white flex items-center justify-center ml-auto">
-        <i class="fa-solid fa-ellipsis-vertical"></i>
-      </button>
-    `;
+    let li = getUsersList(user);
 
     const userMoreMenuBtn = li.querySelector(".user-menu-btn");
     userMoreMenuBtn.addEventListener("click", (e) => {
