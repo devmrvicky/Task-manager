@@ -11,6 +11,11 @@ import {
 } from "../main.js";
 
 const showRecentTaskList = (tasks, taskList, isFromFolder) => {
+  if (!tasks.length) {
+    taskList.innerHTML = `
+      <li class="text-xs text-center py-10 px-8 text-zinc-500">You have not Written any task.<br>To write a task please click on floating plus button</li>
+    `;
+  }
   for (let task of tasks) {
     let li = getRecentTaskList(task, isFromFolder);
     const downAngle = li.querySelector("i.fa-angle-down");
@@ -26,8 +31,6 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
       }
     });
     taskList.insertAdjacentElement("beforeend", li);
-
-    function getArrangedTask() {}
 
     // get updated tasks list
     const changeTaskStatus = (status, isNestedTask = false) => {
@@ -287,6 +290,9 @@ const getRecentTaskPage = () => {
   recentTaskMainContent.insertAdjacentElement("beforeend", taskList);
   recentTaskContent.insertAdjacentElement("afterbegin", recentTaskSideBar);
   recentTaskSideBar.insertAdjacentElement("afterend", recentTaskMainContent);
+
+  taskManagerContent.parentElement.style.height = 100 + "vh";
+
   return recentTaskContent;
 };
 

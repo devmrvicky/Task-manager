@@ -223,12 +223,4 @@ section::-webkit-scrollbar {
   .main-content-area {
     padding: 0 !important;
   }
-
-  /* .task-manager-side-bar {
-    transform: translateX(-100%);
-  }
-
-  .collapse-side-bar-btn {
-    position: fixed
-  } */
 }

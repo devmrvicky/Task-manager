@@ -13,7 +13,7 @@ const mainTile = document.querySelector(".main-title");
 // get section head that is common in all section
 const getSectionElem = (sectionName) => {
   const section = document.createElement("section");
-  section.className = `bg-[#EAF1F1] shadow rounded-3xl p-1 md:p-5 ${sectionName}-section overflow-auto mb-3 sm:mb-0 border`;
+  section.className = `bg-[#EAF1F1] shadow rounded-3xl p-1 md:p-5 ${sectionName}-section overflow-auto mb-3 sm:mb-0 border sm:w-full max-w-[400px] mx-auto`;
   // const sectionHead = getSectionElem("Recent task");
   const sectionHead = document.createElement("div");
   sectionHead.className =
@@ -39,12 +39,22 @@ const getSectionElem = (sectionName) => {
 
   return section;
 };
+
+// function for inserting data when user have not written tasks and notes and have not create any folder
+const insertEmptyMessage = (parameter, parentElem) => {
+  if (!parameter.length) {
+    parentElem.innerHTML = `
+      <li class="text-xs text-center py-10 px-8 text-zinc-500">You have not Written any task.<br>To write a task please click on floating plus button</li>
+    `;
+  }
+};
 // get recent-task-section
 const getRecentTaskSection = () => {
   const section = getSectionElem("recent-tasks");
   const recentTasks = document.createElement("ul");
   recentTasks.className =
-    "recent-tasks flex flex-col overflow-auto md:pt-6 gap-2";
+    "recent-tasks flex flex-col overflow-auto md:pt-6 gap-2 py-5 mx-h-[250px]";
+  insertEmptyMessage(allTaskList, recentTasks);
   for (let task of allTaskList) {
     // console.log(task);
     const taskItem = document.createElement("li");
@@ -70,12 +80,13 @@ const getRecentTaskSection = () => {
 const getFolderSection = () => {
   const folders = getSectionElem("folders");
   const folderList = document.createElement("ul");
-  folderList.className = "folders flex pt-4 overflow-auto";
+  folderList.className = "folders flex justify-center pt-4 overflow-auto";
+  insertEmptyMessage(allFolders, folderList);
   for (let folder of allFolders) {
     // console.log(folder);
     const folderItem = document.createElement("li");
     folderItem.className =
-      "folder flex flex-col items-center hover:bg-gray-50 cursor-default gap-2 py-4 rounded-2xl min-w-[100px] w-full flex-1 m-3";
+      "folder flex flex-col items-center hover:bg-gray-50 cursor-default gap-2 py-4 rounded-2xl min-w-[100px] max-w-[100px] w-full flex-1 m-3";
     folderItem.innerHTML = `
     <i class="fa fa-folder text-3xl"></i>
     <span class="text-xs">${folder.name}</span>
@@ -88,11 +99,20 @@ const getFolderSection = () => {
 // get statistic section
 const getStatisticSection = () => {
   const statisticSection = getSectionElem("statistic");
+  statisticSection.classList.add("cursor-not-allowed");
+  const statisticContent = document.createElement("ul");
+  statisticContent.innerHTML = `
+   <li class="text-xs text-center py-10 px-8 text-zinc-500">This section is currently isn't working.</li>
+  `;
+  statisticSection.append(statisticContent);
   return statisticSection;
 };
 // get notes section
 const getNoteSection = () => {
   const noteSection = getSectionElem("notes");
+  const notesLists = document.createElement("ul");
+  insertEmptyMessage(false, notesLists);
+  noteSection.append(notesLists);
   return noteSection;
 };
 
@@ -124,6 +144,8 @@ export const addDashboardElement = () => {
   // append these element to taskManagerContent
   taskManagerContent.insertAdjacentElement("beforeend", taskArea);
   taskManagerContent.insertAdjacentElement("beforeend", dateTimeArea);
+
+  taskManagerContent.parentElement.style.height = "auto"
 };
 // addDashboardElement();
 logo.addEventListener("click", addDashboardElement);
