@@ -4,12 +4,14 @@ export const getUsersList = (user) => {
     user.current_user ? "active order-first flex-col pt-3" : ""
   } mb-2 relative`;
   li.innerHTML = `
-    <div class="bg-white border min-w-[50px] min-h-[50px] ${
-      user.current_user ? "min-w-[60px] min-h-[60px]" : ""
-    } rounded-full flex items-center justify-center">
-      <i class="fa-solid fa-user ${
-        user.current_user ? "text-3xl" : "text-2xl"
-      }"></i>
+    <div class="bg-white border ${
+      user.current_user ? "w-[100px] h-[100px]" : "w-[50px] h-[50px]"
+    } rounded-full flex items-center justify-center overflow-hidden">
+      ${
+        user.user_img
+          ? ` <img src=${user.user_img} alt="user-img" class="w-full"/>`
+          : `<i class="fa-solid fa-user text-xl"></i>`
+      }
     </div>
     <div class="flex flex-col py-2 ${user.current_user ? "items-center" : ""}">
       <p class=" ${user.current_user ? "text-xl" : "text-base"}">${

@@ -9,52 +9,59 @@ export const getUserEditPage = (user) => {
     <button type="button" class="close-edit-page text-sm outline-none px-3 py-1 hover:border hover:shadow hover:bg-zinc-100 absolute top-[5px] right-[5px]">
       <i class="fa-solid fa-xmark text-xl"></i>
     </button>
-    <div class="my-5">
+    <label class="my-5" for="user-img" cursor-pointer>
       <div class="w-[200px] h-[200px] border p-1 rounded-full cursor-pointer group relative">
-        ${
-          user.user_img
-            ? `
-          <div class="img-container w-full h-full rounded-full border">
-            <img src=${user.user_img} alt="user-img" class="w-full"/>
+          <div class="img-container bg-white border w-full h-full rounded-full flex items-center justify-center overflow-hidden">
+            ${
+              user.user_img
+                ? ` <img src=${user.user_img} alt="user-img" class="w-full"/>`
+                : `<i class="fa-solid fa-user fa-6x"></i>`
+            }
           </div>
-        `
-            : `
-            <div class="bg-white border w-full h-full rounded-full flex items-center justify-center">
-              <i class="fa-solid fa-user fa-6x"></i>
-            </div>
-        `
-        }
-        <div class="edit-icon w-[40px] h-[40px] bg-white hidden items-center justify-center rounded-full border absolute right-[20px] bottom-0 group-hover:flex">
+        <button class="edit-icon min-w-[40px] h-[40px] bg-white hidden items-center justify-center rounded-full border absolute right-[20px] bottom-0 group-hover:flex">
           <i class="fa-solid fa-pen text-sm"></i>
-        </div>
+        </button>
       </div>
-    </div>
-    <h2>
+      </label>
+      <input type="file" aria-hidden="true" id="user-img" class="hidden"/>
+    <h2 class="flex items-center gap-1">
       <span class="text-3xl">${user.user_name}</span>
-      <i class="fa-solid fa-pen text-sm"></i>
+      <button class="edit-icon min-w-[30px] h-[30px] hover:bg-white flex items-center justify-center rounded-full hover:border" id="edit-user-name">
+        <i class="fa-solid fa-pen text-xs"></i>
+      </button>
     </h2>
     <div class="input-field flex flex-col gap-1 max-w-[350px] w-full mb-3 mt-5">
-      <label for="user-id">User Id<i class="fa-solid fa-pen ml-2 text-sm"></i></label>
+      <label for="user-id" class="flex items-center gap-1">
+          <span>User id</span>
+          <button class="edit-icon min-w-[30px] h-[30px] hover:bg-white flex items-center justify-center rounded-full hover:border" id="edit-user-id">
+            <i class="fa-solid fa-pen text-xs"></i>
+          </button>
+      </label>
       <input type="text" value=${
         user.user_id
-      } id="user-id" class="w-full outline-none border px-2 py-1" readonly/>
+      } id="user-id" class="w-full border px-2 py-1" readonly/>
       
     </div>
     <div class="input-field flex flex-col gap-1 max-w-[350px] w-full mt-3">
-      <label for="user-password">User Password<i class="fa-solid fa-pen ml-2 text-sm"></i></label>
+      <label for="user-password" class="flex items-center gap-1">
+      <span>User password</span>
+        <button class="edit-icon min-w-[30px] h-[30px] hover:bg-white flex items-center justify-center rounded-full hover:border" id="edit-user-password">
+          <i class="fa-solid fa-pen text-xs"></i>
+        </button>
+      </label>
       <input type="password" value=${
         user.user_password
-      } id="user-password" class="w-full outline-none border px-2 py-1" readonly/>
+      } id="user-password" class="w-full border px-2 py-1" readonly/>
       
     </div>
     <div class="edit-ctrl-btns flex items-center gap-3 justify-end w-full mt-auto">
-      <button type="button" class="min-w-[40px] min-h-[40px] border border-zinc-500 hover:bg-zinc-500 hover:text-white rounded-full">
+      <button type="button" class="min-w-[40px] min-h-[40px] border border-zinc-500 hover:bg-zinc-500 hover:text-white rounded-full" >
         <i class="fa-solid fa-rotate"></i>
       </button>
       <button type="button" class="min-w-[40px] min-h-[40px] border border-red-500 hover:bg-red-700 hover:text-white text-red-500 rounded-full">
         <i class="fa-solid fa-xmark"></i>
       </button>
-      <button type="button" class="min-w-[40px] min-h-[40px] border border-green-500 hover:bg-green-700 hover:text-white text-green-500 rounded-full">
+      <button type="button" class="min-w-[40px] min-h-[40px] border border-green-500 hover:bg-green-700 hover:text-white text-green-500 rounded-full" id="save-changes">
         <i class="fa-solid fa-save"></i>
       </button>
     </div>
@@ -69,7 +76,6 @@ export const getUserEditPage = (user) => {
   closePageBtn.addEventListener("click", () => {
     editPageContainer.remove();
   });
-
   editPageContainer.append(editPage);
   return editPageContainer;
 };

@@ -49,6 +49,17 @@ const getUpdatedUsers = (users) => {
 
 const login = (loginUser, isLogin = false) => {
   getUsersFromLocalStorage();
+  // change user img on click on user
+  const imgElem = profileElem.querySelector(".user-img");
+  if (loginUser.user_img) {
+    imgElem.innerHTML = `
+    <img src=${loginUser.user_img} alt="user img" class="w-full"/>
+  `;
+  } else {
+    imgElem.innerHTML = `
+      <i class="fa-solid fa-user text-xl md:text-2xl"></i>
+    `;
+  }
   const updatedUser = { ...loginUser, current_user: true, user_hide: false };
   let updatedRemainingUsers;
   if (isLogin) {
@@ -137,6 +148,16 @@ profileElem.addEventListener("click", () => {
 
 window.onload = () => {
   getUsersFromLocalStorage();
+
+  // change user img on top bar
+  const currentUser = users.find((user) => user.current_user);
+  if (currentUser?.user_img) {
+    const imgElem = profileElem.querySelector(".user-img");
+    imgElem.innerHTML = `
+      <img src=${currentUser.user_img} alt="user img" class="w-full"/>
+    `;
+  }
+
   localStorage.setItem("users", JSON.stringify(users));
   let loginFormContainer = getLoginForm();
   const loginForm = loginFormContainer.querySelector("form");
@@ -257,4 +278,5 @@ export {
   getUpdatedUsers,
   login,
   mainApp,
+  profileElem,
 };

@@ -4,6 +4,7 @@ import {
   getUsersFromLocalStorage,
   login,
   mainApp,
+  profileElem,
   users,
 } from "../main";
 import { getUserEditPage } from "./getUserEditPage";
@@ -187,6 +188,109 @@ export const showAllLoginUsers = () => {
       const openUserEditPage = () => {
         dialogBoxElem.close();
         const editPageContainer = getUserEditPage(user);
+
+        // new updated user
+        let newUpdatedUser = {};
+
+        // change img
+        const fileInputElem =
+          editPageContainer.querySelector('input[type="file"]');
+        const imgContainer = editPageContainer.querySelector(".img-container");
+        fileInputElem.addEventListener("change", () => {
+          const userImg = fileInputElem.files[0];
+          const reader = new FileReader();
+          reader.readAsDataURL(userImg);
+          reader.onload = () => {
+            const imgSrc = reader.result;
+            imgContainer.innerHTML = ` <img src=${imgSrc} alt="user-img" class="w-full"/>`;
+            newUpdatedUser.user_img = imgSrc;
+          };
+        });
+
+        // edit buttons for name, id and password
+        const editUserField = (editableElem) => {
+          editableElem.removeAttribute("readonly");
+          editableElem.select();
+          const updateEditableElem = (userField) => {
+            editableElem.setAttribute("readonly", "true");
+            let updatedValue = editableElem.value;
+            editableElem.classList.add("outline-none");
+            if (userField === "user-id") {
+              const isUserExist = users.find((u) => u.user_id === updatedValue);
+              if (isUserExist) {
+                editableElem.value = "";
+                alert(
+                  "You can't use this user id because it is already using someone"
+                );
+                return;
+              }
+              newUpdatedUser.user_id = updatedValue;
+            } else {
+              newUpdatedUser.user_password = updatedValue;
+            }
+          };
+          editableElem.addEventListener("blur", (e) => {
+            updateEditableElem(e.currentTarget.id);
+          });
+          editableElem.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+              updateEditableElem(e.currentTarget.id);
+            }
+          });
+        };
+        const editBtns = editPageContainer.querySelectorAll("button.edit-icon");
+        editBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if (btn.id === "edit-user-name") {
+              let editableElem = btn.previousElementSibling;
+              let value = editableElem.textContent;
+              let inputClass = "border px-2 py-1 outline-none w-full";
+              const input = document.createElement("input");
+              input.className = inputClass;
+              input.value = value;
+              input.focus();
+              editableElem.remove();
+              btn.insertAdjacentElement("beforebegin", input);
+              const updateUserNameField = () => {
+                let updatedValue = input.value;
+                const span = document.createElement("span");
+                span.className = "text-3xl";
+                span.textContent = updatedValue;
+                input.remove();
+                btn.insertAdjacentElement("beforebegin", span);
+                btn.innerHTML = `<i class="fa-solid fa-pen text-sm"></i>`;
+                newUpdatedUser.user_name = updatedValue;
+              };
+              input.addEventListener("blur", updateUserNameField);
+              input.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
+                  updateUserNameField();
+                }
+              });
+            } else {
+              let editableElem = btn.parentElement.nextElementSibling;
+              editUserField(editableElem, btn.id);
+            }
+          });
+        });
+
+        // edit-ctrl-btns
+        const editCtrlBtns = editPageContainer.querySelectorAll(
+          ".edit-ctrl-btns button"
+        );
+        editCtrlBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if (btn.id === "save-changes") {
+              user = { ...user, ...newUpdatedUser };
+              const filteredUsers = users.filter(
+                (filteredUser) => filteredUser.id !== user.id
+              );
+              filteredUsers.push(user);
+              localStorage.setItem("users", JSON.stringify(filteredUsers));
+            }
+          });
+        });
+
         mainApp.append(editPageContainer);
       };
 
@@ -215,6 +319,18 @@ export const showAllLoginUsers = () => {
     li.onclick = () => {
       login(user, true);
       dialogBoxElem.close();
+
+      // change user img on click on user
+      const imgElem = profileElem.querySelector(".user-img");
+      if (user.user_img) {
+        imgElem.innerHTML = `
+          <img src=${user.user_img} alt="user img" class="w-full"/>
+        `;
+      } else {
+        imgElem.innerHTML = `
+          <i class="fa-solid fa-user text-xl md:text-2xl"></i>
+        `;
+      }
     };
 
     // append user if user's user_hide property false
