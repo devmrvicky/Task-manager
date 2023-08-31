@@ -133,6 +133,11 @@ section ul::-webkit-scrollbar {
   background-color: #e2e2e288;
 }
 
+.user-selector-none {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 /* responsive code */
 @media screen and (max-width: 1024px) {
   .main-content-area {

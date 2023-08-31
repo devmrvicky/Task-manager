@@ -2,8 +2,23 @@ export const getUsersList = (user) => {
   let li = document.createElement("li");
   li.className = `user-list px-3 py-2 rounded-lg hover:bg-zinc-50 flex gap-3 items-center cursor-default ${
     user.current_user ? "active order-first flex-col pt-3" : ""
-  } mb-2 relative`;
+  } mb-2 relative ${user.user_locked ? `user-selector-none` : ``}`;
   li.innerHTML = `
+    ${
+      user.user_locked
+        ? `
+      <div class="lock-icon absolute ${
+        user.current_user
+          ? `bottom-[10px] right-[10px]`
+          : `bottom-0 right-[5px]`
+      } text-zinc-500">
+        <i class="fa-solid fa-lock ${
+          user.current_user ? `text-xl` : `text-xs`
+        }"></i>
+      </div>
+    `
+        : ``
+    }
     <div class="bg-white border ${
       user.current_user ? "w-[100px] h-[100px]" : "w-[50px] h-[50px]"
     } rounded-full flex items-center justify-center overflow-hidden">

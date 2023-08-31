@@ -7,9 +7,14 @@ import {
   profileElem,
   users,
 } from "../main";
+import { addDashboardElement } from "../pages/dashboard";
+import { getAlertBox } from "./getAlertBox";
+import { getConfirmPasswordInput } from "./getConfirmPasswordInput";
+import { getLockPasswordInput } from "./getLockPasswordInput";
+import { getLogoutPasswordInput } from "./getLogoutPassInput";
 import { getUserEditPage } from "./getUserEditPage";
+import { getUserMoreMenus } from "./getUserMoreMenus";
 import { getUsersList } from "./getUsersList";
-// import { addDashboardElement } from "../pages/dashboard";
 
 export const showAllLoginUsers = () => {
   const preUsersListElem = dialogBoxElem.querySelector("ul");
@@ -30,66 +35,34 @@ export const showAllLoginUsers = () => {
       if (userMoreMenusElem) {
         userMoreMenusElem.remove();
       }
-      userMoreMenusElem = document.createElement("ul");
-      userMoreMenusElem.className = `user-more-menus bg-white shadow border w-auto p-1 rounded-lg absolute right-[${x}] bottom-[${y}] z-30 flex flex-col gap-2`;
-      userMoreMenusElem.innerHTML = `
-        ${
-          user.current_user
-            ? `
-            <li
-              class="user-menu rounded flex gap-3 items-center p-2 hover:bg-zinc-50 text-xs"
-              id="edit-user"
-            >
-              <i class="fa-solid fa-user-pen"></i>
-              <span>User edit</span>
-            </li>
-            <li
-              class="user-menu rounded flex gap-3 items-center p-2 hover:bg-zinc-50 text-xs"
-              id="logout"
-            >
-              <i class="fa-solid fa-right-from-bracket"></i>
-              <span>Log out</span>
-            </li>
-            <li class="user-menu rounded flex gap-3 items-center p-2 hover:bg-red-500 bg-red-300 text-white text-xs order-last" id="delete-user">
-              <i class="fa-solid fa-trash-alt"></i>
-              <span span>delete</span>
-            </li>`
-            : `<li class="user-menu rounded flex gap-3 items-center p-2 hover:bg-zinc-50 text-xs" id="hide-user">
-                <i class="fa-solid fa-eye-slash"></i>
-                <span>Hide</span>
-              </li>`
-        }
-        
-      `;
+      userMoreMenusElem = getUserMoreMenus(x, y, user);
       li.append(userMoreMenusElem);
 
-      const getLogoutPasswordInput = () => {
-        const passContainer = document.createElement("div");
-        passContainer.className =
-          "logout-pass-container w-full h-screen fixed z-40 backdrop-blur-lg flex items-center justify-center ";
-        const passForm = document.createElement("form");
-        passForm.className =
-          "bg-white border p-3 flex flex-col gap-2 items-center rounded-lg";
-        passForm.innerHTML = `
-          <h3 class="pb-3">Enter User password</h3>
-          <div class="flex gap-2 items-center">
-            <i class="fa-solid fa-key"></i>
-            <input type="password" autocomplete required autofocus placeholder="User password" class="outline-none border px-2 py-1"/>
-          </div>
-          <input type="submit" value="Log out" class="border text-sm outline-none px-3 py-1 rounded-lg mx-auto hover:bg-zinc-50 mt-3"/>
-        `;
-        passContainer.append(passForm);
-
-        passContainer.onclick = (e) => {
-          if (e.target.classList.contains("logout-pass-container")) {
-            passContainer.remove();
+      const lockUser = (user) => {
+        const lockUserPasswordPage = getLockPasswordInput();
+        mainApp.append(lockUserPasswordPage);
+        const lockForm = lockUserPasswordPage.querySelector("form");
+        lockForm.onsubmit = (e) => {
+          e.preventDefault();
+          let updatedUser = {};
+          const passInput = e.currentTarget[0];
+          const confirmPassInput = e.currentTarget[1];
+          const password = passInput.value;
+          let confirmPassword = confirmPassInput.value;
+          if (password === confirmPassword) {
+            updatedUser.user_locked = true;
+            updatedUser.user_lock_password = password;
           }
+          // console.log(updatedUser);
+          updatedUser = { ...user, ...updatedUser };
+          const filteredUsers = users.filter(
+            (filterUser) => filterUser.user_id !== user.user_id
+          );
+          // const insertIndex = user.id.split("_")[0] - 1;
+          filteredUsers.push(updatedUser);
+          localStorage.setItem("users", JSON.stringify(filteredUsers));
+          lockUserPasswordPage.remove();
         };
-
-        setTimeout(() => {
-          passContainer.remove();
-        }, 10000);
-        return passContainer;
       };
 
       const openPasswordInputPage = (actionType) => {
@@ -112,12 +85,16 @@ export const showAllLoginUsers = () => {
               passInput.value = "";
               return;
             }
-            let updatedUsers;
+            let updatedUsers = users;
             if (actionType === "delete-user") {
               confirm("Are you sure?");
+              // filtered user if id is matched
               updatedUsers = users.filter(
                 (deletionUser) => deletionUser.id !== user.id
               );
+            } else if ("locked-user") {
+              lockUser(user);
+              return;
             } else {
               updatedUsers = getUpdatedUsers(users);
             }
@@ -140,34 +117,6 @@ export const showAllLoginUsers = () => {
           dialogBoxElem.close();
         }, 1000);
         // location.reload();
-      };
-
-      const getAlertBox = () => {
-        const alertBoxContainer = document.createElement("div");
-        alertBoxContainer.className =
-          "alert-box-container w-full h-screen fixed z-40 backdrop-blur-lg flex items-center justify-center ";
-        const alertBox = document.createElement("div");
-        alertBox.className =
-          "bg-white border p-10 flex flex-col gap-2 items-center rounded-lg";
-        alertBox.innerHTML = `
-          <p class="text-2xl">Do you want to delete?</p>
-          <div class="flex justify-between items-center mt-10 w-full">
-            <button type="button" class="border text-sm outline-none px-3 py-1 rounded-lg mx-auto hover:bg-red-700 bg-red-500 text-white" id="delete-user">Delete</button>
-            <button type="button" class="border text-sm outline-none px-3 py-1 rounded-lg mx-auto hover:bg-zinc-50" id="cancel">Cancel</button>
-          </div>
-        `;
-        alertBoxContainer.append(alertBox);
-
-        alertBoxContainer.onclick = (e) => {
-          if (e.target.classList.contains("alert-box-container")) {
-            alertBoxContainer.remove();
-          }
-        };
-
-        setTimeout(() => {
-          alertBoxContainer.remove();
-        }, 10000);
-        return alertBoxContainer;
       };
 
       const openUserDeletePage = () => {
@@ -295,19 +244,68 @@ export const showAllLoginUsers = () => {
         mainApp.append(editPageContainer);
       };
 
+      // action according to btn id
+      const actionAccordingToBtnId = (id) => {
+        if (id === "logout") {
+          openPasswordInputPage("logout-user");
+        } else if (id === "hide-user") {
+          hideUser();
+        } else if (id === "lock-user") {
+          openPasswordInputPage("locked-user");
+        } else if (id === "unlock-user") {
+          let updatedUser = {
+            ...user,
+            user_locked: false,
+            user_lock_password: "",
+          };
+          const filteredUsers = users.filter(
+            (filterUser) => filterUser.user_id !== user.user_id
+          );
+          // const insertIndex = user.id.split("_")[0] - 1;
+          filteredUsers.push(updatedUser);
+          localStorage.setItem("users", JSON.stringify(filteredUsers));
+        } else if (id === "delete-user") {
+          openUserDeletePage();
+        } else if (id === "edit-user") {
+          openUserEditPage();
+        }
+      };
+
+      const checkUseLockPassword = (user) => {
+        const confirmPassInput = getConfirmPasswordInput();
+        mainApp.append(confirmPassInput);
+        const form = confirmPassInput.querySelector("form");
+        form.onsubmit = (e) => {
+          e.preventDefault();
+          const value = e.currentTarget[0].value;
+          return value === user.user_lock_password;
+        };
+        return false;
+      };
+
       // log out
       const logoutBtns = li.querySelectorAll(".user-menu");
       logoutBtns.forEach((btn) => {
         btn.addEventListener("click", (e) => {
           e.stopPropagation();
-          if (btn.id === "logout") {
-            openPasswordInputPage("logout-user");
-          } else if (btn.id === "hide-user") {
-            hideUser();
-          } else if (btn.id === "delete-user") {
-            openUserDeletePage();
-          } else if (btn.id === "edit-user") {
-            openUserEditPage();
+          if (user.user_locked) {
+            dialogBoxElem.close();
+            const confirmPassInput = getConfirmPasswordInput();
+            mainApp.append(confirmPassInput);
+            const form = confirmPassInput.querySelector("form");
+            form.onsubmit = (e) => {
+              e.preventDefault();
+              const value = e.currentTarget[0].value;
+              if (user.user_lock_password === value) {
+                confirmPassInput.remove();
+                actionAccordingToBtnId(btn.id);
+              } else {
+                alert("incorrect password");
+                return;
+              }
+            };
+          } else {
+            actionAccordingToBtnId(btn.id);
           }
         });
       });
@@ -318,7 +316,25 @@ export const showAllLoginUsers = () => {
     });
 
     li.onclick = () => {
-      login(user, true);
+      if (user.current_user) return;
+      if (user.user_locked) {
+        const confirmPassInput = getConfirmPasswordInput();
+        mainApp.append(confirmPassInput);
+        const form = confirmPassInput.querySelector("form");
+        form.onsubmit = (e) => {
+          e.preventDefault();
+          const value = e.currentTarget[0].value;
+          if (user.user_lock_password === value) {
+            confirmPassInput.remove();
+            login(user, true);
+          } else {
+            alert("incorrect password");
+            return;
+          }
+        };
+      } else {
+        login(user, true);
+      }
       dialogBoxElem.close();
 
       // change user img on click on user

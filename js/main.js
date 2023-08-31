@@ -28,7 +28,9 @@ let allTasks = {
 
 // get all task from user
 const getUserTasks = (user) => {
-  allTasks.recentTask = user.user_task;
+  if (user) {
+    allTasks.recentTask = user.user_task;
+  }
 };
 
 // set user in localStorage
@@ -54,6 +56,16 @@ const getUpdatedUsers = (users) => {
   return updatedRemainingUsers;
 };
 
+// getReArrangedUsers
+const getReArrangedUsers = (users) => {
+  let arr = [];
+  for (let user of users) {
+    user = { ...user, id: `user_${arr.length + 1}` };
+    arr.push(user);
+  }
+  return arr;
+};
+
 const login = (loginUser, isLogin = false) => {
   getUsersFromLocalStorage();
   // change user img on click on user
@@ -76,7 +88,8 @@ const login = (loginUser, isLogin = false) => {
     updatedRemainingUsers = getUpdatedUsers(users);
   }
   users = [...updatedRemainingUsers, updatedUser];
-  localStorage.setItem("users", JSON.stringify(users));
+  let reArrangedUsers = getReArrangedUsers(users);
+  localStorage.setItem("users", JSON.stringify(reArrangedUsers));
   getUserTasks(updatedUser);
   userNameElem.textContent = updatedUser.user_name;
   addDashboardElement();
@@ -157,13 +170,13 @@ window.onload = () => {
   getUsersFromLocalStorage();
 
   // change user img on top bar
-  // const currentUser = users.find((user) => user.current_user);
-  // if (currentUser?.user_img) {
-  //   const imgElem = profileElem.querySelector(".user-img");
-  //   imgElem.innerHTML = `
-  //     <img src=${currentUser.user_img} alt="user img" class="w-full"/>
-  //   `;
-  // }
+  const currentUser = users.find((user) => user.current_user);
+  if (currentUser?.user_img) {
+    const imgElem = profileElem.querySelector(".user-img");
+    imgElem.innerHTML = `
+      <img src=${currentUser.user_img} alt="user img" class="w-full"/>
+    `;
+  }
 
   localStorage.setItem("users", JSON.stringify(users));
   let loginFormContainer = getLoginForm();
