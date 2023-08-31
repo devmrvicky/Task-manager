@@ -24,13 +24,14 @@ export const showAllLoginUsers = () => {
     const userMoreMenuBtn = li.querySelector(".user-menu-btn");
     userMoreMenuBtn.addEventListener("click", (e) => {
       e.stopPropagation();
+      let x = e.offsetX + "px";
+      let y = e.offsetY + "px";
       let userMoreMenusElem = ul.querySelector(".user-more-menus");
       if (userMoreMenusElem) {
         userMoreMenusElem.remove();
       }
       userMoreMenusElem = document.createElement("ul");
-      userMoreMenusElem.className =
-        "user-more-menus bg-white shadow border w-auto p-1 rounded-lg absolute right-[50px] bottom-[-23px] z-30 flex flex-col gap-2";
+      userMoreMenusElem.className = `user-more-menus bg-white shadow border w-auto p-1 rounded-lg absolute right-[${x}] bottom-[${y}] z-30 flex flex-col gap-2`;
       userMoreMenusElem.innerHTML = `
         ${
           user.current_user

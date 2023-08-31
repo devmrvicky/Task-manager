@@ -26,11 +26,18 @@ let allTasks = {
   recentTask: [],
 };
 
+// get all task from user
+const getUserTasks = (user) => {
+  allTasks.recentTask = user.user_task;
+};
+
 // set user in localStorage
 const getUsersFromLocalStorage = () => {
   let usersFromLocalStorage = JSON.parse(localStorage.getItem("users"));
   if (!usersFromLocalStorage) usersFromLocalStorage = [];
   users = usersFromLocalStorage;
+  const currentUser = users.find((user) => user.current_user);
+  getUserTasks(currentUser);
 };
 
 const getUpdatedUsers = (users) => {
@@ -70,7 +77,7 @@ const login = (loginUser, isLogin = false) => {
   }
   users = [...updatedRemainingUsers, updatedUser];
   localStorage.setItem("users", JSON.stringify(users));
-  allTasks.recentTask = [...updatedUser.user_task];
+  getUserTasks(updatedUser);
   userNameElem.textContent = updatedUser.user_name;
   addDashboardElement();
 };
@@ -150,13 +157,13 @@ window.onload = () => {
   getUsersFromLocalStorage();
 
   // change user img on top bar
-  const currentUser = users.find((user) => user.current_user);
-  if (currentUser?.user_img) {
-    const imgElem = profileElem.querySelector(".user-img");
-    imgElem.innerHTML = `
-      <img src=${currentUser.user_img} alt="user img" class="w-full"/>
-    `;
-  }
+  // const currentUser = users.find((user) => user.current_user);
+  // if (currentUser?.user_img) {
+  //   const imgElem = profileElem.querySelector(".user-img");
+  //   imgElem.innerHTML = `
+  //     <img src=${currentUser.user_img} alt="user img" class="w-full"/>
+  //   `;
+  // }
 
   localStorage.setItem("users", JSON.stringify(users));
   let loginFormContainer = getLoginForm();

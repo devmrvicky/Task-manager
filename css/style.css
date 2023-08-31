@@ -104,7 +104,8 @@ main#app {
   }
 }
 
-section::-webkit-scrollbar {
+section::-webkit-scrollbar,
+section ul::-webkit-scrollbar {
   display: none;
 }
 

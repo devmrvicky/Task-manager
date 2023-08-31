@@ -3,6 +3,7 @@ import allTasks, {
   allFolders,
   allTaskList,
   getNoOfAllTask,
+  getUsersFromLocalStorage,
   taskManagerContent,
 } from "../main.js";
 import { getRecentTaskPage } from "./recentTask.js";
@@ -53,7 +54,7 @@ const getRecentTaskSection = () => {
   const section = getSectionElem("recent-tasks");
   const recentTasks = document.createElement("ul");
   recentTasks.className =
-    "recent-tasks flex flex-col overflow-auto md:pt-6 gap-2 py-5 mx-h-[250px]";
+    "recent-tasks flex flex-col overflow-auto md:pt-6 gap-2 py-5 max-h-[250px]";
   insertEmptyMessage(allTaskList, recentTasks);
   for (let task of allTaskList) {
     // console.log(task);
@@ -118,6 +119,7 @@ const getNoteSection = () => {
 
 // add dashboard content
 export const addDashboardElement = () => {
+  getUsersFromLocalStorage();
   mainTile.textContent = "Dashboard";
   getNoOfAllTask();
   // fist clear all html from taskManagerContent
@@ -145,7 +147,7 @@ export const addDashboardElement = () => {
   taskManagerContent.insertAdjacentElement("beforeend", taskArea);
   taskManagerContent.insertAdjacentElement("beforeend", dateTimeArea);
 
-  taskManagerContent.parentElement.style.height = "auto"
+  taskManagerContent.parentElement.style.height = "auto";
 };
 // addDashboardElement();
 logo.addEventListener("click", addDashboardElement);

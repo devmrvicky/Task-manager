@@ -17,6 +17,7 @@ let tags = [];
 
 // re-render pages
 const reRenderPages = (textEditor) => {
+  getUsersFromLocalStorage();
   const tasksListElem = textEditor.querySelector(".task-lists");
   tasksListElem.innerHTML = "";
   getTaskList(allTasks.recentTask, tasksListElem);

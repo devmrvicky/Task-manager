@@ -8,6 +8,7 @@ import {
   allTags,
   allTasks,
   taskManagerContent,
+  getUsersFromLocalStorage,
 } from "../main.js";
 
 const showRecentTaskList = (tasks, taskList, isFromFolder) => {
@@ -194,6 +195,7 @@ const showRecentTaskList = (tasks, taskList, isFromFolder) => {
 };
 
 const getRecentTaskPage = () => {
+  getUsersFromLocalStorage();
   getNoOfAllTask();
   const recentTaskContent = document.createElement("div");
   recentTaskContent.className = "w-full flex gap-5 overflow-hidden relative";
