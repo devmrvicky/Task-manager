@@ -10,23 +10,23 @@ export const getUserEditPage = (user) => {
       <i class="fa-solid fa-xmark text-xl"></i>
     </button>
     <label class="my-5" for="user-img" cursor-pointer>
-      <div class="w-[200px] h-[200px] border p-1 rounded-full cursor-pointer group relative">
-          <div class="img-container bg-white border w-full h-full rounded-full flex items-center justify-center overflow-hidden">
+      <div class="w-[200px] h-[200px] bg-yellow-500/50 p-1 rounded-full cursor-pointer group relative">
+          <div class="img-container border w-full h-full rounded-full flex items-center justify-center overflow-hidden">
             ${
               user.user_img
                 ? ` <img src=${user.user_img} alt="user-img" class="w-full"/>`
                 : `<i class="fa-solid fa-user fa-6x"></i>`
             }
           </div>
-        <button class="edit-icon min-w-[40px] h-[40px] bg-white hidden items-center justify-center rounded-full border absolute right-[20px] bottom-0 group-hover:flex">
+        <button class="edit-icon edit-user-img min-w-[40px] h-[40px] bg-white hidden items-center justify-center rounded-full border absolute right-[20px] bottom-0 group-hover:flex" id="edit-user-img">
           <i class="fa-solid fa-pen text-sm"></i>
         </button>
       </div>
-      </label>
+    </label>
       <input type="file" aria-hidden="true" id="user-img" class="hidden"/>
-    <h2 class="flex items-center gap-1">
+    <h2 class="flex items-center gap-1 relative">
       <span class="text-3xl">${user.user_name}</span>
-      <button class="edit-icon min-w-[30px] h-[30px] hover:bg-white flex items-center justify-center rounded-full hover:border" id="edit-user-name">
+      <button class="edit-icon min-w-[30px] h-[30px] hover:bg-white flex items-center justify-center rounded-full hover:border absolute bottom-0 right-[-30px]" id="edit-user-name">
         <i class="fa-solid fa-pen text-xs"></i>
       </button>
     </h2>
@@ -61,8 +61,9 @@ export const getUserEditPage = (user) => {
       <button type="button" class="min-w-[40px] min-h-[40px] border border-red-500 hover:bg-red-700 hover:text-white text-red-500 rounded-full">
         <i class="fa-solid fa-xmark"></i>
       </button>
-      <button type="button" class="min-w-[40px] min-h-[40px] border border-green-500 hover:bg-green-700 hover:text-white text-green-500 rounded-full" id="save-changes">
+      <button type="button" class="min-w-[40px] min-h-[40px] border border-green-500 hover:bg-green-700 hover:text-white text-green-500 rounded-full relative" id="save-changes">
         <i class="fa-solid fa-save"></i>
+        <span class="hidden w-[10px] h-[10px] bg-zinc-500 rounded-full absolute top-[-5px] right-[-5px]"></span>
       </button>
     </div>
   `;

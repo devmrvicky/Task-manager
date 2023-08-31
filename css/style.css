@@ -63,6 +63,10 @@ main#app {
   width: 100% !important;
 }
 
+input[type="aria-hidden"] {
+  display: none;
+}
+
 .task-area {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 100px 100px 100px 100px 100px;
