@@ -11,14 +11,28 @@ import {
   getUsersFromLocalStorage,
 } from "../main.js";
 
-const showRecentTaskList = (tasks, taskList, isFromFolder) => {
+const showRecentTaskList = (
+  tasks,
+  taskList,
+  isFromFolder,
+  layout = "horizontal"
+) => {
+  taskList.innerHTML = ``;
+  let isLayoutCell = layout === "cell";
   if (!tasks.length) {
     taskList.innerHTML = `
       <li class="text-xs text-center py-10 px-8 text-zinc-500">You have not Written any task.<br>To write a task please click on floating plus button</li>
     `;
   }
+  if (isLayoutCell) {
+    taskList.classList.remove("flex");
+    taskList.classList.add("grid-layout");
+  } else {
+    taskList.classList.add("flex");
+    taskList.classList.remove("grid-layout");
+  }
   for (let task of tasks) {
-    let li = getRecentTaskList(task, isFromFolder);
+    let li = getRecentTaskList(task, isFromFolder, layout);
     const downAngle = li.querySelector("i.fa-angle-down");
     downAngle?.addEventListener("click", () => {
       li.classList.toggle("show");
@@ -214,7 +228,15 @@ const getRecentTaskPage = () => {
       <option value="all tag" disabled selected>All tags</option>
       ${allTags.map((tag) => `<option value="${tag}">${tag}</option>`).join("")}
     </select>
-    <div class="ml-auto flex items-center gap-4 cursor-default hover:bg-white/50 px-4 py-2 rounded-full sm:text-base text-xs">
+    <div class="layouts ml-auto flex items-center gap-3">
+      <button type="button" id="cell" class="border rounded p-1 flex items-center justify-center hover:bg-zinc-100 text-xs">
+        <span>cell</span>
+      </button>
+      <button type="button" id="horizontal" class="border rounded p-1 flex items-center justify-center hover:bg-zinc-100 text-xs active">
+        <span>horizontal</span>
+      </button>
+    </div>
+    <div class="flex items-center gap-4 cursor-default hover:bg-white/50 px-4 py-2 rounded-full sm:text-base text-xs">
       <span>Sort by</span>
       <i class="fa-solid fa-arrow-down-wide-short"></i>
     </div>
@@ -225,6 +247,21 @@ const getRecentTaskPage = () => {
 
   // by default show recent task list
   showRecentTaskList(allTasks.recentTask, taskList);
+
+  const layoutBtns = recentTaskMainContent.querySelectorAll(".layouts button");
+  layoutBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      for (let layoutBtn of layoutBtns) {
+        layoutBtn.classList.remove("active");
+      }
+      btn.classList.add("active");
+      if (e.currentTarget.id === "cell") {
+        showRecentTaskList(allTasks.recentTask, taskList, false, "cell");
+      } else {
+        showRecentTaskList(allTasks.recentTask, taskList, false, "horizontal");
+      }
+    });
+  });
 
   const recentTaskSideBarItems = recentTaskSideBar.querySelectorAll("li");
   recentTaskSideBarItems.forEach((item) => {
