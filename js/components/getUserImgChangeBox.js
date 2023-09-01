@@ -13,17 +13,17 @@ export const getUserImgChangeBox = (user) => {
       ${
         user.user_img
           ? ` <img src=${user.user_img} alt="user-img" class="w-full"/>`
-          : `<i class="fa-solid fa-user-circle fa-6x"></i>`
+          : `<i class="fa-solid fa-user-circle fa-8x"></i>`
       }
       </div>
     </div>
     <div class="img-box-btns flex gap-5 items-center self-end p-2">
-      <label for="change-img">
+      <label for="change-img" class="cursor-pointer">
         <i class="fa-solid fa-upload text-xl"></i>
       </label>
       <input type="file" id="change-img" aria-hidden="true" class="hidden"/>
       <button type="button" id="remove-img">
-        <i class="fa-solid fa-circle text-xl"></i>
+        <i class="fa-solid fa-refresh text-xl"></i>
       </button>
       <button type="button" id="save-change-img">
         <i class="fa-solid fa-save text-xl"></i>
