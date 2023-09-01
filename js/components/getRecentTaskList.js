@@ -61,9 +61,7 @@ export const getRecentTaskList = (
           ${task.tags
             .map(
               (tag) =>
-                `<li class="tag sm:text-xs text-[10px] border rounded-xl py-1 px-2 bg-white hover:bg-zinc-50 cursor-default ${
-                  isLayoutCell ? `` : ``
-                }">#${tag}</li>`
+                `<li class="tag sm:text-xs text-[10px] border rounded-xl py-1 px-2 bg-white hover:bg-zinc-50 cursor-default">#${tag}</li>`
             )
             .join("")}
         </ul>
@@ -72,7 +70,7 @@ export const getRecentTaskList = (
         task.folder
           ? `<div class="progress-bar-container sm:text-xs text-[10px] flex items-center mt-2 gap-4 ${
               isLayoutCell
-                ? `absolute left-[50%] translate-x-[-50%] w-full max-w-[300px] px-2`
+                ? `absolute left-[50%] translate-x-[-50%] w-full max-w-[250px] px-2`
                 : ``
             }">
         <div class="flex-1 h-1 sm:h-1.5 bg-[#999]/10 rounded-full overflow-hidden"><div style="width: calc((${
