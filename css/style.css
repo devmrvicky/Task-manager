@@ -256,3 +256,14 @@ section ul::-webkit-scrollbar {
     padding: 0 !important;
   }
 }
+
+@media screen and (max-width: 350px) {
+  .text-editor-container {
+    padding: 0 !important;
+  }
+
+  .text-editor {
+    border-radius: 0 !important;
+    height: 100vh !important;
+  }
+}

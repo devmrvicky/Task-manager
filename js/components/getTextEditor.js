@@ -116,7 +116,7 @@ const setDefaultDateTime = (form) => {
 export const getTextEditor = () => {
   const textEditor = document.createElement("div");
   textEditor.className =
-    "text-editor border bg-white w-full max-w-[1200px] h-[500px] flex relative overflow-hidden";
+    "text-editor border bg-white w-full max-w-[1200px] max-h-[800px] h-[90vh] rounded-3xl flex relative overflow-hidden shadow";
   const editorSideBar = getTextEditorSideBar();
   const editorMainArea = getTextEditorMainArea();
 

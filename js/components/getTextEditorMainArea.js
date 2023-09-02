@@ -88,7 +88,12 @@ export const getTextEditorMainArea = () => {
     <div class="p-4 w-full h-[93%]">
       <h4 class="folder-name-heading"></h4>
       <form class="editor-form flex flex-col h-full">
-        <input type="text" placeholder="Enter your task" class="w-full py-2 px-3 outline-none border" required/>
+        <div class="flex gap-2">
+          <input type="text" placeholder="Enter your task" class="w-full py-2 px-3 outline-none border" required/>
+          <button type="submit" id="submit" class=" py-2 px-3 outline-none border mt-auto">
+            <i class="fa-solid fa-add"></i>
+          </button>
+        </div>
         <div class="date flex flex-wrap gap-3 py-3 text-xs sm:text-md">
           <input type="date" id="date" class="flex-1 py-2 px-3 outline-none border min-w-[100px]"/>
           <div class="flex items-center gap-3 flex-wrap">
@@ -105,7 +110,6 @@ export const getTextEditorMainArea = () => {
               `<span class="tag text-xs border rounded-xl py-1 px-2 bg-white hover:bg-zinc-50 cursor-default" data-tag="${tag}">${tag}</span>`
           )
           .join("")}</div>
-        <input type="submit" value="Add task" id="submit" class="w-full py-2 px-3 outline-none border mt-auto" />
       </form>
     </div>
   `;

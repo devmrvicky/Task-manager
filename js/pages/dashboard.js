@@ -1,12 +1,11 @@
 import { appendNewPage } from "../components/appendNewPage.js";
-import allTasks, {
+import {
   allFolders,
   allTaskList,
   getNoOfAllTask,
   getUsersFromLocalStorage,
   taskManagerContent,
 } from "../main.js";
-import { getRecentTaskPage } from "./recentTask.js";
 const logo = document.querySelector(".logo");
 const mainTile = document.querySelector(".main-title");
 
