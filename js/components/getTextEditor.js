@@ -204,7 +204,7 @@ export const getTextEditor = () => {
   createFileFolderBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       let isLiExit =
-        tasksListElem.children[0].dataset.listType === "create-folder";
+        tasksListElem.children[0]?.dataset.listType === "create-folder";
       if (btn.title === "create file" || isLiExit) return;
       const folderInitTime = initTaskDateTime(
         dateElem.value,
@@ -216,10 +216,10 @@ export const getTextEditor = () => {
       li.setAttribute("data-list-type", "create-folder");
       li.innerHTML = `
       <div class="w-full flex gap-3">
-        <div class="hover:bg-zinc-100 flex flex-1 py-3 px-4 rounded-xl">
+        <div class="hover:bg-zinc-100 focus-within:bg-zinc-100 flex flex-1 items-center py-3 px-4 rounded-xl">
           <i class="fa fa-folder text-[1.5rem]"></i>
           <form class="create-folder-form flex-1 ml-4 w-[170px]">
-            <input type="text" class="border outline-none w-full" autofocus />
+            <input type="text" class="border outline-none w-full text-xs p-[2px]" autofocus />
           </form>
         </div>
       </div>
@@ -227,21 +227,23 @@ export const getTextEditor = () => {
 
       const createFolderForm = li.querySelector(".create-folder-form");
       const input = createFolderForm.querySelector("input");
-      input.addEventListener("blur", () => {
+
+      const addFolder = () => {
         if (!input.value) {
           li.remove();
           return;
         }
         updateAllTasksList(input.value, true, folderInitTime);
         reRenderPages(textEditor);
+      };
+
+      input.addEventListener("blur", () => {
+        li.remove();
       });
 
       createFolderForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        const input = e.currentTarget[0];
-        if (!input.value) return;
-        updateAllTasksList(input.value, true, folderInitTime);
-        reRenderPages(textEditor);
+        addFolder();
       });
 
       tasksListElem.insertAdjacentElement("afterbegin", li);
