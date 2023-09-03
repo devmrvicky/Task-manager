@@ -61,11 +61,11 @@ const updateUsersTasksList = (tasks, nested = false) => {
     const filteredTask = currentUser.user_task.filter(
       (userTask) => userTask.name !== tasks.name
     );
-    currentUser.user_task = [...filteredTask, tasks];
+    currentUser.user_task = [tasks, ...filteredTask];
   } else {
     currentUser.user_task = tasks;
   }
-  let newUsersArr = [...remainingUsers, currentUser];
+  let newUsersArr = [currentUser, ...remainingUsers];
   localStorage.setItem("users", JSON.stringify(newUsersArr));
 };
 
@@ -84,8 +84,8 @@ const updateAllTasksList = (name, folder, date = [], tags = []) => {
     newTaskObj.completedTask = 0;
     newTaskObj.tasks = [];
   }
-  const newTaskList = [].concat(newTaskObj);
-  allTasks.recentTask.push(...newTaskList);
+  // const newTaskList = [].concat(newTaskObj);
+  allTasks.recentTask = [newTaskObj, ...allTasks.recentTask];
   updateUsersTasksList(allTasks.recentTask);
 };
 
@@ -116,7 +116,7 @@ const setDefaultDateTime = (form) => {
 export const getTextEditor = () => {
   const textEditor = document.createElement("div");
   textEditor.className =
-    "text-editor border bg-white w-full max-w-[1200px] max-h-[800px] h-[90vh] rounded-3xl flex relative overflow-hidden shadow";
+    "text-editor border bg-white w-full max-w-[1200px] max-h-[800px] h-[90vh] rounded-xl flex relative overflow-hidden shadow";
   const editorSideBar = getTextEditorSideBar();
   const editorMainArea = getTextEditorMainArea();
 
@@ -262,7 +262,8 @@ export const getTextEditor = () => {
 
 const appendFolderHeading = (name) => {
   const folderNameHeading = document.querySelector(".folder-name-heading");
-  if (folderNameHeading?.children[0]) {
+  const folderName = folderNameHeading.getAttribute("data-folder-name");
+  if (folderNameHeading?.children[0] && name === folderName) {
     folderNameHeading.removeAttribute("data-folder-name");
     folderNameHeading.innerHTML = "";
     return;
