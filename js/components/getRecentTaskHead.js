@@ -1,4 +1,4 @@
-import { allTags } from "../main";
+import allTasks, { allTags } from "../main";
 
 export const getRecentTaskHead = () => {
   const recentTaskHead = document.createElement("div");
@@ -12,13 +12,21 @@ export const getRecentTaskHead = () => {
       ${allTags.map((tag) => `<option value="${tag}">${tag}</option>`).join("")}
     </select>
     <div class="more-opts ml-auto flex items-center gap-3">
-      <div class="layouts flex items-center gap-3">
-        <button type="button" id="cell" class="border rounded p-1 flex items-center justify-center hover:bg-zinc-100">
-          <i class="fa-solid fa-grip"></i>
-        </button>
-        <button type="button" id="horizontal" class="border rounded p-1 flex items-center justify-center hover:bg-zinc-100 active">
-          <i class="fa-solid fa-bars"></i>
-        </button>
+    ${
+      !allTasks.recentTask.length
+        ? ``
+        : `<button type="button" id="clear-all-tasks" class="flex items-center justify-center gap-2">
+            <i class="fa-regular fa-trash-can"></i>
+            <span class="hidden text-xs">delete all</span>
+          </button>`
+    }
+    <div class="layouts flex items-center gap-3">
+      <button type="button" id="cell" class="border rounded p-1 flex items-center justify-center hover:bg-zinc-100">
+        <i class="fa-solid fa-grip"></i>
+      </button>
+      <button type="button" id="horizontal" class="border rounded p-1 flex items-center justify-center hover:bg-zinc-100 active">
+        <i class="fa-solid fa-bars"></i>
+      </button>
       </div>
       <div class="flex items-center gap-4 cursor-default hover:bg-white/50 px-4 py-2 rounded-full sm:text-base text-xs">
         <span>Sort by</span>

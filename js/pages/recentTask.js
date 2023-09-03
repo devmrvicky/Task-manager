@@ -11,6 +11,7 @@ import {
   taskManagerContent,
   getUsersFromLocalStorage,
   mainApp,
+  users,
 } from "../main.js";
 
 const showRecentTaskList = (
@@ -226,6 +227,7 @@ const getRecentTaskPage = () => {
     "border flex-1 bg-[#EAF1F1] p-3 rounded-xl overflow-auto";
   const recentTaskHead = getRecentTaskHead();
   recentTaskMainContent.append(recentTaskHead);
+
   const taskList = document.createElement("ul");
   taskList.className = "main-task-list mt-4 flex flex-col gap-4";
 
@@ -250,7 +252,7 @@ const getRecentTaskPage = () => {
     setTimeout(() => {
       moreOptsElem.classList.remove("show-more-opts");
       container.remove();
-    }, 5000);
+    }, 10000);
   });
 
   const layoutBtns = recentTaskMainContent.querySelectorAll(".layouts button");
@@ -265,6 +267,65 @@ const getRecentTaskPage = () => {
       } else {
         showRecentTaskList(allTasks.recentTask, taskList, false, "horizontal");
       }
+    });
+  });
+
+  const getConfirmationPage = () => {
+    const container = document.createElement("div");
+    container.className =
+      "container w-full h-full fixed top-0 right-0 bg-black/20 z-40 flex justify-center items-center";
+    const box = document.createElement("div");
+    box.className =
+      "confirmation-box max-w-[400px] h-[200px] border bg-white flex items-center flex-col gap-10 p-10 rounded-lg";
+    box.innerHTML = `
+      <h1>Do you want to delete your all tasks?</h1>
+      <div class="w-full flex justify-center gap-10">
+        <button class="border px-3 py-2 bg-red-400 rounded hover:bg-red-500 text-white" id="delete-tasks">
+          delete
+        </button>
+        <button class="border px-3 py-2 rounded hover:bg-zinc-100" id="cancel">
+          cancel
+        </button>
+      </div>
+    `;
+    container.append(box);
+    container.addEventListener("click", (e) => {
+      if (e.target.classList.contains("container")) {
+        container.remove();
+      }
+    });
+    return container;
+  };
+
+  // clear all btn
+  const clearAllBtn = recentTaskHead.querySelector("#clear-all-tasks");
+  clearAllBtn?.addEventListener("click", () => {
+    const confirmationBox = getConfirmationPage();
+    mainApp.append(confirmationBox);
+    const btns = confirmationBox.querySelectorAll("button");
+    btns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (btn.id === "delete-tasks") {
+          confirmationBox.remove();
+          getUsersFromLocalStorage();
+          const currentUser = users.find((user) => user.current_user);
+          // update user tasks
+          allTasks.recentTask = [];
+          currentUser.user_task = allTasks.recentTask;
+          // update user
+          const filteredUsers = users.filter(
+            (user) => user.user_id !== currentUser.user_id
+          );
+          const insertIndex = currentUser.id.split("_")[1] - 1;
+          filteredUsers.splice(insertIndex, 0, currentUser);
+          localStorage.setItem("users", JSON.stringify(filteredUsers));
+
+          const taskList = document.querySelector(".main-task-list");
+          showRecentTaskList(currentUser.user_task, taskList);
+        } else {
+          confirmationBox.remove();
+        }
+      });
     });
   });
 

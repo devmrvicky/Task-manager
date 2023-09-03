@@ -2,6 +2,9 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 body {
@@ -29,6 +32,20 @@ main#app {
 .task-manager-side-bar.toggle-side-bar {
   transition: all .5s ease;
   transform: translateX(-100%);
+}
+
+.confirmation-box {
+  animation: openConfirmationBox .5s ease-in-out forwards alternate;
+}
+
+@keyframes openConfirmationBox {
+  0% {
+    transform: scale(.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .task-manager-side-bar.toggle-side-bar button {
@@ -265,6 +282,23 @@ section ul::-webkit-scrollbar {
 
   .more-opts.show-more-opts {
     transform: scale(1);
+  }
+
+  #clear-all-tasks {
+    margin-top: 10px;
+    border: 1px solid #eeeeee;
+    padding: 5px 8px;
+    border-radius: 5px;
+    background-color: rgba(255, 0, 0, 0.747);
+    color: white;
+  }
+
+  #clear-all-tasks:hover {
+    background-color: rgba(255, 0, 0, 0.897);
+  }
+
+  #clear-all-tasks span {
+    display: initial !important;
   }
 }
 

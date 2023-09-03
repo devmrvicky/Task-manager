@@ -13,7 +13,7 @@ const mainTile = document.querySelector(".main-title");
 // get section head that is common in all section
 const getSectionElem = (sectionName) => {
   const section = document.createElement("section");
-  section.className = `bg-[#EAF1F1] shadow rounded-3xl p-1 md:p-5 ${sectionName}-section overflow-auto mb-3 sm:mb-0 border sm:w-full max-w-[400px] mx-auto`;
+  section.className = `bg-[#EAF1F1] shadow rounded-3xl p-1 md:p-5 ${sectionName}-section overflow-auto mb-3 sm:mb-0 border sm:w-full max-w-[400px] mx-auto relative`;
   // const sectionHead = getSectionElem("Recent task");
   const sectionHead = document.createElement("div");
   sectionHead.className =
@@ -80,19 +80,44 @@ const getRecentTaskSection = () => {
 const getFolderSection = () => {
   const folders = getSectionElem("folders");
   const folderList = document.createElement("ul");
-  folderList.className = "folders flex pt-4 overflow-hidden mb-2 mx-2";
+  folderList.className =
+    "folders flex gap-2 pt-4 overflow-auto mb-2 mx-2 relative";
   insertEmptyMessage(allFolders, folderList);
   for (let folder of allFolders) {
-    // console.log(folder);
     const folderItem = document.createElement("li");
     folderItem.className =
-      "folder flex flex-col items-center hover:bg-gray-50 cursor-default gap-2 py-4 rounded-2xl min-w-[100px] max-w-[100px] w-full flex-1";
+      "folder flex flex-col items-center hover:bg-gray-50 bg-[#719191]/20 cursor-default gap-2 py-4 rounded-2xl min-w-[100px] max-w-[100px] w-full flex-1";
     folderItem.innerHTML = `
-    <i class="fa fa-folder text-3xl"></i>
+    <i class="fa fa-folder text-3xl  text-[#719191]"></i>
     <span class="text-xs">${folder.name}</span>
     `;
     folderList.append(folderItem);
   }
+  folders.innerHTML += `
+    <div class="min-w-[100px] h-full flex items-center p-2 absolute top-0 left-0 group">
+      <button class="slide-btn min-w-[20px] h-[20px] mt-5 rounded-full bg-white border hidden items-center justify-center group-hover:flex" id="left">
+        <i class="fa-solid fa-angle-left text-sm"></i>
+      </button>
+    </div>
+    <div class="min-w-[100px] h-full flex items-center justify-end p-2 absolute top-0 right-0 group text-right">
+      <button class="slide-btn min-w-[20px] h-[20px] mt-5 rounded-full bg-white border hidden items-center justify-center group-hover:flex" id="right">
+        <i class="fa-solid fa-angle-right text-sm"></i>
+      </button>
+    </div>
+  `;
+
+  const slideBtns = folders.querySelectorAll(".slide-btn");
+
+  slideBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      if (btn.id === "left") {
+        folderList.scrollLeft += folderList.clientWidth;
+      } else {
+        folderList.scrollLeft -= folderList.clientWidth;
+      }
+    });
+  });
+
   folders.append(folderList);
   return folders;
 };
