@@ -80,13 +80,13 @@ const getRecentTaskSection = () => {
 const getFolderSection = () => {
   const folders = getSectionElem("folders");
   const folderList = document.createElement("ul");
-  folderList.className = "folders flex justify-center pt-4 overflow-auto";
+  folderList.className = "folders flex pt-4 overflow-hidden mb-2 mx-2";
   insertEmptyMessage(allFolders, folderList);
   for (let folder of allFolders) {
     // console.log(folder);
     const folderItem = document.createElement("li");
     folderItem.className =
-      "folder flex flex-col items-center hover:bg-gray-50 cursor-default gap-2 py-4 rounded-2xl min-w-[100px] max-w-[100px] w-full flex-1 m-3";
+      "folder flex flex-col items-center hover:bg-gray-50 cursor-default gap-2 py-4 rounded-2xl min-w-[100px] max-w-[100px] w-full flex-1";
     folderItem.innerHTML = `
     <i class="fa fa-folder text-3xl"></i>
     <span class="text-xs">${folder.name}</span>
