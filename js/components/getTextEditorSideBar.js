@@ -13,7 +13,7 @@ export const getTaskList = (tasks, taskListElem, isFromFolder = false) => {
     <div class="w-full flex ${isFromFolder ? `` : `gap-3`}">
       ${
         isFromFolder
-          ? `<div class="m-3 self-center w-4"><img src="/curved-arrow.png"></div>`
+          ? `<div class="m-3 self-center w-4"><img src="/task-management/curved-arrow.png"></div>`
           : ""
       }
       <div class="hover:bg-zinc-100 flex flex-1 py-3 px-4 rounded-xl">
@@ -24,14 +24,12 @@ export const getTaskList = (tasks, taskListElem, isFromFolder = false) => {
         }
        <div class="flex-1 ml-4">
         <div class="flex flex-col">
-          <div>
-            <p class="group text-xs">${task.name}</p>
-            ${
-              task.folder
-                ? `<p class="text-[.7rem] text-zinc-400">Total tasks: ${task.tasks.length}</p>`
-                : ``
-            }
-          </div>
+        <p class="group text-xs">${task.name}</p>
+          ${
+            task.folder
+              ? `<p class="text-[.7rem] text-zinc-400">Total tasks: ${task.tasks.length}</p>`
+              : ``
+          }
         </div>
         </div>
        ${

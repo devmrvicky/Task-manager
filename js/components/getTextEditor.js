@@ -110,7 +110,6 @@ const setDefaultDateTime = (form) => {
   timeElem.forEach((elem) => {
     elem.value = time;
   });
-  // updateTimeDateObj(date, time, time);
 };
 
 export const getTextEditor = () => {

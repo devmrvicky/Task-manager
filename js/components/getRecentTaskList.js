@@ -35,7 +35,7 @@ export const getRecentTaskList = (
       ${
         task.folder
           ? `<i class="fa fa-folder ${
-              isLayoutCell ? `sm:text-[4rem] ` : `sm:text-4xl `
+              isLayoutCell ? `text-[2.5rem] mt-[10px] ` : `sm:text-4xl `
             }text-2xl"></i>`
           : ``
       }
@@ -43,7 +43,7 @@ export const getRecentTaskList = (
       <div class="${isLayoutCell ? `block` : `flex`}">
         <div>
           <p class="group ${
-            isLayoutCell ? `sm:text-xl pb-2` : `sm:text-base`
+            isLayoutCell ? `text-xl pb-2` : `sm:text-base`
           } text-sm">${task.name}</p>
           <div class="text-[#719191] sm:text-xs text-[10px]"><i class="fa fa-calendar"></i> ${
             task.time.date

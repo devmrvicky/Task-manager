@@ -175,10 +175,6 @@ section ul::-webkit-scrollbar {
   .text-editor-container {
     padding: 20px !important;
   }
-
-  .task-lists :is(.fa-folder, .fa-file) {
-    font-size: .9rem;
-  }
 }
 
 @media screen and (max-width: 850px) {
@@ -244,6 +240,31 @@ section ul::-webkit-scrollbar {
 
   .main-task-list .progress-bar-container {
     display: none;
+  }
+
+  .more-opt-btn {
+    display: flex !important;
+    background-color: white !important;
+  }
+
+  .more-opts {
+    border: 1px solid #e2e2e2;
+    box-shadow: -5px 5px 10px rgba(192, 192, 192, 0.5);
+    background-color: white;
+    padding: 20px 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    flex-direction: column-reverse;
+    z-index: 10;
+    border-radius: 20px;
+    transition: all .5s ease-in-out;
+    transform: scale(0);
+    transform-origin: top right;
+  }
+
+  .more-opts.show-more-opts {
+    transform: scale(1);
   }
 }
 
