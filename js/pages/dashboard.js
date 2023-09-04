@@ -5,6 +5,7 @@ import {
   getNoOfAllTask,
   getUsersFromLocalStorage,
   taskManagerContent,
+  updateNavigationList,
 } from "../main.js";
 const logo = document.querySelector(".logo");
 const mainTile = document.querySelector(".main-title");
@@ -142,7 +143,9 @@ const getNoteSection = () => {
 };
 
 // add dashboard content
-export const addDashboardElement = () => {
+export const addDashboardElement = (isFromBackBtn = false) => {
+  // when addDashboardElement function will be call dashboard push in navigation list
+  updateNavigationList(isFromBackBtn, "dashboard");
   getUsersFromLocalStorage();
   mainTile.textContent = "Dashboard";
   getNoOfAllTask();
@@ -174,4 +177,6 @@ export const addDashboardElement = () => {
   taskManagerContent.parentElement.style.height = "auto";
 };
 // addDashboardElement();
-logo.addEventListener("click", addDashboardElement);
+logo.addEventListener("click", () => {
+  addDashboardElement();
+});

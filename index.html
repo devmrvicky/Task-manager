@@ -44,11 +44,11 @@
           <i class="fa-solid fa-book"></i>
           <span>note</span>
         </li>
-        <li id="calendar-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer">
+        <li id="calendar-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer" data-page="calender">
           <i class="fa-solid fa-calendar-days"></i>
           <span>calendar</span>
         </li>
-        <li id="setting-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer">
+        <li id="setting-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer" data-page="setting">
           <i class="fa-solid fa-gear"></i>
           <span>setting</span>
         </li>
@@ -66,6 +66,11 @@
       <!-- top nav bar -->
       <div
         class="task-manager-top-bar flex items-center gap-5 p-5 md:px-5 md:py-2 py-2 mt-2 rounded border bg-[#EAF1F1] sticky top-1 z-10">
+        <!-- navigation btn -->
+        <button type="button" title="go back"
+          class="nav-btn h-[30px] px-3 py-2 flex items-center justify-center hover:bg-white/50 rounded-lg">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
         <!-- title -->
         <h1 class="md:text-2xl text-xl main-title">Dashboard</h1>
         <!-- search form -->

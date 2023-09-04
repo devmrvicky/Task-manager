@@ -4,6 +4,8 @@ import { getSignupForm } from "./components/getSignupForm.js";
 import { getTextEditor } from "./components/getTextEditor.js";
 import { showAllLoginUsers } from "./components/showAllLoginUsers.js";
 import { addDashboardElement } from "./pages/dashboard.js";
+import "./components/navigation.js";
+import { navigationBtn } from "./components/navigation.js";
 
 const mainApp = document.querySelector("main");
 const mainSideBar = document.querySelector(".task-manager-side-bar");
@@ -20,6 +22,7 @@ let allTaskList = [];
 let noOfCompletedTask = 0;
 let allFolders = [];
 let allTags = [];
+let navigationList = ["dashboard"];
 
 let users = [];
 let allTasks = {
@@ -166,6 +169,16 @@ profileElem.addEventListener("click", () => {
   showAllLoginUsers();
 });
 
+const updateNavigationList = (condition, navItem) => {
+  // update navigation list
+  if (!condition && navigationList.at(-1) !== navItem) {
+    navigationList.push(navItem);
+  }
+  if (navigationList.length > 1) {
+    navigationBtn.style.display = "flex";
+  }
+};
+
 window.onload = () => {
   getUsersFromLocalStorage();
 
@@ -299,4 +312,6 @@ export {
   login,
   mainApp,
   profileElem,
+  navigationList,
+  updateNavigationList,
 };

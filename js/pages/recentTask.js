@@ -12,6 +12,7 @@ import {
   getUsersFromLocalStorage,
   mainApp,
   users,
+  updateNavigationList,
 } from "../main.js";
 
 const showRecentTaskList = (
@@ -214,7 +215,9 @@ const showRecentTaskList = (
   }
 };
 
-const getRecentTaskPage = () => {
+const getRecentTaskPage = (isFromBackBtn = false) => {
+  // when getRecentTaskPage function will be call "recent task" push string will in navigation list
+  updateNavigationList(isFromBackBtn, "recent-tasks");
   getUsersFromLocalStorage();
   getNoOfAllTask();
   const recentTaskContent = document.createElement("div");

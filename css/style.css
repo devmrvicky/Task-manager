@@ -5,6 +5,7 @@
   scroll-behavior: smooth;
   -webkit-user-select: none;
   user-select: none;
+  transition: all .2s ease;
 }
 
 body {
@@ -299,6 +300,12 @@ section ul::-webkit-scrollbar {
 
   #clear-all-tasks span {
     display: initial !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .task-manager-top-bar {
+    padding-left: 2px !important;
   }
 }
 
