@@ -8,7 +8,7 @@ import {
   updateNavigationList,
 } from "../main.js";
 const logo = document.querySelector(".logo");
-const mainTile = document.querySelector(".main-title");
+export const mainTitle = document.querySelector(".main-title");
 
 // get all section
 // get section head that is common in all section
@@ -147,7 +147,8 @@ export const addDashboardElement = (isFromBackBtn = false) => {
   // when addDashboardElement function will be call dashboard push in navigation list
   updateNavigationList(isFromBackBtn, "dashboard");
   getUsersFromLocalStorage();
-  mainTile.textContent = "Dashboard";
+  mainTitle.textContent = "Dashboard";
+  mainTitle.style.paddingLeft = 20 + "px";
   getNoOfAllTask();
   // fist clear all html from taskManagerContent
   taskManagerContent.innerHTML = "";

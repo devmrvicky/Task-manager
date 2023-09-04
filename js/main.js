@@ -3,7 +3,7 @@ import { getLoginForm } from "./components/getLoginForm.js";
 import { getSignupForm } from "./components/getSignupForm.js";
 import { getTextEditor } from "./components/getTextEditor.js";
 import { showAllLoginUsers } from "./components/showAllLoginUsers.js";
-import { addDashboardElement } from "./pages/dashboard.js";
+import { addDashboardElement, mainTitle } from "./pages/dashboard.js";
 import "./components/navigation.js";
 import { navigationBtn } from "./components/navigation.js";
 
@@ -176,6 +176,7 @@ const updateNavigationList = (condition, navItem) => {
   }
   if (navigationList.length > 1) {
     navigationBtn.style.display = "flex";
+    mainTitle.style.paddingLeft = 0;
   }
 };
 

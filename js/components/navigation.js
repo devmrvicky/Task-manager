@@ -17,6 +17,7 @@ navigationBtn?.addEventListener("click", () => {
   navigationList.pop();
   if (navigationList.length <= 1) {
     navigationBtn.style.display = "none";
+    navigationBtn.nextElementSibling.style.paddingLeft = 20 + "px";
   }
 });
 
