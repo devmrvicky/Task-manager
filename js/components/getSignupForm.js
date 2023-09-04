@@ -1,35 +1,41 @@
+import { getUserImgBox } from "./getUserImgBox";
+
 export const getSignupForm = () => {
   const formContainer = document.createElement("div");
   formContainer.className =
     "login-form-container w-full bg-[#1ABC9C] backdrop-blur-[10px] h-screen absolute top-0 left-0 flex items-center justify-center z-20";
   const form = document.createElement("form");
   form.className =
-    "login-form rounded-lg overflow-hidden flex flex-col w-[350px] bg-white";
+    "login-form rounded-lg overflow-hidden flex flex-col items-center text-center w-[350px] bg-white";
+  // const imgBox = getUserImgBox(false)
   form.innerHTML = `
-    <div class="form-heading bg-[#16A085] text-center py-5">
+    <div class="form-heading bg-[#16A085] text-center py-5 w-full flex-1 mb-5">
       <h1 class="text-4xl text-white " >Signup form</h1>
     </div>
+  `;
+  // form.append(imgBox);
+  form.innerHTML += ` 
     <div class="input-fields flex flex-col gap-4 p-5">
-      <div class="input-field flex items-center overflow-hidden rounded-lg border border-[#16A085]">
+      <div class="input-field flex-1 w-full flex items-center overflow-hidden rounded-lg border border-[#16A085]">
         <label for="user-name" aria-hidden="true" class="hidden">User name</label>
         <div class="icon bg-[#16A085] text-white h-full py-2 px-4">
           <i class="fa-solid fa-user"></i>
         </div>
         <input type="text" class="px-3 outline-none w-full" placeholder="User name" name="user name" id="user-name" required/>
       </div>
-      <div class="input-field flex items-center overflow-hidden rounded-lg border border-[#16A085]">
+      <div class="input-field flex-1 w-full flex items-center overflow-hidden rounded-lg border border-[#16A085]">
         <label for="user-id" aria-hidden="true" class="hidden">User Id</label>
         <div class="icon bg-[#16A085] text-white h-full py-2 px-4">
           <i class="fa-solid fa-user"></i>
         </div>
         <input type="text" class="px-3 outline-none w-full" placeholder="User Id" name="user-id" id="user-id" required/>
       </div>
-      <div class="input-field flex items-center overflow-hidden rounded-lg border border-[#16A085]">
+      <div class="input-field flex-1 w-full flex items-center overflow-hidden rounded-lg border border-[#16A085]">
         <label for="user-password" aria-hidden="true" class="hidden">user Password</label>
         <div class="icon bg-[#16A085] text-white h-full py-2 px-4">
           <i class="fa-solid fa-lock"></i>
         </div>
-        <input type="password" class="px-3 outline-none w-full" placeholder="Password" required autocomplete/>
+        <input type="password" class="px-3 outline-none w-full" placeholder="Password" required autocomplete id="user-password"/>
       </div>
       <input type="submit" class="px-4 py-2 rounded-md bg-[#16A085] text-white border mb-2 outline-none" value="Signup" />
     </div>

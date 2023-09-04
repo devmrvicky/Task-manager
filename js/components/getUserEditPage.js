@@ -1,3 +1,5 @@
+import { getUserImgBox } from "./getUserImgBox";
+
 export const getUserEditPage = (user) => {
   const editPageContainer = document.createElement("div");
   editPageContainer.className =
@@ -5,25 +7,12 @@ export const getUserEditPage = (user) => {
   const editPage = document.createElement("div");
   editPage.className =
     "max-w-[700px] w-[90%] h-[90vh] p-3 border rounded-lg shadow bg-[#F9FAFA] flex flex-col items-center relative";
-  editPage.innerHTML = `
+  const imgBox = getUserImgBox(user);
+  editPage.append(imgBox);
+  editPage.innerHTML += `
     <button type="button" class="close-edit-page text-sm outline-none px-3 py-1 hover:border hover:shadow hover:bg-zinc-100 absolute top-[5px] right-[5px]">
       <i class="fa-solid fa-xmark text-xl"></i>
     </button>
-    <label class="my-5" for="user-img" cursor-pointer>
-      <div class="w-[200px] h-[200px] bg-yellow-500/50 p-1 rounded-full cursor-pointer group relative">
-          <div class="img-container border w-full h-full rounded-full flex items-center justify-center overflow-hidden">
-            ${
-              user.user_img
-                ? ` <img src=${user.user_img} alt="user-img" class="w-full"/>`
-                : `<i class="fa-solid fa-user fa-6x"></i>`
-            }
-          </div>
-        <button class="edit-icon edit-user-img min-w-[40px] h-[40px] bg-white hidden items-center justify-center rounded-full border absolute right-[20px] bottom-0 group-hover:flex" id="edit-user-img">
-          <i class="fa-solid fa-pen text-sm"></i>
-        </button>
-      </div>
-    </label>
-      <input type="file" aria-hidden="true" id="user-img" class="hidden"/>
     <h2 class="flex items-center gap-1 relative">
       <span class="text-3xl user-name">${user.user_name}</span>
       <button class="edit-icon min-w-[30px] h-[30px] hover:bg-white flex items-center justify-center rounded-full hover:border absolute bottom-0 right-[-30px]" id="edit-user-name">
@@ -37,9 +26,7 @@ export const getUserEditPage = (user) => {
             <i class="fa-solid fa-pen text-xs"></i>
           </button>
       </label>
-      <input type="text" value=${
-        user.user_id
-      } id="user-id" class="w-full border px-2 py-1" readonly/>
+      <input type="text" value=${user.user_id} id="user-id" class="w-full border px-2 py-1" readonly/>
       
     </div>
     <div class="input-field flex flex-col gap-1 max-w-[350px] w-full mt-3 ">
@@ -49,9 +36,7 @@ export const getUserEditPage = (user) => {
           <i class="fa-solid fa-pen text-xs"></i>
         </button>
       </label>
-      <input type="password" value=${
-        user.user_password
-      } id="user-password" class="w-full border px-2 py-1" readonly/>
+      <input type="password" value=${user.user_password} id="user-password" class="w-full border px-2 py-1" readonly/>
       
     </div>
     <div class="edit-ctrl-btns flex items-center gap-3 justify-end w-full mt-auto translate-x-[100%]">

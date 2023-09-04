@@ -7,6 +7,20 @@ import {
 import { getUserEditPage } from "./getUserEditPage";
 import { getUserImgChangeBox } from "./getUserImgChangeBox";
 
+// new updated user
+let newUpdatedUser = {};
+
+const uploadImg = (imgSrc, appendElem) => {
+  const userImg = imgSrc.files[0];
+  const reader = new FileReader();
+  reader.readAsDataURL(userImg);
+  reader.onload = () => {
+    const imgSrc = reader.result;
+    appendElem.innerHTML = ` <img src=${imgSrc} alt="user-img" class="w-full"/>`;
+    newUpdatedUser.user_img = imgSrc;
+  };
+};
+
 export const openUserEditPage = () => {
   dialogBoxElem.close();
   getUsersFromLocalStorage();
@@ -19,24 +33,10 @@ export const openUserEditPage = () => {
     ".edit-ctrl-btns button"
   );
 
-  // new updated user
-  let newUpdatedUser = {};
-
-  const uploadImg = (imgSrc, appendElem) => {
-    const userImg = imgSrc.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(userImg);
-    reader.onload = () => {
-      const imgSrc = reader.result;
-      appendElem.innerHTML = ` <img src=${imgSrc} alt="user-img" class="w-full"/>`;
-      newUpdatedUser.user_img = imgSrc;
-    };
-  };
-
   // change img
   const fileInputElem = editPageContainer.querySelector("#user-img");
   const imgContainer = editPageContainer.querySelector(".img-container");
-  fileInputElem.addEventListener("change", () => {
+  fileInputElem?.addEventListener("change", () => {
     uploadImg(fileInputElem, imgContainer);
   });
 
@@ -258,3 +258,5 @@ export const openUserEditPage = () => {
 
   mainApp.append(editPageContainer);
 };
+
+export { uploadImg };
