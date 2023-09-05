@@ -1,7 +1,7 @@
 import { appendNewPage } from "./components/appendNewPage.js";
-import { getLoginForm } from "./components/getLoginForm.js";
-import { getSignupForm } from "./components/getSignupForm.js";
-import { getTextEditor } from "./components/getTextEditor.js";
+import { getLoginForm } from "./components/form/getLoginForm.js";
+import { getSignupForm } from "./components/form/getSignupForm.js";
+import { getTextEditor } from "./components/Text-editor/getTextEditor.js";
 import { showAllLoginUsers } from "./components/showAllLoginUsers.js";
 import { addDashboardElement, mainTitle } from "./pages/dashboard.js";
 import "./components/navigation.js";

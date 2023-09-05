@@ -1,4 +1,4 @@
-import allTasks, { allTags } from "../main";
+import allTasks, { allTags } from "../../main";
 
 export const getRecentTaskHead = () => {
   const recentTaskHead = document.createElement("div");

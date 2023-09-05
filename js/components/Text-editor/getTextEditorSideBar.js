@@ -1,4 +1,4 @@
-import allTasks from "../main";
+import allTasks from "../../main";
 
 export const getTaskList = (tasks, taskListElem, isFromFolder = false) => {
   const folderNameHeading = document.querySelector(".folder-name-heading");

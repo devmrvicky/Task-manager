@@ -3,7 +3,7 @@ import {
   getUsersFromLocalStorage,
   mainApp,
   users,
-} from "../main";
+} from "../../main";
 import { getUserEditPage } from "./getUserEditPage";
 import { getUserImgChangeBox } from "./getUserImgChangeBox";
 

@@ -6,8 +6,8 @@ import {
   users,
 } from "../main";
 import { getAlertBox } from "./getAlertBox";
-import { getLockPasswordInput } from "./getLockPasswordInput";
-import { getLogoutPasswordInput } from "./getLogoutPassInput";
+import { getLockPasswordInput } from "./password-input/getLockPasswordInput";
+import { getLogoutPasswordInput } from "./password-input/getLogoutPassInput";
 
 export const lockUser = (user) => {
   getUsersFromLocalStorage();

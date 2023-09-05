@@ -6,11 +6,15 @@ import {
   profileElem,
   users,
 } from "../main";
-import { getConfirmPasswordInput } from "./getConfirmPasswordInput";
+import { getConfirmPasswordInput } from "./password-input/getConfirmPasswordInput";
 import { getUserMoreMenus } from "./getUserMoreMenus";
 import { getUsersList } from "./getUsersList";
-import { openUserEditPage } from "./openUserEditPage";
-import { hideUser, openPasswordInputPage, openUserDeletePage } from "./userActions";
+import { openUserEditPage } from "./edit-user/openUserEditPage";
+import {
+  hideUser,
+  openPasswordInputPage,
+  openUserDeletePage,
+} from "./userActions";
 
 export const showAllLoginUsers = () => {
   const preUsersListElem = dialogBoxElem.querySelector("ul");

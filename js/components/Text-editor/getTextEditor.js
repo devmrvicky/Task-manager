@@ -2,9 +2,9 @@ import allTasks, {
   getUsersFromLocalStorage,
   taskManagerContent,
   users,
-} from "../main.js";
-import { addDashboardElement } from "../pages/dashboard.js";
-import { getRecentTaskPage } from "../pages/recentTask.js";
+} from "../../main.js";
+import { addDashboardElement } from "../../pages/dashboard.js";
+import { getRecentTaskPage } from "../../pages/recentTask.js";
 import { getTextEditorMainArea } from "./getTextEditorMainArea.js";
 import { getTaskList, getTextEditorSideBar } from "./getTextEditorSideBar.js";
 

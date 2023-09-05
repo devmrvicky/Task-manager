@@ -3,7 +3,7 @@ import {
   noOfCompletedTask,
   allFolders,
   allTags,
-} from "../main.js";
+} from "../../main.js";
 
 export const getRecentTaskSideBar = () => {
   const recentTaskSideBar = document.createElement("ul");

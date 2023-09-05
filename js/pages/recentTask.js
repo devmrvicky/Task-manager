@@ -1,8 +1,8 @@
 import { getConfirmationPage } from "../components/getConfirmationPage.js";
-import { getRecentTaskSideBar } from "../components/getRecentSideBar.js";
-import { getRecentTaskHead } from "../components/getRecentTaskHead.js";
-import { getRecentTaskList } from "../components/getRecentTaskList.js";
-import { updateUsersTasksList } from "../components/getTextEditor.js";
+import { getRecentTaskSideBar } from "../components/recent-tasks/getRecentSideBar.js";
+import { getRecentTaskHead } from "../components/recent-tasks/getRecentTaskHead.js";
+import { getRecentTaskList } from "../components/recent-tasks/getRecentTaskList.js";
+import { updateUsersTasksList } from "../components/Text-editor/getTextEditor.js";
 import {
   getNoOfAllTask,
   allTaskList,

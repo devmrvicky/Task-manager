@@ -1,4 +1,4 @@
-import { getUserImgBox } from "./getUserImgBox";
+import { getUserImgBox } from "../edit-user/getUserImgBox";
 
 export const getSignupForm = () => {
   const formContainer = document.createElement("div");
