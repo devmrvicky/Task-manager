@@ -13,7 +13,7 @@ export const getTaskList = (tasks, taskListElem, isFromFolder = false) => {
     <div class="w-full flex ${isFromFolder ? `` : `gap-3`}">
       ${
         isFromFolder
-          ? `<div class="m-3 self-center w-4"><img src="/task-management/curved-arrow.png"></div>`
+          ? `<div class="m-3 self-center w-4"><img src="/Task-manager/curved-arrow.png"></div>`
           : ""
       }
       <div class="hover:bg-zinc-100 flex flex-1 py-3 px-4 rounded-xl">
