@@ -46,21 +46,20 @@ const getUsersFromLocalStorage = () => {
 };
 
 const getUpdatedUsers = (users) => {
-  let updatedRemainingUsers = [];
-  for (let remainingUser of users) {
-    // console.log(remainingUser);
-    if (remainingUser.current_user) {
-      remainingUser = { ...remainingUser, current_user: false };
-      updatedRemainingUsers.push(remainingUser);
+  let updatedUsers = [];
+  for (let user of users) {
+    if (user.current_user) {
+      user = { ...user, current_user: false };
+      updatedUsers.push(user);
     } else {
-      updatedRemainingUsers.push(remainingUser);
+      updatedUsers.push(user);
     }
   }
-  return updatedRemainingUsers;
+  return updatedUsers;
 };
 
-// getReArrangedUsers
-const getReArrangedUsers = (users) => {
+// getIdUpdatedUsers
+const getIdUpdatedUsers = (users) => {
   let arr = [];
   for (let user of users) {
     user = { ...user, id: `user_${arr.length + 1}` };
@@ -91,8 +90,8 @@ const login = (loginUser, isLogin = false) => {
     updatedRemainingUsers = getUpdatedUsers(users);
   }
   users = [...updatedRemainingUsers, updatedUser];
-  let reArrangedUsers = getReArrangedUsers(users);
-  localStorage.setItem("users", JSON.stringify(reArrangedUsers));
+  let idUpdatedUsers = getIdUpdatedUsers(users);
+  localStorage.setItem("users", JSON.stringify(idUpdatedUsers));
   getUserTasks(updatedUser);
   userNameElem.textContent = updatedUser.user_name;
   addDashboardElement();

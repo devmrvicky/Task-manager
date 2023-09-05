@@ -224,12 +224,12 @@ const getRecentTaskPage = (isFromBackBtn = false) => {
   const recentTaskContent = document.createElement("div");
   recentTaskContent.className = "w-full flex gap-5 overflow-hidden relative";
   recentTaskContent.setAttribute("data-page", "recent-task");
-  const recentTaskSideBar = getRecentTaskSideBar();
+  const recentTaskSideBar = getContentSideBar("recent-tasks");
 
   const recentTaskMainContent = document.createElement("div");
   recentTaskMainContent.className =
     "border flex-1 bg-[#EAF1F1] p-3 rounded-xl overflow-auto";
-  const recentTaskHead = getRecentTaskHead();
+  const recentTaskHead = getContentHead("recent-tasks");
   recentTaskMainContent.append(recentTaskHead);
 
   const taskList = document.createElement("ul");
@@ -357,7 +357,7 @@ const getRecentTaskPage = (isFromBackBtn = false) => {
 
   // get recent side bar button
   const sideBarBtn = recentTaskMainContent.querySelector(
-    ".recent-task-side-menu"
+    ".recent-tasks-side-menu"
   );
   sideBarBtn.addEventListener("click", () => {
     recentTaskSideBar.classList.toggle("show-side-bar");
