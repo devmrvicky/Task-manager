@@ -1,5 +1,6 @@
 import allTasks from "../../main";
 import { updateUsersTasksList } from "../Text-editor/getTextEditor";
+import { getNotesList } from "../notes/getNotesList";
 import { getRecentTaskList } from "../recent-tasks/getRecentTaskList";
 import { showUpdatedTasks } from "../recent-tasks/showUpdatedTasks";
 import { getContextMenu } from "./getContextMenu";
@@ -94,8 +95,7 @@ export const showContentItemsList = (
         };
       });
     } else {
-      li = document.createElement("li");
-      li.innerHTML = `<h1>notes</h1>`;
+      li = getNotesList(item);
     }
     contentItemListElem.insertAdjacentElement("beforeend", li);
   }

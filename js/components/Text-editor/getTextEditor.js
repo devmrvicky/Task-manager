@@ -25,7 +25,7 @@ const reRenderPages = (textEditor) => {
   const pageName = textEditor.parentElement.dataset.pageName;
   if (pageName === "dashboard") {
     addDashboardElement();
-  } else if (pageName === "recent-task") {
+  } else if (pageName === "recent-tasks") {
     taskManagerContent.innerHTML = "";
     const recentTaskPage = getRecentTaskPage();
     taskManagerContent.append(recentTaskPage);

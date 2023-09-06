@@ -29,7 +29,37 @@ let allTasks = {
   recentTask: [],
   notes: [
     {
-      note: "this is note body",
+      id: "note_1",
+      title: "note title",
+      note_body: "this is note body",
+      folder: false,
+      history: {
+        date: "2023-09-06",
+        time: "16:26",
+      },
+      tags: [],
+    },
+    {
+      id: "note_2",
+      title: "folder name or note title",
+      folder: true,
+      history: {
+        date: "2023-09-06",
+        time: "16:26",
+      },
+      tags: [],
+      notes: [
+        {
+          id: "nested_note_1",
+          title: "note title",
+          note_body: "this is note body",
+          history: {
+            date: "2023-09-06",
+            time: "16:26",
+          },
+          tags: [],
+        },
+      ],
     },
   ],
 };
@@ -291,6 +321,11 @@ const openTextEditor = () => {
   const textEditor = getTextEditor();
   textEditorContainer.append(textEditor);
   mainApp.append(textEditorContainer);
+
+  const switchTextEditorBtn = textEditor.querySelector("#switch-text-editor");
+  switchTextEditorBtn?.addEventListener("change", (e) => {
+    console.dir(e.currentTarget.selectedOptions[0].value);
+  });
 
   const closeButton = textEditor.querySelector(".close-editor");
   closeButton.addEventListener("click", () => {

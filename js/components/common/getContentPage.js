@@ -30,7 +30,9 @@ export const getContentPage = (pageName, items) => {
   mainContent.append(contentHead);
 
   const contentItemListElem = document.createElement("ul");
-  contentItemListElem.className = "main-task-list mt-4 flex flex-col gap-4";
+  contentItemListElem.className = `main-task-list mt-4 flex flex-col ${
+    pageName === "recent-tasks" ? `gap-4` : `gap-1`
+  }`;
 
   // by default show recent task list
   showContentItemsList(items, contentItemListElem, false, pageName);
