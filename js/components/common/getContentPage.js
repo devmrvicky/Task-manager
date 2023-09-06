@@ -1,9 +1,10 @@
+import { getUsersFromLocalStorage, mainApp } from "../../main";
+import { getConfirmationPage } from "../getConfirmationPage";
+import { getInsertedItemOnSameIndex } from "../getInsertedItemOnSameIndex";
 import { getContentHead } from "./getContentHead";
 import { getContentSideBar } from "./getContentSideBar";
 
-const getContentPage = (pageName, isFromBackBtn = false) => {
-  // when getRecentTaskPage function will be call "recent task" push string will in navigation list
-  updateNavigationList(isFromBackBtn, pageName);
+const getContentPage = (pageName, items) => {
   getUsersFromLocalStorage();
   getNoOfAllTask();
   const contentPage = document.createElement("div");
@@ -21,7 +22,7 @@ const getContentPage = (pageName, isFromBackBtn = false) => {
   contentItemListElem.className = "main-task-list mt-4 flex flex-col gap-4";
 
   // by default show recent task list
-  showRecentTaskList(allTasks.recentTask, contentItemListElem);
+  showContentItemsList(items, contentItemListElem);
 
   // show more options
   const showMoreOptsBtn = mainContent.querySelector(".more-opt-btn");
@@ -53,16 +54,18 @@ const getContentPage = (pageName, isFromBackBtn = false) => {
       btn.classList.add("active");
       if (e.currentTarget.id === "cell") {
         showRecentTaskList(
-          allTasks.recentTask,
+          items,
           contentItemListElem,
           false,
+          "recent-tasks",
           "cell"
         );
       } else {
         showRecentTaskList(
-          allTasks.recentTask,
+          items,
           contentItemListElem,
           false,
+          "recent-tasks",
           "horizontal"
         );
       }
@@ -70,30 +73,31 @@ const getContentPage = (pageName, isFromBackBtn = false) => {
   });
 
   // clear all btn
-  const clearAllBtn = contentHead.querySelector("#clear-all-tasks");
+  const clearAllBtn = contentHead.querySelector("#clear-all-items");
   clearAllBtn?.addEventListener("click", () => {
     const confirmationBox = getConfirmationPage();
     mainApp.append(confirmationBox);
     const btns = confirmationBox.querySelectorAll("button");
     btns.forEach((btn) => {
       btn.addEventListener("click", () => {
-        if (btn.id === "delete-tasks") {
+        if (btn.id === "delete-items") {
           confirmationBox.remove();
           getUsersFromLocalStorage();
           const currentUser = users.find((user) => user.current_user);
           // update user tasks
-          allTasks.recentTask = [];
-          currentUser.user_task = allTasks.recentTask;
-          // update user
-          const filteredUsers = users.filter(
-            (user) => user.user_id !== currentUser.user_id
-          );
-          const insertIndex = currentUser.id.split("_")[1] - 1;
-          filteredUsers.splice(insertIndex, 0, currentUser);
-          localStorage.setItem("users", JSON.stringify(filteredUsers));
+          items = [];
+          if (pageName === "recent-tasks") {
+            currentUser.user_task = items;
+            // update user
+            const contentItemListElem =
+              document.querySelector(".main-task-list");
+            showRecentTaskList(currentUser.user_task, contentItemListElem);
+          } else {
+            // note
+          }
 
-          const contentItemListElem = document.querySelector(".main-task-list");
-          showRecentTaskList(currentUser.user_task, contentItemListElem);
+          const filteredUsers = getInsertedItemOnSameIndex(currentUser, users);
+          localStorage.setItem("users", JSON.stringify(filteredUsers));
         } else {
           confirmationBox.remove();
         }
@@ -115,7 +119,7 @@ const getContentPage = (pageName, isFromBackBtn = false) => {
         }
         item.classList.toggle("active");
         if (item.dataset.name === "recent") {
-          showRecentTaskList(allTasks.recentTask, contentItemListElem);
+          showRecentTaskList(items, contentItemListElem);
         } else if (item.dataset.name === "completed") {
           let completedTask = allTaskList.filter(
             (task) => task.status === "completed"

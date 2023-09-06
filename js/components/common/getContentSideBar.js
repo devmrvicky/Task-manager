@@ -8,8 +8,7 @@ import {
 export const getContentSideBar = (contentType) => {
   const isContentTasks = contentType === "recent-tasks";
   const contentSideBar = document.createElement("ul");
-  contentSideBar.className =
-    "content-sidebar-item p-3 bg-[#EAF1F1] w-3/12 rounded-xl text-[#719191] flex flex-col gap-3 border";
+  contentSideBar.className = `content-sidebar-item ${contentType}-sidebar-item p-3 bg-[#EAF1F1] w-3/12 rounded-xl text-[#719191] flex flex-col gap-3 border`;
   let classes = `hover:bg-white cursor-default flex items-center gap-2 py-2 px-4 rounded-full sm:text-base text-xs`;
   contentSideBar.innerHTML = `
   <li class="task-item active ${classes}" data-role="show-task" data-name="recent"><i class="fa-solid fa-clock"></i><span>Recent</span><span class="ml-auto">

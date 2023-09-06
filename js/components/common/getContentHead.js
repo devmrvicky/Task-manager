@@ -4,7 +4,7 @@ export const getContentHead = (contentType) => {
   const isContentTasks = contentType === "recent-tasks";
 
   const contentHead = document.createElement("div");
-  contentHead.className = `content-head w-full flex items-center gap-3 text-[#719191] relative`;
+  contentHead.className = `content-head ${contentType}-head w-full flex items-center gap-3 text-[#719191] relative`;
   contentHead.innerHTML = `
     <button type="button" class="content-side-menu ${contentType}-side-menu hidden min-w-[44px] h-11 border rounded-full bg-white items-center justify-center">
       <i class="fa-solid fa-bars sm:text-xl"></i>
@@ -17,7 +17,7 @@ export const getContentHead = (contentType) => {
     ${
       !(allTasks.recentTask.length && isContentTasks)
         ? ``
-        : `<button type="button" id="clear-all-tasks" class="flex items-center justify-center gap-2">
+        : `<button type="button" id="clear-all-items" class="flex items-center justify-center gap-2">
             <i class="fa-regular fa-trash-can"></i>
             <span class="hidden text-xs">delete all</span>
           </button>`

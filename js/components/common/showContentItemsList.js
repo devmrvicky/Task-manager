@@ -1,8 +1,16 @@
+import allTasks from "../../main";
+import { updateUsersTasksList } from "../Text-editor/getTextEditor";
+import { getRecentTaskList } from "../recent-tasks/getRecentTaskList";
+import { showUpdatedTasks } from "../recent-tasks/showUpdatedTasks";
+import { getContextMenu } from "./getContextMenu";
+import { getParentFolder } from "./getParentFolder";
+import { getUpdatedIdTasks } from "./getUpdatedIdTasks";
+
 export const showContentItemsList = (
   items,
   contentItemListElem,
-  isFromFolder,
-  contentType,
+  isFromFolder = false,
+  contentType = "recent-tasks",
   layout = "horizontal"
 ) => {
   const isContentTasks = contentType === "recent-tasks";
@@ -37,145 +45,58 @@ export const showContentItemsList = (
           li.children[1].remove();
         }
       });
+      // click on checkbox element
+      let isNestedTask = item.id.split("_")[0] === "nested";
+      const checkboxElem = li.querySelector(".checkbox");
+      checkboxElem.addEventListener("click", () => {
+        showUpdatedTasks(item, items, isNestedTask, li);
+      });
+      const taskShowArea = li.querySelector(".task-show-area");
+      taskShowArea.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        const contextMenu = getContextMenu(e);
+        taskShowArea.append(contextMenu);
+
+        let deleteBtn = contextMenu.querySelector("li");
+        deleteBtn.onclick = () => {
+          let remainingTasks;
+          if (isNestedTask) {
+            const parentFolder = getParentFolder(li);
+            const remainingNestedTasks = parentFolder.tasks.filter(
+              (nestedTask) => nestedTask.id !== item.id
+            );
+            const updatedRemainingNestedTasks = getUpdatedIdTasks(
+              remainingNestedTasks,
+              true
+            );
+            parentFolder.tasks = updatedRemainingNestedTasks;
+            if (item.status === "completed") {
+              parentFolder.completedTask =
+                parseInt(parentFolder.completedTask) - 1;
+            }
+            let filteredTasks = getInsertedItemOnSameIndex(
+              parentFolder,
+              allTasks.recentTask
+            );
+            remainingTasks = filteredTasks;
+          } else {
+            remainingTasks = items.filter(
+              (remainTask) => remainTask.id !== item.id
+            );
+          }
+          const updatedRemainingTasks = getUpdatedIdTasks(remainingTasks);
+          allTasks.recentTask = updatedRemainingTasks;
+          updateUsersTasksList(updatedRemainingTasks);
+          // render whole recent task page after update user task
+          // taskManagerContent.innerHTML = "";
+          // const recentTaskPage = getRecentTaskPage();
+          // taskManagerContent.append(recentTaskPage);
+        };
+      });
     } else {
-      li = `<h1>notes</h1>`;
+      li = document.createElement("li");
+      li.innerHTML = `<h1>notes</h1>`;
     }
     contentItemListElem.insertAdjacentElement("beforeend", li);
-
-    // get parent folder
-    const getParentFolder = () => {
-      const parentElement = li.parentElement.parentElement;
-      const id = parentElement.dataset.fileId;
-      const parentFolder = allTasks.recentTask.find(
-        (recentTask) => recentTask.id === id
-      );
-      return parentFolder;
-    };
-
-    // click on checkbox element
-    let isNestedTask = task.id.split("_")[0] === "nested";
-    const checkboxElem = li.querySelector(".checkbox");
-    checkboxElem.addEventListener("click", () => {
-      let updatedTask = {};
-      if (task.status === "completed") {
-        updatedTask = { ...changeTaskStatus("uncompleted", isNestedTask) };
-      } else {
-        updatedTask = { ...changeTaskStatus("completed", isNestedTask) };
-      }
-      task = { ...updatedTask };
-      let filteredTasks = tasks.filter(
-        (filteredTask) => filteredTask.id !== task.id
-      );
-      const indexToInsert = task.id.slice(-1) - 1;
-      filteredTasks.splice(indexToInsert, 0, task);
-      let updatedTasks = filteredTasks;
-      if (isNestedTask) {
-        const parentFolder = getParentFolder();
-        parentFolder.tasks = [...updatedTasks];
-        parentFolder.completedTask =
-          task.status === "completed"
-            ? parseInt(parentFolder.completedTask) + 1
-            : parseInt(parentFolder.completedTask) - 1;
-        const indexToInsert = parentFolder.id.slice(-1) - 1;
-        let filteredTasks = allTasks.recentTask.filter(
-          (filteredTask) => filteredTask.id !== parentFolder.id
-        );
-        filteredTasks.splice(indexToInsert, 0, parentFolder);
-        allTasks.recentTask = filteredTasks;
-        updateUsersTasksList(filteredTasks);
-      } else {
-        allTasks.recentTask = updatedTasks;
-        updateUsersTasksList(updatedTasks);
-      }
-      // render whole recent task page after update user task
-      taskManagerContent.innerHTML = "";
-      const recentTaskPage = getRecentTaskPage();
-      taskManagerContent.append(recentTaskPage);
-    });
-
-    const getContextMenu = (e) => {
-      let contextMenu = document.querySelector(".context-menu");
-      contextMenu?.remove();
-      const ul = document.createElement("ul");
-      ul.className =
-        "context-menu bg-white w-[100px] flex flex-col gap-2 p-1 border shadow absolute";
-      const li = document.createElement("li");
-      li.className =
-        "flex w-full gap-2 items-center p-2 hover:bg-zinc-50 text-sm";
-      li.innerHTML = `
-        <i class="fa-solid fa-trash-alt"></i>
-        <span>Delete</span>
-      `;
-
-      let x = e.offsetX,
-        y = e.offsetY;
-      let xDistance = e.currentTarget.clientWidth - x >= 90;
-      ul.style.left = (xDistance ? x : x - 90) + "px";
-      ul.style.top = y + "px";
-
-      ul.append(li);
-
-      setTimeout(() => {
-        ul.remove();
-      }, 2000);
-
-      return ul;
-    };
-
-    const taskShowArea = li.querySelector(".task-show-area");
-    taskShowArea.addEventListener("contextmenu", (e) => {
-      e.preventDefault();
-      const contextMenu = getContextMenu(e);
-      taskShowArea.append(contextMenu);
-
-      const getUpdatedIdTasks = (tasks, isNestedTask = false) => {
-        let arr = [];
-        for (let task of tasks) {
-          task = {
-            ...task,
-            id: `${isNestedTask ? "nested_" : ""}task_${arr.length + 1}`,
-          };
-          arr.push(task);
-        }
-        return arr;
-      };
-
-      let deleteBtn = contextMenu.querySelector("li");
-      deleteBtn.onclick = () => {
-        let remainingTasks;
-        if (isNestedTask) {
-          const parentFolder = getParentFolder();
-          const remainingNestedTasks = parentFolder.tasks.filter(
-            (nestedTask) => nestedTask.id !== task.id
-          );
-          const updatedRemainingNestedTasks = getUpdatedIdTasks(
-            remainingNestedTasks,
-            true
-          );
-          parentFolder.tasks = updatedRemainingNestedTasks;
-          if (task.status === "completed") {
-            parentFolder.completedTask =
-              parseInt(parentFolder.completedTask) - 1;
-          }
-          const indexToInsert = parentFolder.id.slice(-1) - 1;
-          let filteredTasks = allTasks.recentTask.filter(
-            (filteredTask) => filteredTask.id !== parentFolder.id
-          );
-          filteredTasks.splice(indexToInsert, 0, parentFolder);
-          remainingTasks = filteredTasks;
-        } else {
-          remainingTasks = tasks.filter(
-            (remainTask) => remainTask.id !== task.id
-          );
-        }
-        const updatedRemainingTasks = getUpdatedIdTasks(remainingTasks);
-        allTasks.recentTask = updatedRemainingTasks;
-        updateUsersTasksList(updatedRemainingTasks);
-        // render whole recent task page after update user task
-        taskManagerContent.innerHTML = "";
-        const recentTaskPage = getRecentTaskPage();
-        taskManagerContent.append(recentTaskPage);
-      };
-    });
   }
 };

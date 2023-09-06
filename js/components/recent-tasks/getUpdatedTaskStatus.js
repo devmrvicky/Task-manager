@@ -1,9 +1,8 @@
 import { getUsersFromLocalStorage, users } from "../../main";
 
 // get updated tasks list
-export const getUpdatedTaskStatus = (status, isNestedTask = false) => {
+export const getUpdatedTaskStatus = (task, status, isNestedTask = false) => {
   getUsersFromLocalStorage();
-  let task = users.find((user) => user.current_user);
   let updatedTaskObj = {};
   if (isNestedTask) {
     updatedTaskObj = { ...task, status };

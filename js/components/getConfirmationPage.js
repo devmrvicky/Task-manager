@@ -8,7 +8,7 @@ export const getConfirmationPage = () => {
   box.innerHTML = `
     <h1>Do you want to delete your all tasks?</h1>
     <div class="w-full flex justify-center gap-10">
-      <button class="border px-3 py-2 bg-red-400 rounded hover:bg-red-500 text-white" id="delete-tasks">
+      <button class="border px-3 py-2 bg-red-400 rounded hover:bg-red-500 text-white" id="delete-items">
         delete
       </button>
       <button class="border px-3 py-2 rounded hover:bg-zinc-100" id="cancel">
