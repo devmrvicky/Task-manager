@@ -200,7 +200,7 @@ section ul::-webkit-scrollbar {
     gap: 10px !important;
   }
 
-  .recent-tasks-sidebar-item {
+  .content-sidebar-item {
     position: absolute;
     height: 450px;
     width: 200px !important;
@@ -214,11 +214,11 @@ section ul::-webkit-scrollbar {
     z-index: 99;
   }
 
-  .recent-tasks-side-menu {
+  .content-side-menu {
     display: flex !important;
   }
 
-  .recent-tasks-side-menu.translate-btn {
+  .content-side-menu.translate-btn {
     animation: animMenuBtn .5s ease-in-out forwards alternate;
   }
 

@@ -1,10 +1,21 @@
-import { getUsersFromLocalStorage, mainApp } from "../../main";
+import {
+  allFolders,
+  allTags,
+  allTaskList,
+  getNoOfAllTask,
+  getUsersFromLocalStorage,
+  mainApp,
+  taskManagerContent,
+  users,
+} from "../../main";
+import { showFolderTags } from "../../pages/recentTask";
 import { getConfirmationPage } from "../getConfirmationPage";
 import { getInsertedItemOnSameIndex } from "../getInsertedItemOnSameIndex";
 import { getContentHead } from "./getContentHead";
 import { getContentSideBar } from "./getContentSideBar";
+import { showContentItemsList } from "./showContentItemsList";
 
-const getContentPage = (pageName, items) => {
+export const getContentPage = (pageName, items) => {
   getUsersFromLocalStorage();
   getNoOfAllTask();
   const contentPage = document.createElement("div");
@@ -22,7 +33,7 @@ const getContentPage = (pageName, items) => {
   contentItemListElem.className = "main-task-list mt-4 flex flex-col gap-4";
 
   // by default show recent task list
-  showContentItemsList(items, contentItemListElem);
+  showContentItemsList(items, contentItemListElem, false, pageName);
 
   // show more options
   const showMoreOptsBtn = mainContent.querySelector(".more-opt-btn");
@@ -53,19 +64,19 @@ const getContentPage = (pageName, items) => {
       }
       btn.classList.add("active");
       if (e.currentTarget.id === "cell") {
-        showRecentTaskList(
+        showContentItemsList(
           items,
           contentItemListElem,
           false,
-          "recent-tasks",
+          pageName,
           "cell"
         );
       } else {
-        showRecentTaskList(
+        showContentItemsList(
           items,
           contentItemListElem,
           false,
-          "recent-tasks",
+          pageName,
           "horizontal"
         );
       }
@@ -91,7 +102,7 @@ const getContentPage = (pageName, items) => {
             // update user
             const contentItemListElem =
               document.querySelector(".main-task-list");
-            showRecentTaskList(currentUser.user_task, contentItemListElem);
+            showContentItemsList(currentUser.user_task, contentItemListElem);
           } else {
             // note
           }
@@ -105,26 +116,26 @@ const getContentPage = (pageName, items) => {
     });
   });
 
-  const recentTaskSideBarItems = contentSideBar.querySelectorAll("li");
-  recentTaskSideBarItems.forEach((item) => {
+  const contentSideBarItems = contentSideBar.querySelectorAll("li");
+  contentSideBarItems.forEach((item) => {
     item.addEventListener("click", (e) => {
       item.classList.toggle("show");
       if (e.currentTarget.dataset.role === "show-task") {
         contentItemListElem.innerHTML = "";
         // show active item
-        for (let sideBarItem of recentTaskSideBarItems) {
+        for (let sideBarItem of contentSideBarItems) {
           if (sideBarItem.classList.contains("active")) {
             sideBarItem.classList.remove("active");
           }
         }
         item.classList.toggle("active");
         if (item.dataset.name === "recent") {
-          showRecentTaskList(items, contentItemListElem);
+          showContentItemsList(items, contentItemListElem, false, pageName);
         } else if (item.dataset.name === "completed") {
           let completedTask = allTaskList.filter(
             (task) => task.status === "completed"
           );
-          showRecentTaskList(completedTask, contentItemListElem);
+          showContentItemsList(completedTask, contentItemListElem);
         }
       } else {
         const ul = document.createElement("ul");
@@ -155,7 +166,7 @@ const getContentPage = (pageName, items) => {
   });
 
   // get recent side bar button
-  const sideBarBtn = mainContent.querySelector(".recent-task-side-menu");
+  const sideBarBtn = mainContent.querySelector(".content-side-menu");
   sideBarBtn.addEventListener("click", () => {
     contentSideBar.classList.toggle("show-side-bar");
     if (!sideBarBtn.classList.contains("translate-btn")) {

@@ -27,6 +27,11 @@ let navigationList = ["dashboard"];
 let users = [];
 let allTasks = {
   recentTask: [],
+  notes: [
+    {
+      note: "this is note body",
+    },
+  ],
 };
 
 // get all task from user

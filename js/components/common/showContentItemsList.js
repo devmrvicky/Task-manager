@@ -39,7 +39,7 @@ export const showContentItemsList = (
         if (!li.children[1]) {
           const nestedTaskList = document.createElement("ul");
           nestedTaskList.className = "nested mt-2 flex flex-col gap-2";
-          showRecentTaskList(item.tasks, nestedTaskList, true);
+          showContentItemsList(item.tasks, nestedTaskList, true);
           li.insertAdjacentElement("beforeend", nestedTaskList);
         } else {
           li.children[1].remove();
