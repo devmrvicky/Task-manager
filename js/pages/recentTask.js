@@ -11,6 +11,7 @@ import {
   mainApp,
   users,
   updateNavigationList,
+  openTextEditorBtn,
 } from "../main.js";
 
 const getRecentTaskPage = (isFromBackBtn = false) => {

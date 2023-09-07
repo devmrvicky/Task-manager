@@ -322,11 +322,6 @@ const openTextEditor = () => {
   textEditorContainer.append(textEditor);
   mainApp.append(textEditorContainer);
 
-  const switchTextEditorBtn = textEditor.querySelector("#switch-text-editor");
-  switchTextEditorBtn?.addEventListener("change", (e) => {
-    console.dir(e.currentTarget.selectedOptions[0].value);
-  });
-
   const closeButton = textEditor.querySelector(".close-editor");
   closeButton.addEventListener("click", () => {
     textEditorContainer.remove();
@@ -354,4 +349,5 @@ export {
   profileElem,
   navigationList,
   updateNavigationList,
+  openTextEditorBtn,
 };

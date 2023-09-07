@@ -79,7 +79,7 @@ let tags = [
   "Life Integrate",
 ];
 
-export const getTextEditorMainArea = () => {
+const getTasksEditorMainArea = () => {
   const editorMainArea = document.createElement("div");
   editorMainArea.className = "editor-main-area flex-1";
   editorMainArea.innerHTML = `
@@ -114,4 +114,9 @@ export const getTextEditorMainArea = () => {
     </div>
   `;
   return editorMainArea;
+};
+
+export const getTextEditorMainArea = () => {
+  let textEditorMainArea = getTasksEditorMainArea();
+  return textEditorMainArea;
 };
