@@ -1,4 +1,5 @@
 import allTasks from "../../main";
+import { getNotesList } from "../notes/getNotesList";
 
 export const getTaskList = (tasks, taskListElem, isFromFolder = false) => {
   const folderNameHeading = document.querySelector(".folder-name-heading");
@@ -46,7 +47,7 @@ export const getTaskList = (tasks, taskListElem, isFromFolder = false) => {
   }
 };
 
-export const getTextEditorSideBar = () => {
+export const getTextEditorSideBar = (editorType) => {
   const editorSideBar = document.createElement("div");
   editorSideBar.className =
     "text-editor-side-bar border-r w-[250px] flex flex-col md:static absolute bg-white h-full -translate-x-full md:translate-x-0";
@@ -55,7 +56,7 @@ export const getTextEditorSideBar = () => {
     "editor-head px-4 py-2 border-b bg-white flex items-center h-[50px]";
   editorSideBarHead.innerHTML = `
     <h1>Task editor</h1>
-    <button type="button" class="editor-side-bar-btn ml-auto md:translate-x-0 translate-x-[60px] min-w-[30px] h-[30px] rounded-full bg-white border hover:bg-zinc-50 block md:hidden">
+    <button type="button" class="editor-side-bar-btn ml-auto md:translate-x-0 translate-x-[60px] min-w-[30px] h-[30px] rounded-full bg-white border hover:bg-zinc-50 block">
     <i class="fa-solid fa-angle-right"></i>
     </button>
   `;
@@ -74,7 +75,16 @@ export const getTextEditorSideBar = () => {
   `;
   const recentTaskList = document.createElement("ul");
   recentTaskList.className = "task-lists flex flex-col overflow-auto";
-  getTaskList(allTasks.recentTask, recentTaskList);
+  if (editorType === "tasks-editor") {
+    getTaskList(allTasks.recentTask, recentTaskList);
+  } else {
+    for (let note of allTasks.notes) {
+      const fragment = document.createDocumentFragment();
+      let li = getNotesList(note);
+      fragment.appendChild(li);
+      recentTaskList.append(fragment);
+    }
+  }
 
   // append all created element to its parent element
   editorSideBar.append(editorSideBarHead);

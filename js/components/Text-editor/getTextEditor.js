@@ -112,11 +112,11 @@ const setDefaultDateTime = (form) => {
   });
 };
 
-export const getTextEditor = () => {
+export const getTaskEditor = () => {
   const textEditor = document.createElement("div");
   textEditor.className =
     "text-editor border bg-white w-full max-w-[1200px] max-h-[800px] h-[90vh] rounded-xl flex relative overflow-hidden shadow";
-  const editorSideBar = getTextEditorSideBar();
+  const editorSideBar = getTextEditorSideBar("tasks-editor");
   const editorMainArea = getTextEditorMainArea();
 
   textEditor.insertAdjacentElement("afterbegin", editorSideBar);

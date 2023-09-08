@@ -1,11 +1,12 @@
 import { appendNewPage } from "./components/appendNewPage.js";
 import { getLoginForm } from "./components/form/getLoginForm.js";
 import { getSignupForm } from "./components/form/getSignupForm.js";
-import { getTextEditor } from "./components/Text-editor/getTextEditor.js";
+import { getTaskEditor } from "./components/Text-editor/getTextEditor.js";
 import { showAllLoginUsers } from "./components/showAllLoginUsers.js";
 import { addDashboardElement, mainTitle } from "./pages/dashboard.js";
 import "./components/navigation.js";
 import { navigationBtn } from "./components/navigation.js";
+import { getNotesEditor } from "./components/Text-editor/getNotesEditor.js";
 
 const mainApp = document.querySelector("main");
 const mainSideBar = document.querySelector(".task-manager-side-bar");
@@ -311,24 +312,32 @@ menuOptions.forEach((menuOption) => {
   });
 });
 
-const openTextEditor = () => {
+const openTextEditor = (editorType) => {
   const textEditorContainer = document.createElement("div");
-  textEditorContainer.className =
-    "text-editor-container w-full h-full fixed top-0 shadow bg-[#F3F6F6]/50 backdrop-blur-sm flex items-center justify-center md:p-24 p-0 z-20";
+  textEditorContainer.className = `text-editor-container w-full h-full fixed top-0 shadow bg-black/50 backdrop-blur-sm flex ${
+    editorType === "add tasks" ? `items-center justify-center md:p-24 p-0` : ""
+  } z-20`;
   const pageName = taskManagerContent.children[0].dataset.page;
   textEditorContainer.setAttribute("data-page-name", pageName);
   if (document.querySelector(".text-editor-container")) return;
-  const textEditor = getTextEditor();
+  let textEditor;
+  if (editorType === "add tasks") {
+    textEditor = getTaskEditor();
+  } else {
+    textEditor = getNotesEditor();
+  }
   textEditorContainer.append(textEditor);
   mainApp.append(textEditorContainer);
 
   const closeButton = textEditor.querySelector(".close-editor");
-  closeButton.addEventListener("click", () => {
+  closeButton?.addEventListener("click", () => {
     textEditorContainer.remove();
   });
 };
 // add event listener for open text editor btn
-openTextEditorBtn.addEventListener("click", openTextEditor);
+openTextEditorBtn.addEventListener("click", (e) => {
+  openTextEditor(e.currentTarget.title);
+});
 
 // export something
 export default allTasks;

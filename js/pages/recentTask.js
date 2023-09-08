@@ -1,23 +1,13 @@
 import { getContentPage } from "../components/common/getContentPage.js";
 import { showContentItemsList } from "../components/common/showContentItemsList.js";
-import {
-  getNoOfAllTask,
-  allTaskList,
-  allFolders,
-  allTags,
-  allTasks,
-  taskManagerContent,
-  getUsersFromLocalStorage,
-  mainApp,
-  users,
-  updateNavigationList,
-  openTextEditorBtn,
-} from "../main.js";
+import { allTasks, updateNavigationList, openTextEditorBtn } from "../main.js";
 
 const getRecentTaskPage = (isFromBackBtn = false) => {
   // when getRecentTaskPage function will be call "recent task" push string will in navigation list
   updateNavigationList(isFromBackBtn, "recent-tasks");
   const recentTaskPage = getContentPage("recent-tasks", allTasks.recentTask);
+  // change open text editor btn
+  openTextEditorBtn.title = "add tasks";
   return recentTaskPage;
 };
 

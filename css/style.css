@@ -8,6 +8,11 @@
   transition: all .2s ease;
 }
 
+.writing-area {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 body {
   position: relative;
 }
@@ -127,11 +132,12 @@ input[type="aria-hidden"] {
 }
 
 section::-webkit-scrollbar,
-section ul::-webkit-scrollbar {
+section ul::-webkit-scrollbar,
+.writing-area-container::-webkit-scrollbar {
   display: none;
 }
 
-.text-editor-container {
+.text-editor {
   animation: openEditor .5s ease-in-out forwards alternate;
 }
 
@@ -182,6 +188,28 @@ section ul::-webkit-scrollbar {
   user-select: none;
 }
 
+
+.text-editor-side-bar.toggle-side-bar {
+  transform: translateX(0%) !important;
+}
+
+.text-editor-side-bar .editor-side-bar-btn {
+  transform: translateX(60px);
+}
+
+.toggle-side-bar .editor-side-bar-btn {
+  transform: translateX(0) rotate(180deg);
+}
+
+.font-styles button.active {
+  background-color: #EAF1F1;
+  transition: all .3s ease-in-out;
+}
+
+.font-styles button:active {
+  transform: scale(.5);
+}
+
 /* responsive code */
 @media screen and (max-width: 1024px) {
   .main-content-area {
@@ -190,7 +218,7 @@ section ul::-webkit-scrollbar {
 }
 
 @media screen and (max-width: 910px) {
-  .text-editor-container {
+  .text-editor-container.tasks-editor-container {
     padding: 20px !important;
   }
 }
