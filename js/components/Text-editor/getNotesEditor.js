@@ -1,5 +1,6 @@
 import { getEditorFooter } from "./getEditorFooter";
 import { getNotesWritingArea } from "./getNotesWritingArea";
+import { getTextEditorMoreOpt } from "./getTextEditorMoreOpt";
 import { getTextEditorSideBar } from "./getTextEditorSideBar";
 import { getToolBox } from "./getToolBox";
 
@@ -34,6 +35,8 @@ export const getNotesEditor = () => {
     }, 1000);
   });
 
+  const editorTopHead = getTextEditorMoreOpt();
+  fragment.appendChild(editorTopHead);
   const toolBox = getToolBox();
   fragment.appendChild(toolBox);
   const noteWritingArea = getNotesWritingArea();
