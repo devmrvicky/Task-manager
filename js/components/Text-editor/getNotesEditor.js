@@ -24,15 +24,12 @@ export const getNotesEditor = () => {
   const fragment = document.createDocumentFragment();
 
   const editorSideBar = getTextEditorSideBar("notes-editor");
-  editorSideBar.className = `text-editor-side-bar absolute top-0 left-0 bg-white w-full max-w-[250px] h-full shadow translate-x-[-100%]`;
+  editorSideBar.className = `text-editor-side-bar absolute top-0 left-0 bg-white w-full max-w-[250px] h-full shadow translate-x-[-100%] z-40`;
   fragment.appendChild(editorSideBar);
 
   const toggleBtn = editorSideBar.querySelector(".editor-side-bar-btn");
   toggleBtn.addEventListener("click", () => {
     editorSideBar.classList.toggle("toggle-side-bar");
-    setTimeout(() => {
-      editorSideBarContainer.style.display = "none";
-    }, 1000);
   });
 
   const editorTopHead = getTextEditorMoreOpt();

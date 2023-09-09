@@ -14,7 +14,7 @@ const fileOptList = () => {
 
 export const getTextEditorMoreOpt = () => {
   const editorHead = document.createElement("div");
-  editorHead.className = "editor-top-head flex gap-3 p-1 pl-16 relative";
+  editorHead.className = "editor-top-head flex items-center gap-3 p-1 pl-16";
   const fragment = document.createDocumentFragment();
   const classes = `hover:bg-[#EAF1F1] rounded-[2px] text-sm px-2 p-1 relative group`;
   const fileOpt = document.createElement("div");
@@ -29,7 +29,12 @@ export const getTextEditorMoreOpt = () => {
   const viewOpt = document.createElement("div");
   viewOpt.appendChild(document.createTextNode("View"));
   viewOpt.className = `${classes} view`;
-  fragment.append(fileOpt, insertOpt, viewOpt);
+
+  const closeBtn = document.createElement("div");
+  closeBtn.className = `close-editor ml-auto border rounded-full min-w-[40px] h-[40px] hover:bg-zinc-200 flex items-center justify-center text-xl cursor-pointer`;
+  closeBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+
+  fragment.append(fileOpt, insertOpt, viewOpt, closeBtn);
 
   editorHead.appendChild(fragment);
   return editorHead;

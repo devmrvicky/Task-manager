@@ -170,11 +170,18 @@ const getFontSizeLists = () => {
 
 export const getToolBox = () => {
   const toolBoxWrapper = document.createElement("div");
-  toolBoxWrapper.className = `tool-box__wrapper w-full px-3 pl-16 py-2 border`;
+  toolBoxWrapper.className = `tool-box__wrapper w-full px-3 py-2 border`;
   const toolBoxPrimary = document.createElement("div");
-  toolBoxPrimary.className = `tool-box__primary flex flex gap-4 items-center overflow-auto`;
+  toolBoxPrimary.className = `tool-box__primary flex flex gap-4 items-center overflow-y-hidden overflow-x-auto`;
 
   const fragment = document.createDocumentFragment();
+
+  // save button
+  const saveBtn = document.createElement("button");
+  saveBtn.className = `tool-btn save-btn p-2 px-3 shadow rounded sticky left-0 z-30`;
+  saveBtn.innerHTML = `
+    <i class="fa-solid fa-floppy-disk"></i>
+  `;
 
   // tools btn group
   let btnsGroupClass = "tool-btn__group flex items-center gap-2";
@@ -183,7 +190,7 @@ export const getToolBox = () => {
   const undoBtn = getToolBtn("undo", "undo");
   const redoBtn = getToolBtn("redo", "redo");
   redoUndoBtns.append(undoBtn, redoBtn);
-  fragment.appendChild(redoUndoBtns);
+  // fragment.appendChild(redoUndoBtns);
 
   const fontStyleBtns = document.createElement("div");
   fontStyleBtns.className = btnsGroupClass + " font-styles";
@@ -192,12 +199,11 @@ export const getToolBox = () => {
   const underlineBtn = getToolBtn("underline", "underline");
   const strikethroughBtn = getToolBtn("strikethrough", "strikethrough");
   fontStyleBtns.append(boldBtn, italicBtn, underlineBtn, strikethroughBtn);
-  fragment.appendChild(fontStyleBtns);
+  // fragment.appendChild(fontStyleBtns);
 
   const fontsOptions = getFontList();
   const fontSizeList = getFontSizeLists();
   const headingLists = getHeadings();
-  fragment.append(fontsOptions, fontSizeList, headingLists);
 
   const fontAlignment = document.createElement("div");
   fontAlignment.className = btnsGroupClass + " font-alignment";
@@ -206,7 +212,7 @@ export const getToolBox = () => {
   const alignCenterBtn = getToolBtn("align center", "justifyCenter");
   const justifyBtn = getToolBtn("justify", "justifyFull");
   fontAlignment.append(alignLeftBtn, alignCenterBtn, alignRightBtn, justifyBtn);
-  fragment.appendChild(fontAlignment);
+  // fragment.appendChild(fontAlignment);
 
   const fontIndent = document.createElement("div");
   fontIndent.className = btnsGroupClass + " font-indent";
@@ -221,10 +227,24 @@ export const getToolBox = () => {
   const bulletListBtn = getToolBtn("bullet list", "insertUnorderedList");
   const checkedListBtn = getToolBtn("checked list");
   fontList.append(numberedListBtn, bulletListBtn, checkedListBtn);
-  fragment.appendChild(fontList);
 
   const moreTools = getToolBtn("more tools...");
-  toolBoxPrimary.append(fragment, moreTools);
+  moreTools.className = `more-tools sticky right-0 shadow p-2 px-3`;
+
+  fragment.append(
+    saveBtn,
+    redoUndoBtns,
+    fontStyleBtns,
+    fontsOptions,
+    fontSizeList,
+    headingLists,
+    fontAlignment,
+    fontIndent,
+    fontList,
+    moreTools
+  );
+
+  toolBoxPrimary.append(fragment);
   toolBoxWrapper.append(toolBoxPrimary);
   return toolBoxWrapper;
 };
