@@ -201,13 +201,71 @@ section ul::-webkit-scrollbar,
   transform: translateX(0) rotate(180deg);
 }
 
-.font-styles button.active {
+/* .text-editor .writing-area {
+  all: unset !important;
+} */
+
+.text-editor button.active {
   background-color: #EAF1F1;
-  transition: all .3s ease-in-out;
+  transition: all .1s ease-in-out;
 }
 
-.font-styles button:active {
-  transform: scale(.5);
+.text-editor button:active {
+  background-color: #EAF1F1;
+  transform: scale(.7);
+}
+
+.text-editor :is(ul, ol) {
+  /* all: unset !important; */
+  list-style-type: unset;
+  padding-left: 40px !important;
+}
+
+.text-editor {
+  & h1 {
+    font-size: 36px;
+    font-weight: 700;
+    /* Font weight for h1: bold */
+  }
+
+  & h2 {
+    font-size: 24px;
+    font-weight: 700;
+    /* Font weight for h2: bold */
+  }
+
+  & h3 {
+    font-size: 18px;
+    font-weight: 600;
+    /* Font weight for h3: semi-bold */
+  }
+
+  & h4 {
+    font-size: 16px;
+    font-weight: 600;
+    /* Font weight for h4: semi-bold */
+  }
+
+  & h5 {
+    font-size: 14px;
+    font-weight: 500;
+    /* Font weight for h5: medium */
+  }
+
+  & h6 {
+    font-size: 12px;
+    font-weight: 500;
+    /* Font weight for h6: medium */
+  }
+
+}
+
+.text-editor ul {
+  list-style-type: disc;
+}
+
+.text-editor ol {
+  list-style-type: number;
 }
 
 /* responsive code */

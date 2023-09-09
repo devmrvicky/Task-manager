@@ -1,6 +1,6 @@
 const getToolBtn = (btnName, command) => {
   const btn = document.createElement("button");
-  btn.className = `tool-btn hover:bg-[#EAF1F1] p-1 rounded`;
+  btn.className = `tool-btn p-1 rounded`;
   btn.title = btnName;
   btn.setAttribute("data-command", command);
   const iconWrapper = document.createElement("span");
@@ -103,16 +103,56 @@ const getToolBtn = (btnName, command) => {
   return btn;
 };
 
-const getFontList = () => {
-  const fonts = ["poppins"];
+// create option
+const createOptions = (type, optionValues) => {
   const select = document.createElement("select");
-  select.className = `bg-[#F7F7FA] p-1`;
-  for (let font of fonts) {
+  select.className = `${type} bg-[#F7F7FA] p-1 text-sm`;
+  for (let opt of optionValues) {
     let option = document.createElement("option");
-    option.appendChild(document.createTextNode(font));
-    select.insertAdjacentElement("afterbegin", option);
+    option.appendChild(document.createTextNode(opt));
+    select.insertAdjacentElement("beforeend", option);
   }
   return select;
+};
+
+const getFontList = () => {
+  const fonts = [
+    "poppins",
+    "Arial, sans-serif",
+    "Times New Roman, serif",
+    "Helvetica, sans-serif",
+    "Courier New, monospace",
+    "Georgia, serif",
+    "Verdana, sans-serif",
+    "Comic Sans MS, cursive",
+    "Palatino Linotype, serif",
+    "Trebuchet MS, sans-serif",
+    "Brush Script MT, cursive",
+    "Roboto, sans-serif", // Modern and clean
+    "Open Sans, sans-serif", // Easy to read
+    "Lato, sans-serif", // Elegant and versatile
+    "Montserrat, sans-serif", // Stylish and professional
+    "Raleway, sans-serif", // Sleek and minimal
+    "Ubuntu, sans-serif", // Humanist and friendly
+    "Cabin, sans-serif", // Geometric and legible
+    "Nunito, sans-serif", // Rounded and warm
+    "Oswald, sans-serif", // Bold and condensed
+    "Crimson Text, serif", // Traditional and elegant
+  ];
+  return createOptions("font-names", fonts);
+};
+
+const getHeadings = () => {
+  const headingLists = [
+    "Paragraph",
+    "Heading 1",
+    "Heading 2",
+    "Heading 3",
+    "Heading 4",
+    "Heading 5",
+    "Heading 6",
+  ];
+  return createOptions("headings", headingLists);
 };
 
 const getFontSizeLists = () => {
@@ -156,7 +196,8 @@ export const getToolBox = () => {
 
   const fontsOptions = getFontList();
   const fontSizeList = getFontSizeLists();
-  fragment.append(fontsOptions, fontSizeList);
+  const headingLists = getHeadings();
+  fragment.append(fontsOptions, fontSizeList, headingLists);
 
   const fontAlignment = document.createElement("div");
   fontAlignment.className = btnsGroupClass + " font-alignment";
@@ -169,15 +210,15 @@ export const getToolBox = () => {
 
   const fontIndent = document.createElement("div");
   fontIndent.className = btnsGroupClass + " font-indent";
-  const decreaseIndentBtn = getToolBtn("decrease indent");
-  const increaseIndentBtn = getToolBtn("increase indent");
+  const decreaseIndentBtn = getToolBtn("decrease indent", "outdent");
+  const increaseIndentBtn = getToolBtn("increase indent", "indent");
   fontIndent.append(decreaseIndentBtn, increaseIndentBtn);
   fragment.appendChild(fontIndent);
 
   const fontList = document.createElement("div");
-  fontList.className = btnsGroupClass + "list";
-  const numberedListBtn = getToolBtn("numbered list");
-  const bulletListBtn = getToolBtn("bullet list");
+  fontList.className = btnsGroupClass + " list";
+  const numberedListBtn = getToolBtn("numbered list", "insertOrderedList");
+  const bulletListBtn = getToolBtn("bullet list", "insertUnorderedList");
   const checkedListBtn = getToolBtn("checked list");
   fontList.append(numberedListBtn, bulletListBtn, checkedListBtn);
   fragment.appendChild(fontList);

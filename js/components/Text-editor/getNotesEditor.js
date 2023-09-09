@@ -7,9 +7,9 @@ const executeCommand = (command, defaultUi, value) => {
   document.execCommand(command, defaultUi, value);
 };
 
-const highlighter = (btns, clickedBtn) => {
+const highlighter = (btns, clickedBtn, isRemoval) => {
   for (let btn of btns) {
-    if (btn.classList.contains("active")) {
+    if (btn.classList.contains("active") && !isRemoval) {
       continue;
     }
     btn.classList.remove("active");
@@ -58,8 +58,46 @@ export const getNotesEditor = () => {
     btn.addEventListener("click", () => {
       const command = btn.dataset.command;
       executeCommand(command, false, null);
-      highlighter(fontStyleBtns, btn);
+      highlighter(alignBtns, btn, true);
     });
+  });
+  const fontIndentation = toolBox.querySelectorAll(".font-indent button");
+  fontIndentation.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const command = btn.dataset.command;
+      executeCommand(command, false, null);
+    });
+  });
+  const undoRedo = toolBox.querySelectorAll(".undo-redo button");
+  undoRedo.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const command = btn.dataset.command;
+      executeCommand(command, false, null);
+    });
+  });
+  const fontList = toolBox.querySelectorAll(".list button");
+  fontList.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const command = btn.dataset.command;
+      executeCommand(command, false, null);
+      highlighter(fontList, btn, true);
+    });
+  });
+  const fontNames = toolBox.querySelector("select.font-names");
+  fontNames.addEventListener("change", (e) => {
+    const selectedFontFamily = e.currentTarget.value;
+    executeCommand("fontName", false, selectedFontFamily);
+  });
+  const headings = toolBox.querySelector("select.headings");
+  headings.addEventListener("change", (e) => {
+    let value = e.currentTarget.value;
+    let tag;
+    if (value === "Paragraph") {
+      tag = "P";
+    } else {
+      tag = value.replace("eading ", "");
+    }
+    executeCommand("formatBlock", false, tag);
   });
 
   return notesEditor;
