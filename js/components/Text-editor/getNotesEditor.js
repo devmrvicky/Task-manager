@@ -118,11 +118,58 @@ export const getNotesEditor = () => {
     executeCommand("formatBlock", false, tag);
   });
 
-  // const currentUser = users.find((user) => user.current_user);
+  let notesListItems = editorSideBar.querySelectorAll(".task-lists li");
+  notesListItems.forEach((list) => {
+    list.className =
+      "text-sm hover:bg-zinc-100 flex items-center gap-3 p-2 pl-6";
+    list.addEventListener("click", (e) => {
+      editorSideBar.classList.remove("toggle-side-bar");
+      const id = e.currentTarget.dataset.fileId;
+      const notes = getCurrentUser().user_notes;
+      const note = notes.find((n) => n.id === id);
+      console.log(note);
+      const notesElem = noteWritingArea.querySelector(".writing-area");
+      notesElem.innerHTML = note.note_body;
+      notesElem.setAttribute("data-note-title", note.title);
+    });
+  });
+
+  const updateNotes = (note) => {
+    const currentUser = getCurrentUser();
+    let updatedNotesList = currentUser.user_notes || [];
+    updatedNotesList = [note, ...updatedNotesList];
+    currentUser.user_notes = updatedNotesList;
+    let filteredUsers = users.filter((user) => user.id !== currentUser.id);
+    const updatedUsers = getInsertedItemOnSameIndex(currentUser, filteredUsers);
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    reRenderPages(notesEditor);
+  };
 
   const saveNotes = () => {
     const currentUser = getCurrentUser();
     const notesElem = noteWritingArea.querySelector(".writing-area");
+    const exitingTitle = notesElem.dataset.noteTitle;
+    if (exitingTitle) {
+      let note = currentUser.user_notes.find(
+        (note) => note.title === exitingTitle
+      );
+      note.note_body = notesElem.innerHTML;
+      let filteredNotes = currentUser.user_notes.filter(
+        (n) => n.id !== note.id
+      );
+      currentUser.user_notes = [note, ...filteredNotes];
+      let filteredUsers = users.filter((user) => user.id !== currentUser.id);
+      const updatedUsers = getInsertedItemOnSameIndex(
+        currentUser,
+        filteredUsers
+      );
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
+      // reRenderPages(notesEditor);
+      return;
+    }
+    // if (isSaved) {
+    // }
+    // isSaved = true;
     const title = getTitle();
     const notesId = "note_" + (getNotesId() + 1);
     const timeObj = getTimeObj();
@@ -139,13 +186,8 @@ export const getNotesEditor = () => {
       history,
       tags
     );
-    let updatedNotesList = currentUser.user_notes || [];
-    updatedNotesList = [newNotes, ...updatedNotesList];
-    currentUser.user_notes = updatedNotesList;
-    let filteredUsers = users.filter((user) => user.id !== currentUser.id);
-    const updatedUsers = getInsertedItemOnSameIndex(currentUser, filteredUsers);
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-    reRenderPages(notesEditor);
+    notesElem.setAttribute("data-note-title", title);
+    updateNotes(newNotes);
   };
 
   const saveNoteBtns = notesEditor.querySelectorAll(".save-btn");
