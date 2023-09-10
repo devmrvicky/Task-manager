@@ -1,5 +1,7 @@
-import allTasks from "../../main";
+import allTasks, { getUsersFromLocalStorage } from "../../main";
 import { getNotesList } from "../notes/getNotesList";
+import { getCurrentUser } from "./getTextEditor";
+import { showNotesListItems } from "../notes/showNotesListItems";
 
 export const getTaskList = (tasks, taskListElem, isFromFolder = false) => {
   const folderNameHeading = document.querySelector(".folder-name-heading");
@@ -78,12 +80,7 @@ export const getTextEditorSideBar = (editorType) => {
   if (editorType === "tasks-editor") {
     getTaskList(allTasks.recentTask, recentTaskList);
   } else {
-    for (let note of allTasks.notes) {
-      const fragment = document.createDocumentFragment();
-      let li = getNotesList(note);
-      fragment.appendChild(li);
-      recentTaskList.append(fragment);
-    }
+    showNotesListItems(recentTaskList);
   }
 
   // append all created element to its parent element

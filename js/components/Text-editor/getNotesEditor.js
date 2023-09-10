@@ -1,5 +1,8 @@
+import allTasks, { users } from "../../main";
+import { getInsertedItemOnSameIndex } from "../getInsertedItemOnSameIndex";
 import { getEditorFooter } from "./getEditorFooter";
 import { getNotesWritingArea } from "./getNotesWritingArea";
+import { getTimeObj, reRenderPages } from "./getTextEditor";
 import { getTextEditorMoreOpt } from "./getTextEditorMoreOpt";
 import { getTextEditorSideBar } from "./getTextEditorSideBar";
 import { getToolBox } from "./getToolBox";
@@ -21,6 +24,7 @@ const highlighter = (btns, clickedBtn, isRemoval) => {
 export const getNotesEditor = () => {
   const notesEditor = document.createElement("div");
   notesEditor.className = `text-editor notes-text-editor bg-white border w-full flex flex-col`;
+  notesEditor.id = "notes-editor";
   const fragment = document.createDocumentFragment();
 
   const editorSideBar = getTextEditorSideBar("notes-editor");
@@ -100,5 +104,68 @@ export const getNotesEditor = () => {
     executeCommand("formatBlock", false, tag);
   });
 
+  const currentUser = users.find((user) => user.current_user);
+
+  const getNotesId = () => {
+    let existingNotes = [];
+    if (currentUser.user_notes) {
+      existingNotes = currentUser.user_notes;
+    }
+    return existingNotes.length;
+  };
+
+  const getTitle = () => {
+    const makeTitle = `untitled_note_${getNotesId() + 1}`;
+    return makeTitle;
+  };
+
+  const saveNotes = () => {
+    // const pageName = notesEditor.parentElement.dataset.pageName;
+    // console.log(pageName);
+    const notesElem = noteWritingArea.querySelector(".writing-area");
+    const title = getTitle();
+    const notesId = "note_" + (getNotesId() + 1);
+    const timeObj = getTimeObj();
+    const history = {
+      date: `${timeObj.date}-${timeObj.month}-${timeObj.year}`,
+      time: `${timeObj.hour}:${timeObj.minute}`,
+    };
+    const tags = [];
+    const newNotes = new GetNewNote(
+      notesId,
+      title,
+      notesElem.innerHTML,
+      false,
+      history,
+      tags
+    );
+    let updatedNotesList = currentUser.user_notes || [];
+    updatedNotesList = [newNotes, ...updatedNotesList];
+    currentUser.user_notes = updatedNotesList;
+    let filteredUsers = users.filter((user) => user.id !== currentUser.id);
+    const updatedUsers = getInsertedItemOnSameIndex(currentUser, filteredUsers);
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    reRenderPages(notesEditor);
+  };
+
+  const saveNoteBtns = notesEditor.querySelectorAll(".save-btn");
+  saveNoteBtns.forEach((saveNoteBtn) => {
+    saveNoteBtn.addEventListener("click", () => {
+      saveNotes();
+    });
+  });
+
   return notesEditor;
 };
+
+class GetNewNote {
+  constructor(noteId, title, noteBody, isFolder, history, tags) {
+    this.uniqueId = Symbol();
+    this.id = noteId;
+    this.title = title;
+    this.note_body = noteBody;
+    this.folder = isFolder;
+    this.history = history;
+    this.tags = tags;
+  }
+}

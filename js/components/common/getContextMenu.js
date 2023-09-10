@@ -3,7 +3,7 @@ export const getContextMenu = (e) => {
   contextMenu?.remove();
   const ul = document.createElement("ul");
   ul.className =
-    "context-menu bg-white w-[100px] flex flex-col gap-2 p-1 border shadow absolute";
+    "context-menu bg-white w-[100px] flex flex-col gap-2 p-1 border shadow absolute z-20";
   const li = document.createElement("li");
   li.className = "flex w-full gap-2 items-center p-2 hover:bg-zinc-50 text-sm";
   li.innerHTML = `

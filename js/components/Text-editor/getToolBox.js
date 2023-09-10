@@ -179,6 +179,7 @@ export const getToolBox = () => {
   // save button
   const saveBtn = document.createElement("button");
   saveBtn.className = `tool-btn save-btn p-2 px-3 shadow rounded sticky left-0 z-30`;
+  saveBtn.title = "save notes";
   saveBtn.innerHTML = `
     <i class="fa-solid fa-floppy-disk"></i>
   `;

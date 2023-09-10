@@ -2,7 +2,7 @@ const fileOptList = () => {
   const optsContainer = document.createElement("div");
   optsContainer.className = `opts-container w-[200px] flex flex-col gap-2 bg-white shadow rounded absolute top-[32px] left-0 text-base scale-y-0 group-hover:scale-y-100 origin-top overflow-hidden invisible group-hover:visible p-2`;
   const saveOpt = document.createElement("div");
-  saveOpt.className = `flex w-full flex-1 items-center gap-2 px-2 py-1 hover:bg-[#EAF1F1] rounded`;
+  saveOpt.className = `save-btn flex w-full flex-1 items-center gap-2 px-2 py-1 hover:bg-[#EAF1F1] rounded`;
   saveOpt.innerHTML = `
     <i class="fa-solid fa-floppy-disk"></i>
     <span>save</span>

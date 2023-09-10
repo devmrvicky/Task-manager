@@ -1,8 +1,7 @@
 import allTasks, { allTags } from "../../main";
+import { getCurrentUser } from "../Text-editor/getTextEditor";
 
 export const getContentHead = (contentType) => {
-  const isContentTasks = contentType === "recent-tasks";
-
   const contentHead = document.createElement("div");
   contentHead.className = `content-head ${contentType}-head w-full flex items-center gap-3 text-[#719191] relative`;
   contentHead.innerHTML = `
@@ -15,7 +14,7 @@ export const getContentHead = (contentType) => {
     </select>
     <div class="more-opts ml-auto flex items-center gap-3">
     ${
-      !(allTasks.recentTask.length && isContentTasks)
+      !(allTasks.recentTask.length || getCurrentUser().user_notes.length)
         ? ``
         : `<button type="button" id="clear-all-items" class="flex items-center justify-center gap-2">
             <i class="fa-regular fa-trash-can"></i>

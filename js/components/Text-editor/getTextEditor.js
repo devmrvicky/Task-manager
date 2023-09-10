@@ -4,9 +4,11 @@ import allTasks, {
   users,
 } from "../../main.js";
 import { addDashboardElement } from "../../pages/dashboard.js";
+import { getNotesPage } from "../../pages/notes.js";
 import { getRecentTaskPage } from "../../pages/recentTask.js";
 import { getTextEditorMainArea } from "./getTextEditorMainArea.js";
 import { getTaskList, getTextEditorSideBar } from "./getTextEditorSideBar.js";
+import { showNotesListItems } from "../notes/showNotesListItems.js";
 
 let selectedObj;
 let isSelected = false;
@@ -16,12 +18,16 @@ let nestedTags = [];
 let tags = [];
 
 // re-render pages
-const reRenderPages = (textEditor) => {
+export const reRenderPages = (textEditor) => {
   getUsersFromLocalStorage();
   const tasksListElem = textEditor.querySelector(".task-lists");
   tasksListElem.innerHTML = "";
-  getTaskList(allTasks.recentTask, tasksListElem);
-  getActiveListElem(tasksListElem);
+  if (textEditor.id === "tasks-editor") {
+    getTaskList(allTasks.recentTask, tasksListElem);
+    getActiveListElem(tasksListElem);
+  } else {
+    showNotesListItems(tasksListElem);
+  }
   const pageName = textEditor.parentElement.dataset.pageName;
   if (pageName === "dashboard") {
     addDashboardElement();
@@ -29,6 +35,10 @@ const reRenderPages = (textEditor) => {
     taskManagerContent.innerHTML = "";
     const recentTaskPage = getRecentTaskPage();
     taskManagerContent.append(recentTaskPage);
+  } else if (pageName === "notes") {
+    taskManagerContent.innerHTML = "";
+    const notesPage = getNotesPage();
+    taskManagerContent.append(notesPage);
   }
 };
 
@@ -116,6 +126,7 @@ export const getTaskEditor = () => {
   const textEditor = document.createElement("div");
   textEditor.className =
     "text-editor border bg-white w-full max-w-[1200px] max-h-[800px] h-[90vh] rounded-xl flex relative overflow-hidden shadow";
+  textEditor.id = "tasks-editor";
   const editorSideBar = getTextEditorSideBar("tasks-editor");
   const editorMainArea = getTextEditorMainArea();
 
@@ -316,4 +327,4 @@ function getActiveListElem(listsElem) {
   });
 }
 
-export { updateUsersTasksList };
+export { updateUsersTasksList, getTimeObj, getCurrentUser };

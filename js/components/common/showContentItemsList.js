@@ -1,5 +1,6 @@
 import allTasks from "../../main";
 import { updateUsersTasksList } from "../Text-editor/getTextEditor";
+import { getInsertedItemOnSameIndex } from "../getInsertedItemOnSameIndex";
 import { getNotesList } from "../notes/getNotesList";
 import { getRecentTaskList } from "../recent-tasks/getRecentTaskList";
 import { showUpdatedTasks } from "../recent-tasks/showUpdatedTasks";

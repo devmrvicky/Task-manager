@@ -1,3 +1,4 @@
+import { showNotesListItems } from "../components/notes/showNotesListItems.js";
 import { appendNewPage } from "../components/appendNewPage.js";
 import {
   allFolders,
@@ -137,7 +138,8 @@ const getStatisticSection = () => {
 const getNoteSection = () => {
   const noteSection = getSectionElem("notes");
   const notesLists = document.createElement("ul");
-  insertEmptyMessage(false, notesLists);
+  notesLists.className = `flex gap-2 flex-col`;
+  showNotesListItems(notesLists);
   noteSection.append(notesLists);
   return noteSection;
 };

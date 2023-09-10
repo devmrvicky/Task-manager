@@ -99,14 +99,14 @@ export const getContentPage = (pageName, items) => {
           const currentUser = users.find((user) => user.current_user);
           // update user tasks
           items = [];
+          const contentItemListElem = document.querySelector(".main-task-list");
           if (pageName === "recent-tasks") {
             currentUser.user_task = items;
             // update user
-            const contentItemListElem =
-              document.querySelector(".main-task-list");
             showContentItemsList(currentUser.user_task, contentItemListElem);
           } else {
-            // note
+            currentUser.user_notes = items;
+            showContentItemsList(currentUser.user_notes, contentItemListElem);
           }
 
           const filteredUsers = getInsertedItemOnSameIndex(currentUser, users);
