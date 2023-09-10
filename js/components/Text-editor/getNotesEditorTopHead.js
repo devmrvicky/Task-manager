@@ -39,7 +39,7 @@ const getTextEditorMoreOpt = () => {
   return editorMoreOpts;
 };
 
-const getNoteTitleHeading = (titleHeading) => {
+export const getNoteTitleHeading = (titleHeading) => {
   if (!titleHeading) {
     titleHeading = getTitle();
   }

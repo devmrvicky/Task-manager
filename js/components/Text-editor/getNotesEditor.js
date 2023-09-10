@@ -1,9 +1,12 @@
-import allTasks, { users } from "../../main";
+import { users } from "../../main";
 import { getInsertedItemOnSameIndex } from "../getInsertedItemOnSameIndex";
 import { getEditorFooter } from "./getEditorFooter";
 import { getNotesWritingArea } from "./getNotesWritingArea";
 import { getCurrentUser, getTimeObj, reRenderPages } from "./getTextEditor";
-import { getNotesEditorTopHead } from "./getNotesEditorTopHead";
+import {
+  getNoteTitleHeading,
+  getNotesEditorTopHead,
+} from "./getNotesEditorTopHead";
 import { getTextEditorSideBar } from "./getTextEditorSideBar";
 import { getToolBox } from "./getToolBox";
 
@@ -127,10 +130,13 @@ export const getNotesEditor = () => {
       const id = e.currentTarget.dataset.fileId;
       const notes = getCurrentUser().user_notes;
       const note = notes.find((n) => n.id === id);
-      console.log(note);
       const notesElem = noteWritingArea.querySelector(".writing-area");
       notesElem.innerHTML = note.note_body;
       notesElem.setAttribute("data-note-title", note.title);
+
+      // replace title on head
+      const titleElem = getNoteTitleHeading(note.title);
+      editorTopHead.querySelector(".title-heading").replaceWith(titleElem);
     });
   });
 
@@ -146,6 +152,7 @@ export const getNotesEditor = () => {
   };
 
   const saveNotes = () => {
+    const titleElem = editorTopHead.querySelector(".title-heading");
     const currentUser = getCurrentUser();
     const notesElem = noteWritingArea.querySelector(".writing-area");
     const exitingTitle = notesElem.dataset.noteTitle;
@@ -154,6 +161,7 @@ export const getNotesEditor = () => {
         (note) => note.title === exitingTitle
       );
       note.note_body = notesElem.innerHTML;
+      note.title = titleElem.textContent;
       let filteredNotes = currentUser.user_notes.filter(
         (n) => n.id !== note.id
       );
@@ -167,10 +175,7 @@ export const getNotesEditor = () => {
       // reRenderPages(notesEditor);
       return;
     }
-    // if (isSaved) {
-    // }
-    // isSaved = true;
-    const title = getTitle();
+    const title = titleElem.textContent || getTitle();
     const notesId = "note_" + (getNotesId() + 1);
     const timeObj = getTimeObj();
     const history = {
