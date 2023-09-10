@@ -195,6 +195,7 @@ const handleSignupFormSubmit = (e) => {
   newUser.user_password = userPassword;
   newUser.user_hide = false;
   newUser.user_task = [];
+  newUser.user_notes = [];
   login(newUser, false);
   showAllLoginUsers();
 };
