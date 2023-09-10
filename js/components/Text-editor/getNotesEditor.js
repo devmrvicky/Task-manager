@@ -2,8 +2,8 @@ import allTasks, { users } from "../../main";
 import { getInsertedItemOnSameIndex } from "../getInsertedItemOnSameIndex";
 import { getEditorFooter } from "./getEditorFooter";
 import { getNotesWritingArea } from "./getNotesWritingArea";
-import { getTimeObj, reRenderPages } from "./getTextEditor";
-import { getTextEditorMoreOpt } from "./getTextEditorMoreOpt";
+import { getCurrentUser, getTimeObj, reRenderPages } from "./getTextEditor";
+import { getNotesEditorTopHead } from "./getNotesEditorTopHead";
 import { getTextEditorSideBar } from "./getTextEditorSideBar";
 import { getToolBox } from "./getToolBox";
 
@@ -21,6 +21,20 @@ const highlighter = (btns, clickedBtn, isRemoval) => {
   clickedBtn.classList.toggle("active");
 };
 
+const getNotesId = () => {
+  const currentUser = getCurrentUser();
+  let existingNotes = [];
+  if (currentUser.user_notes) {
+    existingNotes = currentUser.user_notes;
+  }
+  return existingNotes.length;
+};
+
+const getTitle = () => {
+  const makeTitle = `untitled_note_${getNotesId() + 1}`;
+  return makeTitle;
+};
+
 export const getNotesEditor = () => {
   const notesEditor = document.createElement("div");
   notesEditor.className = `text-editor notes-text-editor bg-white border w-full flex flex-col`;
@@ -36,7 +50,7 @@ export const getNotesEditor = () => {
     editorSideBar.classList.toggle("toggle-side-bar");
   });
 
-  const editorTopHead = getTextEditorMoreOpt();
+  const editorTopHead = getNotesEditorTopHead();
   fragment.appendChild(editorTopHead);
   const toolBox = getToolBox();
   fragment.appendChild(toolBox);
@@ -104,24 +118,10 @@ export const getNotesEditor = () => {
     executeCommand("formatBlock", false, tag);
   });
 
-  const currentUser = users.find((user) => user.current_user);
-
-  const getNotesId = () => {
-    let existingNotes = [];
-    if (currentUser.user_notes) {
-      existingNotes = currentUser.user_notes;
-    }
-    return existingNotes.length;
-  };
-
-  const getTitle = () => {
-    const makeTitle = `untitled_note_${getNotesId() + 1}`;
-    return makeTitle;
-  };
+  // const currentUser = users.find((user) => user.current_user);
 
   const saveNotes = () => {
-    // const pageName = notesEditor.parentElement.dataset.pageName;
-    // console.log(pageName);
+    const currentUser = getCurrentUser();
     const notesElem = noteWritingArea.querySelector(".writing-area");
     const title = getTitle();
     const notesId = "note_" + (getNotesId() + 1);
@@ -169,3 +169,5 @@ class GetNewNote {
     this.tags = tags;
   }
 }
+
+export { getTitle };

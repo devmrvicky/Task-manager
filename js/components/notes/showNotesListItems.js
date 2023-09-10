@@ -6,7 +6,6 @@ import { getContextMenu } from "../common/getContextMenu";
 export const showNotesListItems = (recentTaskList) => {
   getUsersFromLocalStorage();
   const notes = getCurrentUser().user_notes || [];
-  console.log(users);
   for (let note of notes) {
     const fragment = document.createDocumentFragment();
     let li = getNotesList(note);
