@@ -201,16 +201,12 @@ section ul::-webkit-scrollbar,
   transform: translateX(0) rotate(180deg);
 }
 
-/* .text-editor .writing-area {
-  all: unset !important;
-} */
-
-.text-editor button.active {
+.tool-box__wrapper button.active {
   background-color: #EAF1F1;
   transition: all .1s ease-in-out;
 }
 
-.text-editor button:active {
+.tool-box__wrapper button:active {
   background-color: #EAF1F1;
   transform: scale(.7);
 }

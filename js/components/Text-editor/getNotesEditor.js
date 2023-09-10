@@ -20,7 +20,7 @@ const highlighter = (btns, clickedBtn, isRemoval) => {
 
 export const getNotesEditor = () => {
   const notesEditor = document.createElement("div");
-  notesEditor.className = `text-editor bg-white border w-full flex flex-col`;
+  notesEditor.className = `text-editor notes-text-editor bg-white border w-full flex flex-col`;
   const fragment = document.createDocumentFragment();
 
   const editorSideBar = getTextEditorSideBar("notes-editor");
