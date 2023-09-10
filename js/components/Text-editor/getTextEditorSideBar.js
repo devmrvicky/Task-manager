@@ -1,6 +1,4 @@
-import allTasks, { getUsersFromLocalStorage } from "../../main";
-import { getNotesList } from "../notes/getNotesList";
-import { getCurrentUser } from "./getTextEditor";
+import allTasks from "../../main";
 import { showNotesListItems } from "../notes/showNotesListItems";
 
 export const getTaskList = (tasks, taskListElem, isFromFolder = false) => {
