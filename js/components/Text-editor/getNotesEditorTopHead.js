@@ -1,3 +1,4 @@
+import { getTraceIcon } from "../edit-user/openUserEditPage";
 import { getTitle } from "./getNotesEditor";
 
 const fileOptList = () => {
@@ -47,6 +48,10 @@ export const getNoteTitleHeading = (titleHeading) => {
   titleHeadingElem.className = `title-heading flex items-center border-b outline-none bg-white absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]`;
   titleHeadingElem.setAttribute("contenteditable", "true");
   titleHeadingElem.appendChild(document.createTextNode(titleHeading));
+
+  const traceIcon = getTraceIcon("new document");
+  titleHeadingElem.insertAdjacentElement("afterbegin", traceIcon);
+
   return titleHeadingElem;
 };
 

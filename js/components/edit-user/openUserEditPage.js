@@ -21,6 +21,24 @@ const uploadImg = (imgSrc, appendElem) => {
   };
 };
 
+// trace icon
+const getTraceIcon = (message) => {
+  const div = document.createElement("div");
+  div.className = `trace-icon absolute bottom-[3px] left-[-20px] cursor-pointer`;
+  div.title = message;
+  div.innerHTML = `
+        <i class="fa-solid fa-circle text-xs text-zinc-300"></i>
+      `;
+  return div;
+};
+
+const removeAllTraceChangesIcon = (pageElem) => {
+  const allTraceChangesIcons = pageElem.querySelectorAll(".trace-icon");
+  allTraceChangesIcons.forEach((icon) => {
+    icon.remove();
+  });
+};
+
 export const openUserEditPage = () => {
   dialogBoxElem.close();
   getUsersFromLocalStorage();
@@ -39,17 +57,6 @@ export const openUserEditPage = () => {
   fileInputElem?.addEventListener("change", () => {
     uploadImg(fileInputElem, imgContainer);
   });
-
-  // trace icon
-  const getTraceIcon = (message) => {
-    const div = document.createElement("div");
-    div.className = `trace-icon absolute bottom-[3px] left-[-20px] cursor-pointer`;
-    div.title = message;
-    div.innerHTML = `
-        <i class="fa-solid fa-circle text-xs text-zinc-300"></i>
-      `;
-    return div;
-  };
 
   // trace changes
   const traceChanges = (updatedValue, compareField, element) => {
@@ -202,14 +209,6 @@ export const openUserEditPage = () => {
     });
   });
 
-  const removeAllTraceChangesIcon = () => {
-    const allTraceChangesIcons =
-      editPageContainer.querySelectorAll(".trace-icon");
-    allTraceChangesIcons.forEach((icon) => {
-      icon.remove();
-    });
-  };
-
   // restore all unsaved changes
   const restoreChanges = () => {
     getUsersFromLocalStorage();
@@ -231,11 +230,11 @@ export const openUserEditPage = () => {
     }`;
     ctrlBtnsContainer.classList.add("translate-x-[100%]");
     newUpdatedUser = { ...user };
-    removeAllTraceChangesIcon();
+    removeAllTraceChangesIcon(editPageContainer);
   };
 
   function saveChanges() {
-    removeAllTraceChangesIcon();
+    removeAllTraceChangesIcon(editPageContainer);
     console.log(newUpdatedUser);
     user = { ...user, ...newUpdatedUser };
     const filteredUsers = users.filter(
@@ -259,4 +258,4 @@ export const openUserEditPage = () => {
   mainApp.append(editPageContainer);
 };
 
-export { uploadImg };
+export { uploadImg, getTraceIcon, removeAllTraceChangesIcon };

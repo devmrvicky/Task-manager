@@ -9,6 +9,10 @@ import {
 } from "./getNotesEditorTopHead";
 import { getTextEditorSideBar } from "./getTextEditorSideBar";
 import { getToolBox } from "./getToolBox";
+import {
+  getTraceIcon,
+  removeAllTraceChangesIcon,
+} from "../edit-user/openUserEditPage";
 
 const executeCommand = (command, defaultUi, value) => {
   document.execCommand(command, defaultUi, value);
@@ -121,6 +125,20 @@ export const getNotesEditor = () => {
     executeCommand("formatBlock", false, tag);
   });
 
+  const titleHeadingElem = editorTopHead.querySelector(".title-heading");
+  let isSaved = false;
+  // trace changes check if saved or unsaved
+  const traceIsSaved = (isSaved, titleElem) => {
+    if (isSaved) {
+      const traceIcon = getTraceIcon("You have changed in note");
+      if (titleElem.children.length) return;
+      titleElem.insertAdjacentElement("afterbegin", traceIcon);
+    } else {
+      removeAllTraceChangesIcon(titleElem);
+    }
+  };
+
+  const notesElem = noteWritingArea.querySelector(".writing-area");
   let notesListItems = editorSideBar.querySelectorAll(".task-lists li");
   notesListItems.forEach((list) => {
     list.className =
@@ -130,13 +148,24 @@ export const getNotesEditor = () => {
       const id = e.currentTarget.dataset.fileId;
       const notes = getCurrentUser().user_notes;
       const note = notes.find((n) => n.id === id);
-      const notesElem = noteWritingArea.querySelector(".writing-area");
       notesElem.innerHTML = note.note_body;
       notesElem.setAttribute("data-note-title", note.title);
-
       // replace title on head
       const titleElem = getNoteTitleHeading(note.title);
       editorTopHead.querySelector(".title-heading").replaceWith(titleElem);
+      // remove trace icon if exist
+      removeAllTraceChangesIcon(titleElem);
+
+      // trace change in writing area
+      notesElem.addEventListener("input", () => {
+        isSaved = notesElem.innerHTML !== note.note_body;
+        traceIsSaved(isSaved, titleElem);
+      });
+      // trace changed in title heading
+      titleElem.addEventListener("input", () => {
+        isSaved = titleElem.textContent !== note.title;
+        traceIsSaved(isSaved, titleElem);
+      });
     });
   });
 
@@ -152,9 +181,9 @@ export const getNotesEditor = () => {
   };
 
   const saveNotes = () => {
+    // removeAllTraceChangesIcon(notesEditor);
     const titleElem = editorTopHead.querySelector(".title-heading");
     const currentUser = getCurrentUser();
-    const notesElem = noteWritingArea.querySelector(".writing-area");
     const exitingTitle = notesElem.dataset.noteTitle;
     if (exitingTitle) {
       let note = currentUser.user_notes.find(
@@ -172,6 +201,19 @@ export const getNotesEditor = () => {
         filteredUsers
       );
       localStorage.setItem("users", JSON.stringify(updatedUsers));
+      notesElem.setAttribute("data-note-title", note.title);
+      // trace change in writing area
+      notesElem.addEventListener("input", () => {
+        isSaved = notesElem.innerHTML !== note.note_body;
+        traceIsSaved(isSaved, titleElem);
+      });
+      // trace changed in title heading
+      titleElem.addEventListener("input", () => {
+        isSaved = titleElem.textContent !== note.title;
+        traceIsSaved(isSaved, titleElem);
+      });
+      isSaved = true;
+      removeAllTraceChangesIcon(titleElem);
       // reRenderPages(notesEditor);
       return;
     }
@@ -193,6 +235,18 @@ export const getNotesEditor = () => {
     );
     notesElem.setAttribute("data-note-title", title);
     updateNotes(newNotes);
+    // trace change in writing area
+    notesElem.addEventListener("input", () => {
+      isSaved = notesElem.innerHTML !== note.note_body;
+      traceIsSaved(isSaved, titleElem);
+    });
+    // trace changed in title heading
+    titleElem.addEventListener("input", () => {
+      isSaved = titleElem.textContent !== note.title;
+      traceIsSaved(isSaved, titleElem);
+    });
+    isSaved = true;
+    removeAllTraceChangesIcon(titleElem);
   };
 
   const saveNoteBtns = notesEditor.querySelectorAll(".save-btn");
