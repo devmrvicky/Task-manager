@@ -188,6 +188,9 @@ section ul::-webkit-scrollbar,
   user-select: none;
 }
 
+.open-text-editor {
+  width: 50px !important;
+}
 
 .text-editor-side-bar.toggle-side-bar {
   transform: translateX(0%) !important;
