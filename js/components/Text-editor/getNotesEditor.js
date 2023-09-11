@@ -237,8 +237,9 @@ export const getNotesEditor = () => {
     updateNotes(newNotes);
     // trace change in writing area
     notesElem.addEventListener("input", () => {
-      isSaved = notesElem.innerHTML !== note.note_body;
-      traceIsSaved(isSaved, titleElem);
+      console.log(newNotes);
+      // isSaved = notesElem.innerHTML !== note.note_body;
+      // traceIsSaved(isSaved, titleElem);
     });
     // trace changed in title heading
     titleElem.addEventListener("input", () => {

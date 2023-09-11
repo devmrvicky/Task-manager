@@ -345,6 +345,54 @@ section ul::-webkit-scrollbar,
   }
 }
 
+@media screen and (max-width: 700px) {
+
+  .editor-top-head.toggle-more-opts {
+    height: 90px;
+    align-items: flex-end !important;
+  }
+
+  .editor-more-opts {
+    padding-left: 10px !important;
+    visibility: hidden;
+    transition: unset !important;
+  }
+
+  .editor-top-head.toggle-more-opts .editor-more-opts {
+    visibility: visible;
+  }
+
+  .editor-top-head.toggle-more-opts .more-opts-toggle-btn {
+    transform: rotate(180deg);
+  }
+
+  .title-heading {
+    top: 20px !important
+  }
+
+  .close-editor {
+    margin-left: 10px !important;
+  }
+
+  .close-editor,
+  .more-opts-toggle-btn {
+    align-self: flex-start;
+    min-width: 30px !important;
+    height: 30px !important;
+    margin-top: 5px;
+  }
+
+  .close-editor,
+  .more-opts-toggle-btn {
+    font-size: 1rem !important;
+  }
+
+  .more-opts-toggle-btn {
+    display: block !important;
+    margin-left: auto;
+  }
+}
+
 @media screen and (max-width: 550px) {
   .main-task-list .tags {
     display: none !important;
@@ -400,6 +448,10 @@ section ul::-webkit-scrollbar,
 @media screen and (max-width: 500px) {
   .task-manager-top-bar {
     padding-left: 2px !important;
+  }
+
+  .text-editor footer {
+    display: none !important;
   }
 }
 

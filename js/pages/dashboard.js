@@ -8,6 +8,7 @@ import {
   taskManagerContent,
   updateNavigationList,
 } from "../main.js";
+import { getCurrentUser } from "../components/Text-editor/getTextEditor.js";
 const logo = document.querySelector(".logo");
 export const mainTitle = document.querySelector(".main-title");
 
@@ -138,7 +139,8 @@ const getStatisticSection = () => {
 const getNoteSection = () => {
   const noteSection = getSectionElem("notes");
   const notesLists = document.createElement("ul");
-  notesLists.className = `flex gap-2 flex-col`;
+  notesLists.className = `flex gap-2 flex-col my-4`;
+  insertEmptyMessage(getCurrentUser().user_notes, notesLists);
   showNotesListItems(notesLists);
   noteSection.append(notesLists);
   return noteSection;

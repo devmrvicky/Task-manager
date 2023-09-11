@@ -3,15 +3,25 @@ import { getTitle } from "./getNotesEditor";
 
 const fileOptList = () => {
   const optsContainer = document.createElement("div");
-  optsContainer.className = `opts-container w-[200px] flex flex-col gap-2 bg-white shadow rounded absolute top-[32px] left-0 text-base scale-y-0 group-hover:scale-y-100 origin-top overflow-hidden invisible group-hover:visible p-2`;
+  optsContainer.className = `opts-container w-[200px] flex flex-col gap-2 bg-white shadow rounded absolute top-[32px] left-0 z-40 text-base scale-y-0 group-hover:scale-y-100 origin-top overflow-hidden invisible group-hover:visible p-2 border`;
+  const fragment = document.createDocumentFragment();
+  const classes = ` flex w-full flex-1 items-center gap-2 px-2 py-1 hover:bg-[#EAF1F1] rounded text-sm`;
+  const newPage = document.createElement("div");
+  newPage.className = `create-new-page ${classes}`;
+  newPage.innerHTML = `
+    <i class="fa-solid fa-file-circle-plus"></i>
+    <span>new page</span>
+    <span class="ml-auto text-zinc-500 text-xs">Ctrl + n</span>
+  `;
   const saveOpt = document.createElement("div");
-  saveOpt.className = `save-btn flex w-full flex-1 items-center gap-2 px-2 py-1 hover:bg-[#EAF1F1] rounded`;
+  saveOpt.className = `save-btn ${classes}`;
   saveOpt.innerHTML = `
     <i class="fa-solid fa-floppy-disk"></i>
     <span>save</span>
-    <span class="ml-auto text-zinc-500 text-sm">Ctrl + s</span>
+    <span class="ml-auto text-zinc-500 text-xs">Ctrl + s</span>
   `;
-  optsContainer.append(saveOpt);
+  fragment.append(newPage, saveOpt);
+  optsContainer.append(fragment);
   return optsContainer;
 };
 
@@ -60,9 +70,21 @@ export const getNotesEditorTopHead = () => {
   editorTopHead.className = `editor-top-head flex items-center justify-between p-1 relative`;
   const fragment = document.createDocumentFragment();
   const closeBtn = document.createElement("div");
-  closeBtn.className = `close-editor ml-auto border rounded-full min-w-[40px] h-[40px] hover:bg-zinc-200 flex items-center justify-center text-xl cursor-pointer`;
+  const btnClasses = `border rounded-full min-w-[40px] h-[40px] hover:bg-zinc-200 flex items-center justify-center text-xl cursor-pointer`;
+  closeBtn.className = `close-editor ml-auto ${btnClasses}`;
   closeBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
-  fragment.append(getTextEditorMoreOpt(), getNoteTitleHeading(), closeBtn);
+  const moreOptsToggleBtn = document.createElement("button");
+  moreOptsToggleBtn.className = `more-opts-toggle-btn hidden ${btnClasses}`;
+  moreOptsToggleBtn.innerHTML = `<i class="fa-solid fa-angle-down"></i>`;
+  moreOptsToggleBtn.addEventListener("click", () => {
+    editorTopHead.classList.toggle("toggle-more-opts");
+  });
+  fragment.append(
+    getTextEditorMoreOpt(),
+    getNoteTitleHeading(),
+    moreOptsToggleBtn,
+    closeBtn
+  );
   editorTopHead.append(fragment);
   return editorTopHead;
 };
