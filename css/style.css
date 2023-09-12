@@ -121,7 +121,8 @@ input[type="aria-hidden"] {
   grid-template-columns: repeat(7, 1fr);
 }
 
-.task-item.active {
+.task-item.active,
+.individual-note-item.active {
   background-color: #fff;
 }
 

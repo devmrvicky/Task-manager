@@ -20,7 +20,7 @@ const getSectionElem = (sectionName) => {
   // const sectionHead = getSectionElem("Recent task");
   const sectionHead = document.createElement("div");
   sectionHead.className =
-    "section-head flex justify-between items-center sticky top-0 py-3 px-5 md:m-0 m-2 bg-white rounded-3xl";
+    "section-head flex justify-between items-center sticky top-0 py-3 px-5 md:m-0 m-2 bg-white rounded-3xl z-20";
   const headTitleElem = document.createElement("h3");
   headTitleElem.textContent =
     sectionName[0].toUpperCase() + sectionName.slice(1);
