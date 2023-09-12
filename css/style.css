@@ -8,7 +8,8 @@
   transition: all .2s ease;
 }
 
-.writing-area {
+.writing-area,
+.individual-page {
   -webkit-user-select: text;
   user-select: text;
 }
@@ -137,6 +138,33 @@ section ul::-webkit-scrollbar,
   display: none;
 }
 
+.task-area section,
+.task-manager-content>div>:is(ul, div) {
+  animation: fade .5s ease-in-out forwards alternate;
+}
+
+@keyframes fade {
+  0% {
+    transform: scale(.99);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.content-head.hide-unwanted-things {
+
+  .tags,
+  .layouts,
+  .sort {
+    display: none;
+  }
+
+}
+
 .text-editor {
   animation: openEditor .5s ease-in-out forwards alternate;
 }
@@ -214,13 +242,15 @@ section ul::-webkit-scrollbar,
   transform: scale(.7);
 }
 
-.writing-area :is(ul, ol) {
+.writing-area :is(ul, ol),
+.individual-page :is(ul, ol) {
   /* all: unset !important; */
   list-style-type: unset;
   padding-left: 40px !important;
 }
 
-.writing-area {
+.writing-area,
+.individual-page {
   & h1 {
     font-size: 36px;
     font-weight: 700;

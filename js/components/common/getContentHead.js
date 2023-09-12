@@ -29,7 +29,7 @@ export const getContentHead = (contentType) => {
         <i class="fa-solid fa-bars"></i>
       </button>
       </div>
-      <div class="flex items-center gap-4 cursor-default hover:bg-white/50 px-4 py-2 rounded-full sm:text-base text-xs">
+      <div class="sort flex items-center gap-4 cursor-default hover:bg-white/50 px-4 py-2 rounded-full sm:text-base text-xs">
         <span>Sort by</span>
         <i class="fa-solid fa-arrow-down-wide-short"></i>
       </div>

@@ -34,7 +34,7 @@ export const getContentPage = (pageName, items) => {
     pageName === "recent-tasks" ? `gap-4` : `gap-1`
   }`;
 
-  // by default show recent task list
+  // by default show recent task list or note list
   showContentItemsList(items, contentItemListElem, false, pageName);
 
   // show more options
