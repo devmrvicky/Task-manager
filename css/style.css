@@ -1,40 +1,10 @@
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  scroll-behavior: smooth;
-  -webkit-user-select: none;
-  user-select: none;
-  transition: all .2s ease;
-}
-
 .writing-area,
 .individual-page {
   -webkit-user-select: text;
   user-select: text;
 }
 
-body {
-  position: relative;
-}
 
-#app h1 {
-  padding-bottom: 0;
-}
-
-main#app {
-  width: 100%;
-  margin: 0;
-  /* margin-top: 50px; */
-  padding: 0 0 0;
-  border-top: 1px solid;
-  background-color: #EAF1F1;
-  font-family: poppins;
-}
-
-& button {
-  width: auto !important;
-}
 
 .task-manager-side-bar.toggle-side-bar {
   transition: all .5s ease;
@@ -61,34 +31,8 @@ main#app {
 
 }
 
-.side-menu-options {
-  & li:hover {
-    color: #e2e2e2;
-  }
-
-  & li.active {
-    color: #e2e2e2;
-  }
-
-  & i {
-    font-size: 1.5rem;
-  }
-
-  & span {
-    display: none;
-  }
-}
-
-.main-content-area {
-  background-color: #f9fafa93;
-}
-
-.task-manager-top-bar form input {
-  width: 100% !important;
-}
-
-input[type="aria-hidden"] {
-  display: none;
+.side-menu-options li.active {
+  color: #e2e2e2;
 }
 
 .task-area {
