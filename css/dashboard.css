@@ -1,0 +1,35 @@
+.task-area {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 100px 100px 100px 100px 100px;
+}
+
+.recent-tasks-section {
+  grid-row: 1 / 4;
+}
+
+.statistic-section {
+  grid-row: 4 / -1;
+}
+
+.folders-section {
+  grid-row: -6 / -4;
+}
+
+.notes-section {
+  grid-row: -4 / -1;
+}
+
+.date-time-area {
+  width: 30%;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+section::-webkit-scrollbar,
+section ul::-webkit-scrollbar,
+.writing-area-container::-webkit-scrollbar {
+  display: none;
+}
