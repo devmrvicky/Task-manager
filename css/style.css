@@ -93,6 +93,22 @@ input[type="aria-hidden"] {
   }
 }
 
+.delete-list-item {
+  animation: delete-item .5s ease-in-out forwards alternate
+}
+
+@keyframes delete-item {
+  0% {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  100% {
+    transform: translateX(100%);
+    visibility: hidden;
+  }
+}
+
 .content-head.hide-unwanted-things .tags,
 .content-head.hide-unwanted-things .layouts,
 .content-head.hide-unwanted-things .sort {

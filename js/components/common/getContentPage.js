@@ -30,7 +30,7 @@ export const getContentPage = (pageName, items) => {
   mainContent.append(contentHead);
 
   const contentItemListElem = document.createElement("ul");
-  contentItemListElem.className = `main-task-list mt-4 flex flex-col ${
+  contentItemListElem.className = `main-task-list mt-4 flex flex-col overflow-x-hidden ${
     pageName === "recent-tasks" ? `gap-4` : `gap-1`
   }`;
 

@@ -89,6 +89,11 @@ export const showContentItemsList = (
           const updatedRemainingTasks = getUpdatedIdTasks(remainingTasks);
           allTasks.recentTask = updatedRemainingTasks;
           updateUsersTasksList(updatedRemainingTasks);
+
+          li.classList.add("delete-list-item");
+          setTimeout(() => {
+            li.remove();
+          }, 500);
           // render whole recent task page after update user task
           // taskManagerContent.innerHTML = "";
           // const recentTaskPage = getRecentTaskPage();
