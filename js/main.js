@@ -28,41 +28,7 @@ let navigationList = ["dashboard"];
 let users = [];
 let allTasks = {
   recentTask: [],
-  notes: [
-    {
-      id: "note_1",
-      title: "note title",
-      note_body: "this is note body",
-      folder: false,
-      history: {
-        date: "2023-09-06",
-        time: "16:26",
-      },
-      tags: [],
-    },
-    {
-      id: "note_2",
-      title: "folder name or note title",
-      folder: true,
-      history: {
-        date: "2023-09-06",
-        time: "16:26",
-      },
-      tags: [],
-      notes: [
-        {
-          id: "nested_note_1",
-          title: "note title",
-          note_body: "this is note body",
-          history: {
-            date: "2023-09-06",
-            time: "16:26",
-          },
-          tags: [],
-        },
-      ],
-    },
-  ],
+  notes: [],
 };
 
 // get all task from user
@@ -81,6 +47,7 @@ const getUsersFromLocalStorage = () => {
   getUserTasks(currentUser);
 };
 
+//* Here we are doing logout current user
 const getUpdatedUsers = (users) => {
   let updatedUsers = [];
   for (let user of users) {
@@ -94,6 +61,12 @@ const getUpdatedUsers = (users) => {
   return updatedUsers;
 };
 
+// const getUpdatedUsers = (users) => {
+//   return users.map((user) =>
+//     user.current_user ? (user = { ...user, current_user: false }) : user
+//   );
+// };
+
 // getIdUpdatedUsers
 const getIdUpdatedUsers = (users) => {
   let arr = [];
@@ -104,9 +77,10 @@ const getIdUpdatedUsers = (users) => {
   return arr;
 };
 
+// * handle new user signup and existing user login
 const login = (loginUser, isLogin = false) => {
   getUsersFromLocalStorage();
-  // change user img on click on user
+  // change user icon on user login -> if user has user img then set img else set user icon
   const imgElem = profileElem.querySelector(".user-img");
   if (loginUser.user_img) {
     imgElem.innerHTML = `

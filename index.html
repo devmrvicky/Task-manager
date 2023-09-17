@@ -17,10 +17,9 @@
 <body>
   <!-- Project code -->
   <main id="app" class="flex" data-project-name="task-manager">
-    <!-- <h1>Task manager</h1> -->
 
     <!-- task manager side bar -->
-    <div
+    <aside
       class="task-manager-side-bar bg-[#719191] text-white p-2 flex flex-col items-center gap-5 w-14 h-full fixed top-0 z-30">
       <!-- logo -->
       <div class="logo p-1 bg-white rounded sticky top-[5px]">
@@ -31,27 +30,22 @@
         <li id="task-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer hover:text-[#e2e2e2]"
           data-page="recent-tasks" title="Recent tasks">
           <i class="text-[1.5rem] fa-solid fa-clipboard-list"></i>
-          <span class="hidden">Tasks</span>
         </li>
         <li id="note-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer hover:text-[#e2e2e2]"
           data-page="notes" title="Notes">
           <i class="text-[1.5rem] fa-solid fa-book"></i>
-          <span class="hidden">note</span>
         </li>
         <li id="statistic-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer hover:text-[#e2e2e2]"
           data-page="statistic" title="Statistic">
           <i class="text-[1.5rem] fa-solid fa-square-poll-vertical"></i>
-          <span class="hidden">statistic</span>
         </li>
         <li id="calendar-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer hover:text-[#e2e2e2]"
           data-page="calender" title="Calender">
           <i class="text-[1.5rem] fa-solid fa-calendar-days"></i>
-          <span class="hidden">calendar</span>
         </li>
         <li id="setting-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer hover:text-[#e2e2e2]"
           data-page="setting" title="Setting">
           <i class="text-[1.5rem] fa-solid fa-gear"></i>
-          <span class="hidden">setting</span>
         </li>
       </ul>
       <!-- collapse side bar -->
@@ -59,7 +53,7 @@
         class="collapse-side-bar-btn bg-white text-zinc-500 min-w-[40px] min-h-[40px] border rounded-full flex items-center justify-center hover:bg-zinc-500 hover:text-white">
         <i class="fa-solid fa-right-from-bracket fa-rotate-180"></i>
       </button>
-    </div>
+    </aside>
     <!-- end task manager side bar -->
 
     <!-- task and calendar area -->
@@ -72,14 +66,14 @@
           class="nav-btn h-[30px] px-3 py-2 flex items-center justify-center hover:bg-white/50 rounded-lg">
           <i class="fa-solid fa-arrow-left"></i>
         </button>
-        <!-- title -->
-        <h1 class="md:text-2xl text-xl main-title">Dashboard</h1>
+        <!-- page title -->
+        <h1 class="md:text-2xl text-xl main-title font-bold">Dashboard</h1>
         <!-- search form -->
         <form action=""
-          class="border border-zinc-400 hidden md:flex max-w-[400px] w-full px-3 py-2 items-center bg-transparent rounded-md">
+          class="border border-zinc-400 hidden md:flex max-w-[400px] w-full px-3 py-1 items-center bg-transparent rounded-md">
           <label for="search-task" aria-hidden="true" class="hidden">search task</label>
           <input type="text" name="search" placeholder="Search tasks, notes, folder . . . " id="search-task"
-            title="input search text" class="bg-transparent w-full outline-none">
+            title="input search text" class="bg-transparent w-full outline-none text-sm">
           <button type="submit" title="search button">
             <i class="fa fa-search text-[#719191]"></i>
           </button>
@@ -92,7 +86,6 @@
               class="user-img bg-white max-w-[40px] max-h-[50px] md:min-w-[50px] md:h-[50px] min-w-[40px] h-[40px] rounded-full flex items-center justify-center border hover:bg-zinc-50 overflow-hidden">
               <i class="fa-solid fa-user text-xl md:text-2xl"></i>
             </div>
-            <!-- <img src="/profile.jpg" alt="profile img"> -->
           </div>
         </div>
         <dialog id="d" class="w-[300px] m-auto p-5 rounded-lg flex-col">
@@ -108,7 +101,6 @@
             <i class="fa-solid fa-xmark"></i>
           </button>
         </dialog>
-        <!-- <button onclick="d.showModal()">show dialog</button> -->
       </div>
       <!-- end top nav bar -->
 
@@ -118,7 +110,7 @@
 
       <!-- add task button -->
       <button type="button" title="add tasks"
-        class="open-text-editor bg-[#EAF1F1] w-[50px] min-h-[50px] border rounded-full hover:bg-zinc-100 fixed bottom-[20px] right-[20px] shadow-lg overflow-hidden border p-1 active:scale-75">
+        class="open-text-editor bg-[#EAF1F1] w-[50px] min-h-[50px] border rounded-full hover:bg-zinc-100 fixed bottom-[20px] right-[20px] shadow-lg overflow-hidden p-1 active:scale-75">
         <img src="/pen.png" alt="open editor" class="w-full">
       </button>
     </div>
