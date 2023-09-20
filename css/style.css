@@ -53,7 +53,7 @@ input[type="aria-hidden"] {
   }
 }
 
-.task-manager-side-bar.toggle-side-bar button {
+.task-manager-side-bar.toggle-side-bar .collapse-side-bar-btn {
   transition: all .5s ease;
   transform: translateX(60px) rotate(180deg);
 
@@ -61,6 +61,10 @@ input[type="aria-hidden"] {
 
 .side-menu-options li.active {
   color: #e2e2e2;
+}
+
+.more-page-opt-container.show-more-page-opt-container {
+  display: block;
 }
 
 

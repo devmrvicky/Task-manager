@@ -10,7 +10,8 @@ import { getNotesEditor } from "./components/Text-editor/getNotesEditor.js";
 
 const mainApp = document.querySelector("main");
 const mainSideBar = document.querySelector(".task-manager-side-bar");
-const mainSideBarBtn = mainSideBar.querySelector("button");
+const mainSideBarBtn = mainSideBar.querySelector(".collapse-side-bar-btn");
+const morePageBtn = mainSideBar.querySelector("#more-page-toggle-btn");
 const menuOptions = document.querySelectorAll(".menu-option");
 const profileElem = document.querySelector(".prof");
 const dialogBoxElem = document.querySelector("#d");
@@ -246,6 +247,13 @@ window.onload = () => {
   if (innerWidth <= 430) {
     mainSideBar.classList.add("toggle-side-bar");
   }
+
+  // toggle more page option container
+  morePageBtn.addEventListener("click", () => {
+    document
+      .querySelector(".more-page-opt-container")
+      .classList.toggle("show-more-page-opt-container");
+  });
 };
 
 function toggleMainSideBar() {

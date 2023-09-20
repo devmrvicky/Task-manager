@@ -1,10 +1,16 @@
 import { taskManagerContent } from "../main";
+import getBugReportingPage from "../pages/bugsReporting";
 import { getNotesPage } from "../pages/notes";
 import { getRecentTaskPage } from "../pages/recentTask";
+import getSuggestionPage from "../pages/suggestions";
 import { getConstructionPage } from "./getConstructionPage";
 const mainTitle = document.querySelector(".main-title");
 
 export const appendNewPage = (newPageType, isFromBackBtn = false) => {
+  // if more page option container is open close it when new page append
+  document
+    .querySelector(".more-page-opt-container")
+    .classList.remove("show-more-page-opt-container");
   taskManagerContent.innerHTML = "";
   if (newPageType === "recent-tasks") {
     const recentTaskPage = getRecentTaskPage(isFromBackBtn);
@@ -22,6 +28,16 @@ export const appendNewPage = (newPageType, isFromBackBtn = false) => {
     mainTitle.textContent = "Setting";
   } else if (newPageType === "calender") {
     mainTitle.textContent = "Calender";
+  } else if (newPageType === "bugs") {
+    const bugsReportingPage = getBugReportingPage(isFromBackBtn);
+    taskManagerContent.append(bugsReportingPage);
+    mainTitle.textContent = "Bugs";
+    return;
+  } else if (newPageType === "suggestion") {
+    const suggestionsPage = getSuggestionPage(isFromBackBtn);
+    taskManagerContent.append(suggestionsPage);
+    mainTitle.textContent = "Suggestion";
+    return;
   }
   const constructionPage = getConstructionPage(isFromBackBtn);
   taskManagerContent.append(constructionPage);

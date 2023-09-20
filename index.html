@@ -26,7 +26,7 @@
         <img src="/task-manager-logo.png" alt="logo">
       </div>
       <!-- side menu options -->
-      <ul class="side-menu-options flex-1 flex flex-col gap-2">
+      <ul class="side-menu-options flex flex-col gap-2">
         <li id="task-opt" class="menu-option w-full p-1 my-2 flex items-center cursor-pointer hover:text-[#e2e2e2]"
           data-page="recent-tasks" title="Recent tasks">
           <i class="text-[1.5rem] fa-solid fa-clipboard-list"></i>
@@ -47,10 +47,33 @@
           data-page="setting" title="Setting">
           <i class="text-[1.5rem] fa-solid fa-gear"></i>
         </li>
+        <li class="relative hidden more-page-opt-container">
+          <ul
+            class="flex flex-col items-center justify-center bg-white text-black rounded absolute top-14 left-6 w-44 p-2">
+            <li id="bugs-opt"
+              class="menu-option w-full p-1 my-2 flex items-center gap-2 cursor-pointer hover:text-[#e2e2e2]"
+              title="report bugs" data-page="bugs">
+              <i class="text-[1.5rem] fa-solid fa-bug"></i>
+              <span class="text-xs">Found a bug?</span>
+            </li>
+            <li id="suggetion-opt"
+              class="menu-option w-full p-1 my-2 flex items-center gap-2 cursor-pointer hover:text-[#e2e2e2]"
+              title="give me suggestions" data-page="suggestion">
+              <i class="text-[1.5rem] fa-solid fa-lightbulb"></i>
+              <span class="text-xs">I have a suggestion.</span>
+            </li>
+          </ul>
+        </li>
       </ul>
+      <!-- more menu option -->
+      <button type="button" id="more-page-toggle-btn"
+        class="w-full p-1 my-2 flex items-center justify-center cursor-pointer hover:text-[#e2e2e2]"
+        title="More options">
+        <i class="text-[1.5rem] fa-solid fa-ellipsis"></i>
+      </button>
       <!-- collapse side bar -->
       <button type="button" title="collapse side bar"
-        class="collapse-side-bar-btn bg-white text-zinc-500 min-w-[40px] min-h-[40px] border rounded-full flex items-center justify-center hover:bg-zinc-500 hover:text-white">
+        class="collapse-side-bar-btn bg-white text-zinc-500 min-w-[40px] min-h-[40px] border rounded-full flex items-center justify-center hover:bg-zinc-500 hover:text-white mt-auto">
         <i class="fa-solid fa-right-from-bracket fa-rotate-180"></i>
       </button>
     </aside>
