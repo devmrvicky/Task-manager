@@ -62,13 +62,13 @@ const getUpdatedUsers = (users) => {
   return updatedUsers;
 };
 
-// const getUpdatedUsers = (users) => {
-//   return users.map((user) =>
-//     user.current_user ? (user = { ...user, current_user: false }) : user
-//   );
-// };
+const getUpdatedUsers2 = (users) => {
+  return users.map((user) =>
+    user.current_user ? (user = { ...user, current_user: false }) : user
+  );
+};
 
-// getIdUpdatedUsers
+// * getIdUpdatedUsers function rearrange id of all user or we can call reset of id
 const getIdUpdatedUsers = (users) => {
   let arr = [];
   for (let user of users) {
@@ -78,33 +78,46 @@ const getIdUpdatedUsers = (users) => {
   return arr;
 };
 
-// * handle new user signup and existing user login
-const login = (loginUser, isLogin = false) => {
-  getUsersFromLocalStorage();
+// * update profile image
+const updateProfileImg = (user) => {
   // change user icon on user login -> if user has user img then set img else set user icon
   const imgElem = profileElem.querySelector(".user-img");
-  if (loginUser.user_img) {
+  if (user.user_img) {
     imgElem.innerHTML = `
-    <img src=${loginUser.user_img} alt="user img" class="w-full"/>
-  `;
+      <img src=${user.user_img} alt="user img" class="w-full"/>
+    `;
   } else {
     imgElem.innerHTML = `
-      <i class="fa-solid fa-user text-xl md:text-2xl"></i>
-    `;
+        <i class="fa-solid fa-user text-xl md:text-2xl"></i>
+      `;
   }
-  const updatedUser = { ...loginUser, current_user: true, user_hide: false };
+};
+
+// * handle new user signup and existing user login
+const loginOrSignupUser = (currentUser, isUserExist = false) => {
+  getUsersFromLocalStorage();
+  // update profile image
+  updateProfileImg(currentUser);
+
+  const loginUser = { ...currentUser, current_user: true, user_hide: false };
   let updatedRemainingUsers;
-  if (isLogin) {
-    const remainingUsers = users.filter((user) => user.id !== loginUser.id);
+  // * check if user exist means that is user already create account
+  // * if user has already created account then login otherwise signup
+  if (isUserExist) {
+    // * we have filtered these users from all users which id doesn't match with current pass user. After that update all filtered users' current_user property true to false
+    const remainingUsers = users.filter((user) => user.id !== currentUser.id);
     updatedRemainingUsers = getUpdatedUsers(remainingUsers);
   } else {
+    // * user doesn't already exist. then update all users' current_user property true to false
     updatedRemainingUsers = getUpdatedUsers(users);
   }
-  users = [...updatedRemainingUsers, updatedUser];
+  // * here we add all remaining users and current user that was passed by function in main users
+  users = [...updatedRemainingUsers, loginUser];
   let idUpdatedUsers = getIdUpdatedUsers(users);
   localStorage.setItem("users", JSON.stringify(idUpdatedUsers));
-  getUserTasks(updatedUser);
-  userNameElem.textContent = updatedUser.user_name;
+  getUserTasks(loginUser);
+  userNameElem.textContent = loginUser.user_name;
+  // * after login or signup land on dashboard
   addDashboardElement();
 };
 
@@ -118,15 +131,19 @@ const userAvailable = (userId, userPassword) => {
   return false;
 };
 
-// login form submitted
+// it handle user login form submit
 const handleLoginFormSubmit = (e) => {
   e.preventDefault();
   const idInput = e.currentTarget[0];
   const passwordInput = e.currentTarget[1];
   const userId = idInput.value;
   const userPassword = passwordInput.value;
+
+  // check if user is available for login
   const user = userAvailable(userId, userPassword);
+  // if user doesn't exist
   if (!user) {
+    // check if warningElem is available. If available remove it and append it again
     let warningElem =
       idInput.parentElement.parentElement.querySelector(".warning-text");
     warningElem?.remove();
@@ -140,8 +157,24 @@ const handleLoginFormSubmit = (e) => {
     }, 1000);
     return;
   }
-  login(user, true);
+  loginOrSignupUser(user, true);
+  // here login function take two parameter
+  // first parameter is user
+  // second parameter is a boolean value for checking is it new user or not
 };
+
+// constructor for creating multiple user
+class createUser {
+  constructor(id, userName, userId, userPassword, userHide) {
+    this.id = id;
+    this.user_name = userName;
+    this.user_id = userId;
+    this.user_password = userPassword;
+    this.user_hide = userHide;
+    this.user_task = [];
+    this.user_notes = [];
+  }
+}
 
 // handle signup form submit
 const handleSignupFormSubmit = (e) => {
@@ -163,15 +196,15 @@ const handleSignupFormSubmit = (e) => {
   }
 
   getUsersFromLocalStorage();
-  let newUser = {};
-  newUser.id = `user_${users.length + 1}`;
-  newUser.user_name = userName;
-  newUser.user_id = userId;
-  newUser.user_password = userPassword;
-  newUser.user_hide = false;
-  newUser.user_task = [];
-  newUser.user_notes = [];
-  login(newUser, false);
+  // call class construction for creating new user
+  let newUser = new createUser(
+    `user_${users.length + 1}`,
+    userId,
+    userName,
+    userPassword,
+    false
+  );
+  loginOrSignupUser(newUser, false);
   showAllLoginUsers();
 };
 
@@ -180,6 +213,9 @@ profileElem.addEventListener("click", () => {
   showAllLoginUsers();
 });
 
+// * this function for updating navigation list that is an array
+// * It take two parameter first condition it check user has come back or not
+// * If condition false then push particular page name on navigation list
 const updateNavigationList = (condition, navItem) => {
   // update navigation list
   if (!condition && navigationList.at(-1) !== navItem) {
@@ -192,6 +228,7 @@ const updateNavigationList = (condition, navItem) => {
 };
 
 window.onload = () => {
+  // * get all users from local storage
   getUsersFromLocalStorage();
 
   // change user img on top bar
@@ -202,12 +239,13 @@ window.onload = () => {
       <img src=${currentUser.user_img} alt="user img" class="w-full"/>
     `;
   }
-
+  // * set all users in local storage
   localStorage.setItem("users", JSON.stringify(users));
+  // * get login form
   let loginFormContainer = getLoginForm();
   const loginForm = loginFormContainer.querySelector("form");
   loginForm.addEventListener("submit", handleLoginFormSubmit);
-
+  // * get signup form
   let signupFormContainer = getSignupForm();
   let signupForm = signupFormContainer.querySelector("form");
   signupForm.addEventListener("submit", handleSignupFormSubmit);
@@ -226,6 +264,7 @@ window.onload = () => {
 
   const addUserBtn = dialogBoxElem.querySelector("#add-user-btn");
   addUserBtn.addEventListener("click", () => {
+    // * traverse user list element and clear all user for appending new users
     addUserBtn.parentElement.parentElement.parentElement.nextElementSibling.innerHTML =
       "";
     dialogBoxElem.close();
@@ -235,7 +274,7 @@ window.onload = () => {
   // check if current user is present or not if present then login with that if not open sign up form for adding new user
   const user = users.find((user) => user.current_user);
   if (user) {
-    login(user, true);
+    loginOrSignupUser(user, true);
   } else {
     taskManagerContent.append(loginFormContainer);
   }
@@ -283,6 +322,7 @@ function getNoOfAllTask() {
   }
 }
 
+// * get all menus of side bar and loop it to get individual menu button and add click event listener to each individual button and call appendNewPage function that is take page name
 menuOptions.forEach((menuOption) => {
   menuOption.addEventListener("click", (e) => {
     for (const menu of menuOptions) {
@@ -295,13 +335,16 @@ menuOptions.forEach((menuOption) => {
   });
 });
 
+// * this openTextEditor function open text editor on the basis of editor type which editor you want to open
 const openTextEditor = (editorType) => {
   const textEditorContainer = document.createElement("div");
   textEditorContainer.className = `text-editor-container w-full h-full fixed top-0 shadow bg-black/50 backdrop-blur-sm flex ${
     editorType === "add tasks" ? `items-center justify-center md:p-24 p-0` : ""
   } z-20`;
+  // * here set attribute called 'data-page-name' to pageName for updating this particular page when save task or note
   const pageName = taskManagerContent.children[0].dataset.page;
   textEditorContainer.setAttribute("data-page-name", pageName);
+  // * return when text editor already appended
   if (document.querySelector(".text-editor-container")) return;
   let textEditor;
   if (editorType === "add tasks") {
@@ -309,8 +352,10 @@ const openTextEditor = (editorType) => {
   } else {
     textEditor = getNotesEditor();
   }
+  const fragment = document.createDocumentFragment();
   textEditorContainer.append(textEditor);
-  mainApp.append(textEditorContainer);
+  fragment.appendChild(textEditorContainer);
+  mainApp.append(fragment);
 
   const closeButton = textEditor.querySelector(".close-editor");
   closeButton?.addEventListener("click", () => {
@@ -336,7 +381,7 @@ export {
   getUsersFromLocalStorage,
   dialogBoxElem,
   getUpdatedUsers,
-  login,
+  loginOrSignupUser,
   mainApp,
   profileElem,
   navigationList,

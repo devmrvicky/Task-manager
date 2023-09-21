@@ -1,7 +1,7 @@
 import {
   dialogBoxElem,
   getUsersFromLocalStorage,
-  login,
+  loginOrSignupUser,
   mainApp,
   profileElem,
   users,
@@ -108,14 +108,14 @@ export const showAllLoginUsers = () => {
           const value = e.currentTarget[0].value;
           if (user.user_lock_password === value) {
             confirmPassInput.remove();
-            login(user, true);
+            loginOrSignupUser(user, true);
           } else {
             alert("incorrect password");
             return;
           }
         };
       } else {
-        login(user, true);
+        loginOrSignupUser(user, true);
       }
       dialogBoxElem.close();
 

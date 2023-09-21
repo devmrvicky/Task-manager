@@ -119,6 +119,14 @@ input[type="aria-hidden"] {
   display: none;
 }
 
+/* .text-editor-container {
+  transform: translateY(-100%);
+}
+
+.text-editor-container.show-text-editor-container {
+  transform: translateY(0);
+} */
+
 .text-editor {
   animation: openEditor .5s ease-in-out forwards alternate;
 }
