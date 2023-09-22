@@ -1,51 +1,31 @@
 import { getTodoSidebar } from "../components/todo/getTodoSidebar";
 import getTodoMainContent from "../components/todo/getTodoMainContent";
-import { taskManagerContent, updateNavigationList } from "../main";
+import {
+  getUsersFromLocalStorage,
+  taskManagerContent,
+  updateNavigationList,
+  users,
+} from "../main";
 import getTimeObj from "../components/getTimeObj";
 
-const todo = [
-  {
-    id: "todo_1",
-    dueDate: "22/09/2023",
-    todo: "this is todo",
-    isImportant: true,
-    isCompleted: false,
-  },
-  {
-    id: "todo_2",
-    dueDate: "22/09/2023",
-    todo: "this is todo",
-    isImportant: false,
-    isCompleted: true,
-  },
-  {
-    id: "todo_3",
-    dueDate: "21/03/2024",
-    todo: "this is todo",
-    isImportant: false,
-    isCompleted: true,
-  },
-  {
-    id: "todo_4",
-    dueDate: "21/03/2024",
-    todo: "this is todo",
-    isImportant: false,
-    isCompleted: false,
-  },
-  {
-    id: "todo_5",
-    dueDate: "22/03/2024",
-    todo: "this is todo",
-    isImportant: false,
-    isCompleted: false,
-  },
-];
+const getLatestTodoLists = () => {
+  // get latest todo lists
+  getUsersFromLocalStorage();
+  return users.find((user) => user.current_user).user_todo || [];
+};
+
+// * get current date
+const dateObj = getTimeObj();
+const currentDate = `${dateObj.year}-${dateObj.month}-${dateObj.date}`;
+
+// temporary todo list
+const tempTodoLists = [];
 
 const getTodoPage = (isFromBackBtn = false) => {
-  taskManagerContent.parentElement.style.height = 100 + "vh";
-  // * get current date
-  const dateObj = getTimeObj();
-  const currentDate = `${dateObj.date}/${dateObj.month}/${dateObj.year}`;
+  taskManagerContent.style.height = 90 + "vh";
+
+  const todo = getLatestTodoLists();
+
   const todayTodo = todo.filter((todo) => todo.dueDate === currentDate);
   const headingTitle = `<div><p class="text-xl font-semibold pb-2">My day</p> <p>${currentDate}</p></div>`;
 
@@ -57,6 +37,7 @@ const getTodoPage = (isFromBackBtn = false) => {
   const todoSidebarItems = todoSidebar.querySelectorAll("li");
   todoSidebarItems.forEach((sidebarItem) => {
     sidebarItem.addEventListener("click", () => {
+      const todo = getLatestTodoLists();
       const todoMainContentElem = document.querySelector(".todo-main-content");
       const sectionName = sidebarItem.dataset.sectionName;
       if (sectionName === "All Todo") {
@@ -75,11 +56,14 @@ const getTodoPage = (isFromBackBtn = false) => {
           getTodoMainContent(completedTodo, headingTitle)
         );
       } else if (sectionName === "My day") {
+        const todayTodo = todo.filter((todo) => todo.dueDate === currentDate);
         todoMainContentElem.replaceWith(
           getTodoMainContent(todayTodo, headingTitle)
         );
       } else {
-        todoMainContentElem.replaceWith(getTodoMainContent([], "Add todo"));
+        todoMainContentElem.replaceWith(
+          getTodoMainContent(tempTodoLists, "Add todo")
+        );
       }
     });
   });
@@ -88,3 +72,4 @@ const getTodoPage = (isFromBackBtn = false) => {
 };
 
 export default getTodoPage;
+export { currentDate, getLatestTodoLists, tempTodoLists };

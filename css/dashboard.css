@@ -30,6 +30,7 @@
 
 section::-webkit-scrollbar,
 section ul::-webkit-scrollbar,
-.writing-area-container::-webkit-scrollbar {
+.writing-area-container::-webkit-scrollbar,
+.todo-lists::-webkit-scrollbar {
   display: none;
 }
