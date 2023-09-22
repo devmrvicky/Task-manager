@@ -1,12 +1,14 @@
-import { taskManagerContent } from "../main";
+import { openTextEditorBtn, taskManagerContent } from "../main";
 import getBugReportingPage from "../pages/bugsReporting";
 import { getNotesPage } from "../pages/notes";
 import { getRecentTaskPage } from "../pages/recentTask";
 import getSuggestionPage from "../pages/suggestions";
+import getTodoPage from "../pages/todo";
 import { getConstructionPage } from "./getConstructionPage";
 const mainTitle = document.querySelector(".main-title");
 
 export const appendNewPage = (newPageType, isFromBackBtn = false) => {
+  openTextEditorBtn.style.display = "block";
   // if more page option container is open close it when new page append
   document
     .querySelector(".more-page-opt-container")
@@ -23,6 +25,12 @@ export const appendNewPage = (newPageType, isFromBackBtn = false) => {
     const notesPage = getNotesPage(isFromBackBtn);
     taskManagerContent.append(notesPage);
     mainTitle.textContent = "Notes";
+    return;
+  } else if (newPageType === "todo") {
+    const notesPage = getTodoPage(isFromBackBtn);
+    taskManagerContent.append(notesPage);
+    mainTitle.textContent = "todo";
+    openTextEditorBtn.style.display = "none";
     return;
   } else if (newPageType === "setting") {
     mainTitle.textContent = "Setting";

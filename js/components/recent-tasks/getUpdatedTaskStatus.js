@@ -1,4 +1,4 @@
-import { getUsersFromLocalStorage, users } from "../../main";
+import { getUsersFromLocalStorage } from "../../main";
 
 // get updated tasks list
 export const getUpdatedTaskStatus = (task, status, isNestedTask = false) => {

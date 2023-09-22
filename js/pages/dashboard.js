@@ -5,6 +5,7 @@ import {
   allTaskList,
   getNoOfAllTask,
   getUsersFromLocalStorage,
+  menuOptions,
   taskManagerContent,
   updateNavigationList,
 } from "../main.js";
@@ -148,6 +149,10 @@ const getNoteSection = () => {
 
 // add dashboard content
 export const addDashboardElement = (isFromBackBtn = false) => {
+  // whenever call open dashboard deactivate menu option if active
+  menuOptions.forEach((menu) => {
+    menu.classList.remove("active");
+  });
   // when addDashboardElement function will be call dashboard push in navigation list
   updateNavigationList(isFromBackBtn, "dashboard");
   getUsersFromLocalStorage();

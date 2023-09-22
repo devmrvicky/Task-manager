@@ -387,4 +387,5 @@ export {
   navigationList,
   updateNavigationList,
   openTextEditorBtn,
+  menuOptions,
 };

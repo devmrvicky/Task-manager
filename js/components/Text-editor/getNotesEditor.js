@@ -2,7 +2,7 @@ import { users } from "../../main";
 import { getInsertedItemOnSameIndex } from "../getInsertedItemOnSameIndex";
 import { getEditorFooter } from "./getEditorFooter";
 import { getNotesWritingArea } from "./getNotesWritingArea";
-import { getCurrentUser, getTimeObj, reRenderPages } from "./getTextEditor";
+import { getCurrentUser, reRenderPages } from "./getTextEditor";
 import {
   getNoteTitleHeading,
   getNotesEditorTopHead,
@@ -13,6 +13,7 @@ import {
   getTraceIcon,
   removeAllTraceChangesIcon,
 } from "../edit-user/openUserEditPage";
+import getTimeObj from "../getTimeObj";
 
 const executeCommand = (command, defaultUi, value) => {
   document.execCommand(command, defaultUi, value);

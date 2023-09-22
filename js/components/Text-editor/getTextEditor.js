@@ -9,6 +9,7 @@ import { getRecentTaskPage } from "../../pages/recentTask.js";
 import { getTextEditorMainArea } from "./getTextEditorMainArea.js";
 import { getTaskList, getTextEditorSideBar } from "./getTextEditorSideBar.js";
 import { showNotesListItems } from "../notes/showNotesListItems.js";
+import getTimeObj from "../getTimeObj.js";
 
 let selectedObj;
 let isSelected = false;
@@ -40,18 +41,6 @@ export const reRenderPages = (textEditor) => {
     const notesPage = getNotesPage();
     taskManagerContent.append(notesPage);
   }
-};
-
-// get time obj
-const getTimeObj = () => {
-  const dateObj = new Date();
-  const year = dateObj.getFullYear();
-  const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
-  const day = ("0" + dateObj.getDay()).slice(-2);
-  const date = ("0" + dateObj.getDate()).slice(-2);
-  const hour = ("0" + dateObj.getHours()).slice(-2);
-  const minute = ("0" + dateObj.getMinutes()).slice(-2);
-  return { year, month, day, date, hour, minute };
 };
 
 const initTaskDateTime = (date, init, end) => ({ date, init, end });
@@ -327,4 +316,4 @@ function getActiveListElem(listsElem) {
   });
 }
 
-export { updateUsersTasksList, getTimeObj, getCurrentUser };
+export { updateUsersTasksList, getCurrentUser };
