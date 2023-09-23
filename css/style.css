@@ -297,6 +297,10 @@ input[type="aria-hidden"] {
     box-shadow: 0 0 rgba(0, 0, 0, .5);
     transform: translateX(-100%);
     transition: all .5s ease-in-out;
+    /* z-index: 99; */
+  }
+
+  .todo-sidebar-item {
     z-index: 99;
   }
 

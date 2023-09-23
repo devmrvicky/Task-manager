@@ -4,35 +4,56 @@ import { getContextMenu } from "../common/getContextMenu";
 
 const imagePath = import.meta.env.BASE_URL + "/write-note.png";
 
-const getCheckboxLabel = (condition, checkboxName) => {
-  const label = document.createElement("label");
-  label.id = checkboxName;
-  const checkboxInput = document.createElement("input");
-  checkboxInput.id = checkboxName;
-  checkboxInput.checked = condition ? true : false;
+const getCheckboxLabel = (condition, elemName) => {
+  const div = document.createElement("div");
+  div.title = elemName;
+  div.classList.add(elemName);
   const icon = document.createElement("i");
-  icon.className = `fa-${checkboxInput.checked ? "solid" : "regular"} ${
-    checkboxName === "important-todo"
+  icon.className = `fa-${condition ? "solid" : "regular"} ${
+    elemName === "important-todo"
       ? "fa-star"
-      : `fa-circle${checkboxInput.checked ? "-check" : ""}`
+      : `fa-circle${condition ? "-check" : ""}`
   } text-[#fff]`;
-  checkboxInput.classList.add("hidden");
-  label.append(icon, checkboxInput);
-  return label;
+  div.append(icon);
+  return div;
 };
 
 const getIndividualTodo = ({ todo, isCompleted, isImportant }) => {
   const listElem = document.createElement("li");
   listElem.className = `todo-list w-full border flex items-center gap-3 px-4 py-2 bg-[#719191] rounded relative`;
+  listElem.setAttribute("data-completed", false);
   const fragment = document.createDocumentFragment();
   const checkbox = getCheckboxLabel(isCompleted, "completed-todo");
-  const todoElem = document.createElement("div");
-  todoElem.className = `w-full flex-1 text-[#fff]`;
+  let importantLabel = null;
+  let todoElem;
+  if (isCompleted) {
+    todoElem = document.createElement("s");
+  } else {
+    todoElem = document.createElement("div");
+    importantLabel = getCheckboxLabel(isImportant, "important-todo");
+  }
+  todoElem.className = `todo-elem w-full flex-1 text-[#fff]`;
   todoElem.appendChild(document.createTextNode(todo));
-  const importantLabel = getCheckboxLabel(isImportant, "important-todo");
-  fragment.append(checkbox, todoElem, importantLabel);
+  if (importantLabel) {
+    fragment.append(checkbox, todoElem, importantLabel);
+  } else {
+    fragment.append(checkbox, todoElem);
+  }
   listElem.appendChild(fragment);
   return listElem;
+};
+
+// update current user's todo list
+const updateCurrentUserTodo = (updatedTodoLists) => {
+  getUsersFromLocalStorage();
+  localStorage.setItem(
+    "users",
+    JSON.stringify(
+      users.map((user) =>
+        user.current_user ? { ...user, user_todo: updatedTodoLists } : user
+      )
+    )
+  );
 };
 
 const getTodoLists = (lists) => {
@@ -60,27 +81,55 @@ const getTodoLists = (lists) => {
     const fragment = document.createDocumentFragment();
     const li = getIndividualTodo(list);
 
+    // delete individual todo
     li.addEventListener("contextmenu", (e) => {
       e.preventDefault();
       const contextmenu = getContextMenu(e);
       const deleteBtn = contextmenu.querySelector("ul li");
       deleteBtn.onclick = () => {
         const allTodo = getLatestTodoLists();
-        getUsersFromLocalStorage();
         let filteredTodoLists = allTodo.filter((li) => li.id !== list.id);
-        localStorage.setItem(
-          "users",
-          JSON.stringify(
-            users.map((user) =>
-              user.current_user
-                ? { ...user, user_todo: filteredTodoLists }
-                : user
-            )
-          )
-        );
+        updateCurrentUserTodo(filteredTodoLists);
         li.remove();
       };
       li.append(contextmenu);
+    });
+
+    // complete todo
+    const importantBtn = li.querySelector(".important-todo");
+    const completeCheckbox = li.querySelector(".completed-todo");
+    const todoElem = li.querySelector(".todo-elem");
+    completeCheckbox.addEventListener("click", () => {
+      const checkedIcon = document.createElement("i");
+      checkedIcon.classList.add("fa-solid", "fa-circle-check", "text-white");
+      completeCheckbox.replaceChildren(checkedIcon);
+      const strikethroughElem = document.createElement("s");
+      strikethroughElem.classList.add(
+        "text-zinc-100",
+        "todo-elem",
+        "w-full",
+        "flex-1"
+      );
+      strikethroughElem.appendChild(document.createTextNode(list.todo));
+      todoElem.replaceWith(strikethroughElem);
+      const allTodo = getLatestTodoLists();
+      let filteredTodoLists = allTodo.map((li) =>
+        li.id === list.id ? { ...li, isCompleted: true } : li
+      );
+      updateCurrentUserTodo(filteredTodoLists);
+      importantBtn.style.display = "none";
+    });
+
+    // make important todo
+    importantBtn?.addEventListener("click", () => {
+      const importantIcon = document.createElement("i");
+      importantIcon.classList.add("fa-solid", "fa-star", "text-white");
+      importantBtn.replaceChildren(importantIcon);
+      const allTodo = getLatestTodoLists();
+      let filteredTodoLists = allTodo.map((li) =>
+        li.id === list.id ? { ...li, isImportant: true } : li
+      );
+      updateCurrentUserTodo(filteredTodoLists);
     });
 
     fragment.appendChild(li);

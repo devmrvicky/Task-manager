@@ -41,6 +41,7 @@ const getTodoMainContent = (todo, sectionName) => {
       const todoListElem = getIndividualTodo(newTodo);
       todoLists.prepend(todoListElem);
     }
+    console.log(todoLists);
   };
 
   const todoInput = addTodoInput.querySelector("input");
