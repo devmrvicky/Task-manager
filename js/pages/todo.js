@@ -27,16 +27,19 @@ const getTodoPage = (isFromBackBtn = false) => {
   const todo = getLatestTodoLists();
 
   const todayTodo = todo.filter((todo) => todo.dueDate === currentDate);
-  const headingTitle = `<div><p class="text-xl font-semibold pb-2">My day</p> <p>${currentDate}</p></div>`;
+  const headingTitle = `<div><p class="text-[1.2rem] pb-1">My day</p> <p class="text-sm">${currentDate}</p></div>`;
 
   // update navigation lists
   updateNavigationList(isFromBackBtn, "todo");
   const fragment = document.createDocumentFragment();
+
   const todoSidebar = getTodoSidebar();
-  let todoMainContent = getTodoMainContent(todayTodo, headingTitle);
+  const todoMainContent = getTodoMainContent(todayTodo, headingTitle);
+
   const todoSidebarItems = todoSidebar.querySelectorAll("li");
   todoSidebarItems.forEach((sidebarItem) => {
     sidebarItem.addEventListener("click", () => {
+      todoSidebar.classList.remove("show-side-bar");
       const todo = getLatestTodoLists();
       const todoMainContentElem = document.querySelector(".todo-main-content");
       const sectionName = sidebarItem.dataset.sectionName;

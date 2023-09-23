@@ -297,6 +297,7 @@ input[type="aria-hidden"] {
     box-shadow: 0 0 rgba(0, 0, 0, .5);
     transform: translateX(-100%);
     transition: all .5s ease-in-out;
+    z-index: 99;
   }
 
   .show-side-bar {
@@ -386,6 +387,33 @@ input[type="aria-hidden"] {
   .more-opts-toggle-btn {
     display: block !important;
     margin-left: auto;
+  }
+}
+
+@media screen and (max-width: 580px) {
+
+  /* .todo-head{
+    border
+  } */
+  .toggle-date-inputs-btn {
+    display: flex !important;
+  }
+
+  .input-field {
+    position: absolute;
+    top: 50px;
+    background: #EAF1F1;
+    width: 100%;
+    padding: 5px;
+    transform: translateY(-50%);
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .input-field.show-input-field {
+    transform: translateY(0);
+    visibility: visible;
+    opacity: 1;
   }
 }
 
