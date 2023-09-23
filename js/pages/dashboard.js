@@ -185,6 +185,7 @@ export const addDashboardElement = (isFromBackBtn = false) => {
   taskManagerContent.insertAdjacentElement("beforeend", dateTimeArea);
 
   taskManagerContent.parentElement.style.height = "auto";
+  taskManagerContent.style.height = "auto";
 };
 // addDashboardElement();
 logo.addEventListener("click", () => {
