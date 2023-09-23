@@ -2,6 +2,8 @@ import { getUsersFromLocalStorage, users } from "../../main";
 import { getLatestTodoLists } from "../../pages/todo";
 import { getContextMenu } from "../common/getContextMenu";
 
+const imagePath = import.meta.env.BASE_URL + "/write-note.png";
+
 const getCheckboxLabel = (condition, checkboxName) => {
   const label = document.createElement("label");
   label.id = checkboxName;
@@ -41,7 +43,7 @@ const getTodoLists = (lists) => {
     imgContainer.className = `flex flex-col mx-auto items-center my-10`;
     const fragment = document.createDocumentFragment();
     const img = document.createElement("img");
-    img.src = `../../../public/write-note.png`;
+    img.src = imagePath;
     const textMsg = document.createElement("div");
     textMsg.className = `w-full flex flex-col gap-2 items-center`;
     textMsg.innerHTML = `
