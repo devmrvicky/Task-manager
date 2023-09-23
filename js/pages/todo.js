@@ -19,8 +19,6 @@ const dateObj = getTimeObj();
 const currentDate = `${dateObj.year}-${dateObj.month}-${dateObj.date}`;
 
 const getTodoPage = (isFromBackBtn = false) => {
-  taskManagerContent.style.height = 90 + "vh";
-
   const todo = getLatestTodoLists();
 
   const todayTodo = todo.filter((todo) => todo.dueDate === currentDate);
@@ -28,6 +26,10 @@ const getTodoPage = (isFromBackBtn = false) => {
 
   // update navigation lists
   updateNavigationList(isFromBackBtn, "todo");
+  // todo page element
+  const todoMainPage = document.createElement("div");
+  todoMainPage.className =
+    "todo-main-page flex gap-5 h-[85vh] flex-1 relative overflow-hidden z-30";
   const fragment = document.createDocumentFragment();
 
   const todoSidebar = getTodoSidebar();
@@ -66,7 +68,8 @@ const getTodoPage = (isFromBackBtn = false) => {
     });
   });
   fragment.append(todoSidebar, todoMainContent);
-  return fragment;
+  todoMainPage.appendChild(fragment);
+  return todoMainPage;
 };
 
 export default getTodoPage;
