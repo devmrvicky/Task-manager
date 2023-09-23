@@ -18,9 +18,6 @@ const getLatestTodoLists = () => {
 const dateObj = getTimeObj();
 const currentDate = `${dateObj.year}-${dateObj.month}-${dateObj.date}`;
 
-// temporary todo list
-const tempTodoLists = [];
-
 const getTodoPage = (isFromBackBtn = false) => {
   taskManagerContent.style.height = 90 + "vh";
 
@@ -64,9 +61,7 @@ const getTodoPage = (isFromBackBtn = false) => {
           getTodoMainContent(todayTodo, headingTitle)
         );
       } else {
-        todoMainContentElem.replaceWith(
-          getTodoMainContent(tempTodoLists, "Add todo")
-        );
+        todoMainContentElem.replaceWith(getTodoMainContent([], "Add todo"));
       }
     });
   });
@@ -75,4 +70,4 @@ const getTodoPage = (isFromBackBtn = false) => {
 };
 
 export default getTodoPage;
-export { currentDate, getLatestTodoLists, tempTodoLists };
+export { currentDate, getLatestTodoLists };

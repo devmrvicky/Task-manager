@@ -1,4 +1,4 @@
-const getAddTodoInput = () => {
+const getAddTodoInput = (sectionName) => {
   const inputField = document.createElement("div");
   inputField.className = `w-full bg-[#719191]/80 focus-within:bg-[#719191] text-white flex items-center gap-2 p-2 px-4 mt-auto rounded sticky bottom-0 z-20`;
   const fragment = document.createDocumentFragment();

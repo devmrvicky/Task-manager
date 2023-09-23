@@ -93,6 +93,7 @@ const getTodoLists = (lists) => {
         li.remove();
       };
       li.append(contextmenu);
+  
     });
 
     // complete todo
@@ -118,6 +119,7 @@ const getTodoLists = (lists) => {
       );
       updateCurrentUserTodo(filteredTodoLists);
       importantBtn.style.display = "none";
+      
     });
 
     // make important todo
@@ -130,6 +132,7 @@ const getTodoLists = (lists) => {
         li.id === list.id ? { ...li, isImportant: true } : li
       );
       updateCurrentUserTodo(filteredTodoLists);
+      
     });
 
     fragment.appendChild(li);

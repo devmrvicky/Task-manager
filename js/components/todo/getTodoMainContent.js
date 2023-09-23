@@ -1,8 +1,8 @@
 import { getUsersFromLocalStorage, users } from "../../main";
-import { currentDate, tempTodoLists } from "../../pages/todo";
+import { currentDate, getLatestTodoLists } from "../../pages/todo";
 import getAddTodoInput from "./getAddTodoInput";
 import getTodoHead from "./getTodoHead";
-import getTodoLists, { getIndividualTodo } from "./getTodoLists";
+import getTodoLists from "./getTodoLists";
 
 class createTodo {
   constructor(id, todo, dueDate, isCompleted, isImportant) {
@@ -14,6 +14,25 @@ class createTodo {
   }
 }
 
+let filteredTodoLists = [];
+
+const updateTodoListsDom = (sectionName, newTodo) => {
+  const todo = getLatestTodoLists();
+  if (sectionName.includes("All todo")) {
+    filteredTodoLists = todo;
+  } else if (sectionName.includes("Important")) {
+    filteredTodoLists = todo.filter((todo) => todo.isImportant);
+  } else if (sectionName.includes("Completed")) {
+    filteredTodoLists = todo.filter((todo) => todo.isCompleted);
+  } else if (sectionName.includes("My day")) {
+    filteredTodoLists = todo.filter((todo) => todo.dueDate === currentDate);
+  } else {
+    filteredTodoLists.unshift(newTodo);
+  }
+  const todoListElem = document.querySelector(".todo-lists");
+  todoListElem.replaceWith(getTodoLists(filteredTodoLists));
+};
+
 const getTodoMainContent = (todo, sectionName) => {
   const todoMainContent = document.createElement("div");
   todoMainContent.className =
@@ -23,7 +42,7 @@ const getTodoMainContent = (todo, sectionName) => {
   const todoLists = getTodoLists(todo);
   const addTodoInput = getAddTodoInput(sectionName);
 
-  const updateTodoLists = (newTodo, sectionName = "") => {
+  const updateTodoLists = (newTodo) => {
     getUsersFromLocalStorage();
     const updatedUsers = users.map((user) =>
       user.current_user
@@ -33,15 +52,7 @@ const getTodoMainContent = (todo, sectionName) => {
         : user
     );
     localStorage.setItem("users", JSON.stringify(updatedUsers));
-    if (sectionName === "Add todo") {
-      tempTodoLists.unshift(newTodo);
-      const todoListElem = document.querySelector(".todo-lists");
-      todoListElem.replaceWith(getTodoLists(tempTodoLists));
-    } else {
-      const todoListElem = getIndividualTodo(newTodo);
-      todoLists.prepend(todoListElem);
-    }
-    console.log(todoLists);
+    updateTodoListsDom(sectionName, newTodo);
   };
 
   const todoInput = addTodoInput.querySelector("input");
@@ -54,11 +65,14 @@ const getTodoMainContent = (todo, sectionName) => {
         false,
         false
       );
-      if (sectionName.includes("My day")) {
-        newTodo.dueDate = currentDate;
-      } else if (sectionName.includes("Important")) {
-        newTodo.isImportant = true;
-      } else if (sectionName.includes("Add todo")) {
+      if (
+        sectionName.includes("Add todo") ||
+        sectionName.includes("Important") ||
+        sectionName.includes("All todo")
+      ) {
+        if (sectionName.includes("Important")) {
+          newTodo.isImportant = true;
+        }
         const inputs = todoHead.querySelectorAll("input");
         inputs.forEach((input) => {
           if (input.type === "date") {
@@ -67,16 +81,22 @@ const getTodoMainContent = (todo, sectionName) => {
             newTodo.dueTime = input.value;
           }
         });
-        updateTodoLists(newTodo, "Add todo");
+        updateTodoLists(newTodo);
         todoInput.value = "";
         return;
+      } else if (sectionName.includes("My day")) {
+        newTodo.dueDate = currentDate;
       }
       updateTodoLists(newTodo);
       todoInput.value = "";
     }
   });
 
-  fragment.append(todoHead, todoLists, addTodoInput);
+  if (sectionName.includes("Completed")) {
+    fragment.append(todoHead, todoLists);
+  } else {
+    fragment.append(todoHead, todoLists, addTodoInput);
+  }
   todoMainContent.appendChild(fragment);
   return todoMainContent;
 };
