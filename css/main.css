@@ -1,6 +1,11 @@
 @import url('style.css');
 @import url('dashboard.css');
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

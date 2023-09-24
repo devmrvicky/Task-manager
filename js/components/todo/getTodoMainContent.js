@@ -5,12 +5,13 @@ import getTodoHead from "./getTodoHead";
 import getTodoLists from "./getTodoLists";
 
 class createTodo {
-  constructor(id, todo, dueDate, isCompleted, isImportant) {
+  constructor(id, todo, dueDate, isCompleted, isImportant, createdDate) {
     this.id = id;
     this.todo = todo;
     this.dueDate = dueDate;
     this.isCompleted = isCompleted;
     this.isImportant = isImportant;
+    this.createdDate = createdDate;
   }
 }
 
@@ -63,7 +64,8 @@ const getTodoMainContent = (todo, sectionName) => {
         todoInput.value,
         currentDate,
         false,
-        false
+        false,
+        currentDate
       );
       if (
         sectionName.includes("Add todo") ||
@@ -101,3 +103,4 @@ const getTodoMainContent = (todo, sectionName) => {
   return todoMainContent;
 };
 export default getTodoMainContent;
+export { updateTodoListsDom };

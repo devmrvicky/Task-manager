@@ -1,6 +1,11 @@
-import { getUsersFromLocalStorage, users } from "../../main";
+import {
+  getUsersFromLocalStorage,
+  taskManagerContent,
+  users,
+} from "../../main";
 import { getLatestTodoLists } from "../../pages/todo";
 import { getContextMenu } from "../common/getContextMenu";
+import getTodoDetailSection from "./getTodoDetailSection";
 
 const imagePath = import.meta.env.BASE_URL + "/write-note.png";
 
@@ -56,6 +61,14 @@ const updateCurrentUserTodo = (updatedTodoLists) => {
   );
 };
 
+// delete individual todo
+const deleteIndividualTodo = (listElem, todoObj) => {
+  const allTodo = getLatestTodoLists();
+  let filteredTodoLists = allTodo.filter((li) => li.id !== todoObj.id);
+  updateCurrentUserTodo(filteredTodoLists);
+  listElem.remove();
+};
+
 const getTodoLists = (lists) => {
   const listsElem = document.createElement("ul");
   listsElem.className = `todo-lists flex-1 p-5 flex flex-col gap-2 overflow-auto`;
@@ -86,21 +99,19 @@ const getTodoLists = (lists) => {
       e.preventDefault();
       const contextmenu = getContextMenu(e);
       const deleteBtn = contextmenu.querySelector("ul li");
-      deleteBtn.onclick = () => {
-        const allTodo = getLatestTodoLists();
-        let filteredTodoLists = allTodo.filter((li) => li.id !== list.id);
-        updateCurrentUserTodo(filteredTodoLists);
-        li.remove();
+      deleteBtn.onclick = (e) => {
+        e.stopPropagation();
+        deleteIndividualTodo(li, list);
       };
       li.append(contextmenu);
-  
     });
 
     // complete todo
     const importantBtn = li.querySelector(".important-todo");
     const completeCheckbox = li.querySelector(".completed-todo");
     const todoElem = li.querySelector(".todo-elem");
-    completeCheckbox.addEventListener("click", () => {
+    completeCheckbox.addEventListener("click", (e) => {
+      e.stopPropagation();
       const checkedIcon = document.createElement("i");
       checkedIcon.classList.add("fa-solid", "fa-circle-check", "text-white");
       completeCheckbox.replaceChildren(checkedIcon);
@@ -118,12 +129,13 @@ const getTodoLists = (lists) => {
         li.id === list.id ? { ...li, isCompleted: true } : li
       );
       updateCurrentUserTodo(filteredTodoLists);
+      if (!importantBtn) return;
       importantBtn.style.display = "none";
-      
     });
 
     // make important todo
-    importantBtn?.addEventListener("click", () => {
+    importantBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
       const importantIcon = document.createElement("i");
       importantIcon.classList.add("fa-solid", "fa-star", "text-white");
       importantBtn.replaceChildren(importantIcon);
@@ -132,7 +144,18 @@ const getTodoLists = (lists) => {
         li.id === list.id ? { ...li, isImportant: true } : li
       );
       updateCurrentUserTodo(filteredTodoLists);
-      
+    });
+
+    // get individual todo detail section
+    li.addEventListener("click", () => {
+      const todoMainPage = taskManagerContent.children[0];
+      const todoName = todoMainPage.lastElementChild.dataset.todoName;
+      if (todoMainPage.lastElementChild.id === "todo-individual-section") {
+        todoMainPage.lastElementChild.remove();
+        if (todoName === list.todo) return;
+      }
+      const individualTodoDetailSection = getTodoDetailSection(list, li);
+      todoMainPage.append(individualTodoDetailSection);
     });
 
     fragment.appendChild(li);
@@ -142,4 +165,4 @@ const getTodoLists = (lists) => {
 };
 
 export default getTodoLists;
-export { getIndividualTodo };
+export { getIndividualTodo, updateCurrentUserTodo, deleteIndividualTodo };

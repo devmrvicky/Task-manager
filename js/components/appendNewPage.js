@@ -29,7 +29,7 @@ export const appendNewPage = (newPageType, isFromBackBtn = false) => {
   } else if (newPageType === "todo") {
     const notesPage = getTodoPage(isFromBackBtn);
     taskManagerContent.append(notesPage);
-    mainTitle.textContent = "todo";
+    mainTitle.textContent = "Todo";
     openTextEditorBtn.style.display = "none";
     return;
   } else if (newPageType === "setting") {

@@ -1,11 +1,6 @@
 import { getTodoSidebar } from "../components/todo/getTodoSidebar";
 import getTodoMainContent from "../components/todo/getTodoMainContent";
-import {
-  getUsersFromLocalStorage,
-  taskManagerContent,
-  updateNavigationList,
-  users,
-} from "../main";
+import { getUsersFromLocalStorage, updateNavigationList, users } from "../main";
 import getTimeObj from "../components/getTimeObj";
 
 const getLatestTodoLists = () => {
@@ -29,7 +24,9 @@ const getTodoPage = (isFromBackBtn = false) => {
   // todo page element
   const todoMainPage = document.createElement("div");
   todoMainPage.className =
-    "todo-main-page flex gap-5 h-[85vh] flex-1 relative overflow-hidden z-30";
+    "todo-main-page flex gap-3 h-[85vh] flex-1 relative overflow-hidden";
+  todoMainPage.setAttribute("data-current-section", "My day");
+
   const fragment = document.createDocumentFragment();
 
   const todoSidebar = getTodoSidebar();
@@ -42,27 +39,33 @@ const getTodoPage = (isFromBackBtn = false) => {
       const todo = getLatestTodoLists();
       const todoMainContentElem = document.querySelector(".todo-main-content");
       const sectionName = sidebarItem.dataset.sectionName;
+
       if (sectionName === "All Todo") {
+        todoMainPage.setAttribute("data-current-section", sectionName);
         const headingTitle = `<i class="fa-solid fa-house"></i><span>${sectionName}</span>`;
         todoMainContentElem.replaceWith(getTodoMainContent(todo, headingTitle));
       } else if (sectionName === "Important") {
+        todoMainPage.setAttribute("data-current-section", sectionName);
         const headingTitle = `<i class="fa-regular fa-star"></i><span>${sectionName}</span>`;
         const importantTodo = todo.filter((todo) => todo.isImportant);
         todoMainContentElem.replaceWith(
           getTodoMainContent(importantTodo, headingTitle)
         );
       } else if (sectionName === "Completed") {
+        todoMainPage.setAttribute("data-current-section", sectionName);
         const headingTitle = `<i class="fa-regular fa-circle-check"></i><span>${sectionName}</span>`;
         const completedTodo = todo.filter((todo) => todo.isCompleted);
         todoMainContentElem.replaceWith(
           getTodoMainContent(completedTodo, headingTitle)
         );
       } else if (sectionName === "My day") {
+        todoMainPage.setAttribute("data-current-section", sectionName);
         const todayTodo = todo.filter((todo) => todo.dueDate === currentDate);
         todoMainContentElem.replaceWith(
           getTodoMainContent(todayTodo, headingTitle)
         );
       } else {
+        todoMainPage.setAttribute("data-current-section", "Add todo");
         todoMainContentElem.replaceWith(getTodoMainContent([], "Add todo"));
       }
     });

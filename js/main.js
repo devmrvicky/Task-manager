@@ -325,6 +325,7 @@ function getNoOfAllTask() {
 // * get all menus of side bar and loop it to get individual menu button and add click event listener to each individual button and call appendNewPage function that is take page name
 menuOptions.forEach((menuOption) => {
   menuOption.addEventListener("click", (e) => {
+    toggleMainSideBar();
     for (const menu of menuOptions) {
       if (menu.classList.contains("active")) {
         menu.classList.remove("active");

@@ -82,7 +82,7 @@ input[type="aria-hidden"] {
 
 .task-area section,
 .task-manager-content>div>:is(ul, div) {
-  animation: fade .5s ease-in-out forwards alternate;
+  animation: fade .3s ease-in forwards alternate;
 }
 
 @keyframes fade {
@@ -97,17 +97,33 @@ input[type="aria-hidden"] {
   }
 }
 
+.task-manager-content .todo-individual-section {
+  animation: rightToLeft .2s ease-in-out forwards alternate;
+}
+
+@keyframes rightToLeft {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
 .delete-list-item {
   animation: delete-item .5s ease-in-out forwards alternate
 }
 
 @keyframes delete-item {
   0% {
+    -webkit-transform: translateX(0);
     transform: translateX(0);
     visibility: visible;
   }
 
   100% {
+    -webkit-transform: translateX(100%);
     transform: translateX(100%);
     visibility: hidden;
   }
@@ -211,9 +227,6 @@ input[type="aria-hidden"] {
   padding-left: 40px !important;
 }
 
-.writing-area,
-.individual-page {}
-
 .writing-area h1,
 .individual-page h1 {
   font-size: 36px;
@@ -276,6 +289,17 @@ input[type="aria-hidden"] {
 @media screen and (max-width: 1024px) {
   .main-content-area {
     background: #F9FAFA;
+  }
+
+  .todo-main-content {
+    position: relative !important;
+  }
+
+  .todo-individual-section {
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    height: 100%;
   }
 }
 
